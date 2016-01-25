@@ -1,0 +1,47 @@
+{
+  "turtle": [
+    {
+      "type": "input",
+      "value": {
+        "human": true
+      }
+    },
+    {
+      "type": "position"
+    },
+    {
+      "type": "sprite",
+      "value": {
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "type": "animation",
+      "value": {
+        "animationId": 1
+      }
+    }
+  ],
+  "gomba": [
+    {
+      "type": "input"
+    },
+    {
+      "type": "position"
+    },
+    {
+      "type": "sprite",
+      "value": {
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "type": "animation",
+      "value": {
+        "animationId": 2
+      }
+    }
+  ]
+}

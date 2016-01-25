@@ -1,0 +1,30 @@
+[
+  {
+    "name": "turtle_walk",
+    "id": 1,
+    "frames": [
+      {
+        "tileId": 13,
+        "time": 200
+      },
+      {
+        "tileId": 14,
+        "time": 200
+      }
+    ]
+  },
+  {
+    "name": "gomba_walk",
+    "id": 2,
+    "frames": [
+      {
+        "tileId": 10,
+        "time": 200
+      },
+      {
+        "tileId": 11,
+        "time": 200
+      }
+    ]
+  }
+]
