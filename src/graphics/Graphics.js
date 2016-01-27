@@ -1,6 +1,9 @@
 var gl = null;
+var canvas = null;
 var programs = Object.create(null);
 var textures = Object.create(null);
+
+createContext('webgl');
 
 function getContext() {
     return gl;
@@ -15,16 +18,12 @@ function getTexture(id) {
 }
 
 function createContext(contextType, contextAttributes) {
-    if(gl) return gl;
+    if (window.gl) return gl;
+    console.info('creating webgl context');
     try {
-        var canvas = document.createElement('canvas');
-        document.body.appendChild(canvas);
+        canvas = document.createElement('canvas');
         gl = canvas.getContext(contextType, contextAttributes);
-        // refactor this out of here
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-        gl.enable(gl.BLEND);
-        // end
+        window.gl = gl;
         return gl;
     } catch(ex) {
         console.error('unable to create WebGL rendering context: ', ex.message);
@@ -33,7 +32,7 @@ function createContext(contextType, contextAttributes) {
 }
 
 function createProgram(id, vertexSource, fragmentSource) {
-    if(programs[id]) return programs[id];
+    if (programs[id]) return programs[id];
     var vertexShader = compileShaderSource(vertexSource, gl.VERTEX_SHADER);
     var fragmentShader = compileShaderSource(fragmentSource, gl.FRAGMENT_SHADER);
     var program = linkProgram(vertexShader, fragmentShader);
@@ -55,9 +54,9 @@ function compileShaderSource(shaderSource, shaderType) {
     return shader;
 }
 
-function linkProgram(vertextShader, fragmentShader) {
+function linkProgram(vertexShader, fragmentShader) {
     var program = gl.createProgram();
-    gl.attachShader(program, vertextShader);
+    gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
     gl.linkProgram(program);
     var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
@@ -76,26 +75,25 @@ function addLineNumbers(src) {
     }).join("\n");
 }
 
-function createTexture(id, src, callback) {
-    if(textures[id]) return textures[id].handle;
-    var image = new Image();
-    image.id = id;
-    image.callback = callback;
-    image.onload = onTextureLoaded;
-    image.onerror = onTextureLoadError;
-    image.src = src;
+function createTexture(tex, src) {
+    return new Promise(function(resolve, reject) {
+        var image = new Image();
+        image.onload = function() {
+            image.onload = null;
+            image.onerror = null;
+            var texture = onImageLoaded(tex, image);
+            resolve(texture);
+        };
+        image.onerror = function() {
+            image.onload = null;
+            image.onerror = null;
+            reject(src);
+        };
+        image.src = src;
+    });
 }
 
-function onTextureLoadError() {
-    var image = this;
-    image.callback(null, {message: 'error loading ' + image.src});
-    image.callback = null;
-    image.onload = null;
-    image.onerror = null;
-}
-
-function onTextureLoaded() {
-    var image = this;
+function onImageLoaded(tex, image) {
     var texture = gl.createTexture();
 
     gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -105,24 +103,14 @@ function onTextureLoaded() {
     gl.generateMipmap(gl.TEXTURE_2D);
     gl.bindTexture(gl.TEXTURE_2D, null);
 
-    textures[image.id] = texture;
-
-    image.onload = null;
-    image.callback(true, null);
-    image.callback = null;
-    image.onload = null;
-    image.onerror = null;
-}
-
-function setClearColor(color) {
-    gl.clearColor(color.r, color.g, color.b, 1.0);
+    textures[tex] = texture;
+    return texture;
 }
 
 export default {
     getContext: getContext,
     getProgram: getProgram,
     getTexture: getTexture,
-    setClearColor: setClearColor,
     createContext: createContext,
     createProgram: createProgram,
     createTexture: createTexture

@@ -1,0 +1,72 @@
+[
+  {
+    "id": 10100,
+    "type": 1,
+    "name": "turtle",
+    "components": {
+      "position": null,
+      "sprite": {
+        "width": 16,
+        "height": 28
+      },
+      "animation": {
+        "animationId": 1
+      },
+      "box": {
+        "width": 16,
+        "height": 28,
+        "collider": 100
+      },
+      "input": {
+        "human": true
+      }
+    }
+  },
+  {
+    "id": 10101,
+    "type": 1,
+    "name": "gomba",
+    "components": {
+      "input": {
+        "human": false
+      },
+      "sprite": {
+        "width": 16,
+        "height": 16
+      },
+      "animation": {
+        "animationId": 2
+      },
+      "box": {
+        "width": 16,
+        "height": 16,
+        "collider": 100
+      },
+      "agent": {
+        "script": 100
+      }
+    }
+  },
+  {
+    "id": 10200,
+    "type": 1,
+    "name": "hero",
+    "components": {
+      "sprite": {
+        "width": 16,
+        "height": 16
+      },
+      "animation": {
+        "animationId": 3
+      },
+      "box": {
+        "width": 12,
+        "height": 12,
+        "collider": 200
+      },
+      "input": {
+        "human": true
+      }
+    }
+  }
+]

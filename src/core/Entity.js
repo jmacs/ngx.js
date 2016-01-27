@@ -1,183 +1,133 @@
-import System from './System.js';
-import identity from './identity';
+import Prefab from './Prefab';
 
-var ASCII_UNDERSCORE = 95;
-
-var componentListeners = Object.create(null);
 var componentClasses = Object.create(null);
 var prefabs = Object.create(null);
-var entities = Object.create(null);
-
-function get(id) {
-    return entities[id];
-}
-
-function forEach(callback) {
-    var keys = Object.keys(entities);
-    for (var i = 0, len = keys.length; i < len; i++) {
-        var entity = entities[keys[i]];
-        callback(entity);
-    }
-}
-
-function spawn(name) {
-    var entity = new Entity(name);
-    entities[entity.id] = entity;
-    var prefab = prefabs[name];
-    if(prefab) {
-        for (var i = 0, len = prefab.length; i < len; i++) {
-            var component = prefab[i];
-            entity.attach(component.type, component.value);
-        }
-    } else {
-        console.error('spawn: undefined prefab "%s"', name);
-    }
-    return entity;
-}
-
-function kill(id) {
-    var entity = entities[id];
-    if(entity) {
-        entity.kill();
-    } else {
-        console.warn('kill: "%s" does not exist', entity.id);
-    }
-}
-
-function addComponent(name, ComponentClass) {
-    if(!componentClasses[name]) {
-        componentClasses[name] = ComponentClass;
-        componentListeners[name] = [];
-    } else {
-        console.warn('addComponent: "%s" is already defined', name);
-    }
-}
-
-function addPrefab(name, prefab) {
-    if(prefab instanceof Array) {
-        for (var i = 0, len = prefab.length; i < len; i++) {
-            var type = componentClasses[prefab[i].type];
-            if(!type) {
-                console.warn('addPrefab: unknown component type "%s"', type);
-            }
-        }
-        prefabs[name] = prefab;
-    } else {
-        console.error('addPrefab: "%s" must define an array of prefab components', name);
-    }
-}
-
-function sendComponentAttach(entity, type, component) {
-    var listeners = componentListeners[type];
-    for (var i = 0, len = listeners.length; i < len; i++) {
-        listeners[i].onComponentAttach(entity, component, type);
-    }
-}
-
-function sendComponentDetach(entity, type, component) {
-    var listeners = componentListeners[name];
-    for (var i = 0, len = listeners.length; i < len; i++) {
-        listeners[i].onComponentDetach(entity, component, type);
-    }
-}
-
-function linkEvents(type, attachCallback, detachCallback) {
-    var listeners = componentListeners[type];
-    if(listeners) {
-        listeners.push({
-            onComponentAttach: attachCallback,
-            onComponentDetach: detachCallback
-        });
-    } else {
-        console.error('linkEvents: invalid component type "%s"', type);
-    }
-}
-
-function clear(context) {
-    var keys = Object.keys(entities);
-    for (var i = 0, len = keys.length; i < len; i++) {
-        var entity = entities[keys[i]];
-        if(entity.context === context) {
-            delete entities[entity.id];
-        }
-    }
-}
 
 class Entity {
 
-    constructor(name) {
-        this._name = name;
-        this._id = identity(entities);
-        this._context = System.getContext();
+    constructor(ref, prefab) {
+        this.__ref = ref || 0;
+        this.__prefab = prefab;
+        this.position = [0.0, 0.0, 0.0];
+        this.visible = false;
     }
 
-    get id() {
-        return this._id;
+    get ref() {
+        return this.__ref;
     }
 
-    get name() {
-        return this._name;
-    }
-
-    get context() {
-        return this._context;
-    }
-
-    set context(context) {
-        var keys = Object.keys(this);
-        for (var i = 0, len = keys.length; i < len; i++) {
-            var key = keys[i];
-            if(key.charAt(0) === ASCII_UNDERSCORE) continue;
-            var component = this[key];
-            sendComponentDetach(this, key, component);
-            this._context = context;
-            sendComponentAttach(this, key, component);
-        }
-        this._context = context;
-    }
-
-    attach(type, values) {
-        if(this[type]) return;
-        var ComponentClass = componentClasses[type];
-        if(!ComponentClass) {
-            console.warn('%s is not a registered component type', type);
-        }
-        var instance = new ComponentClass();
-        this[type] = instance;
-        if(values) {
-            instance.initialize(values);
-        }
-        sendComponentAttach(this, type, instance);
-    }
-
-    detach(type) {
-        var component = this[type];
-        if(!component) return;
-        sendComponentDetach(this, type, component);
-        component.destroy();
-        delete this[type];
-    }
-
-    kill() {
-        var keys = Object.keys(this);
-        for (var i = 0, len = keys.length; i < len; i++) {
-            var key = keys[i];
-            if(key.charAt(0) === ASCII_UNDERSCORE) continue;
-            var component = this[key];
-            sendComponentDetach(this, key, component);
-            component.destroy();
-        }
-        delete entities[id];
+    get prefab() {
+        return this.__prefab;
     }
 }
 
+function prefabType(prefabId) {
+    var prefab = prefabs[prefabId];
+    return prefab ? prefab.type : 0;
+}
+
+function create(ref, prefabId) {
+    var prefab = prefabs[prefabId];
+    if (!prefab) {
+        throw new Error('unknown prefab: ' + prefabId);
+    }
+
+    // todo: pool entities
+    var entity = new Entity(ref, prefab);
+    for (var i = 0, ii = prefab.size; i < ii; i++) {
+        var component = prefab.componentAt(i);
+        attachComponent(component.type, entity, component.state);
+    }
+
+    return entity;
+}
+
+function release(entity) {
+    // todo: release to pool
+}
+
+function addComponent(name, ComponentClass) {
+    if (!validateComponentName(name)) return;
+    componentClasses[name] = ComponentClass;
+}
+
+function addPrefab(options) {
+    var prefab = new Prefab(options);
+    if (!prefabs[prefab.id]) {
+        prefabs[prefab.id] = prefab;
+    } else {
+        console.warn('prefab "%s:%s" is already defined', prefab.id, prefab.name);
+    }
+}
+
+function attachComponent(componentType, entity, state) {
+    if (entity[componentType]) {
+        console.warn('attachComponent: entity %s:%s already has component %s', entity.name, entity.ref, type);
+        return;
+    }
+
+    var ComponentClass = componentClasses[componentType];
+    if (!ComponentClass) {
+        console.warn('attachComponent: %s is not a registered component type', componentType);
+        return;
+    }
+
+    // todo: pool component types
+    var instance = new ComponentClass();
+    entity[componentType] = instance;
+    instance.initialize(entity);
+
+    if (state) {
+        instance.hydrate(state);
+    }
+
+    return instance;
+}
+
+function detachComponent(componentType, entity) {
+    var component = entity[componentType];
+    if (!component) {
+        console.warn('detachComponent: %s:%s does not have component %s', entity.ref, entity.name, componentType);
+        return;
+    }
+    entity[componentType].destroy();
+    delete entity[componentType];
+}
+
+function validateComponentName(name) {
+    if (componentClasses[name]) {
+        console.warn('component "%s" is already defined', name);
+        return false;
+    }
+    if (name === 'prefab') {
+        console.error('reserved component name "prefab"');
+        return false;
+    }
+    if (name === 'position') {
+        console.error('reserved component name "position"');
+        return false;
+    }
+    if (name === 'visible') {
+        console.error('reserved component name "position"');
+        return false;
+    }
+    if (name === 'ref') {
+        console.error('reserved component name "ref"');
+        return false;
+    }
+    if (name.charAt(0) === '_') {
+        console.error('component names cannot start with an underscore');
+        return false;
+    }
+    return true;
+}
+
 export default {
-    get: get,
-    spawn: spawn,
-    kill: kill,
-    forEach: forEach,
+    create: create,
+    release: release,
+    prefabType: prefabType,
     addPrefab: addPrefab,
     addComponent: addComponent,
-    linkEvents: linkEvents,
-    clear: clear
+    attachComponent: attachComponent,
+    detachComponent: detachComponent
 }

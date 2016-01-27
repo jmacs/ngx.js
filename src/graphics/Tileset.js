@@ -1,87 +1,48 @@
-import Graphics from './Graphics.js';
+import Graphics from './Graphics';
+import Tile from './Tile';
 
 var tiles = Object.create(null);
 
-function load(options) {
+function add(options) {
     var tex = options.tex;
     var height = options.height;
     var width = options.width;
-
     var length = options.tiles.length;
-    for(var i = 0; i < length; i++) {
+
+    for (var i = 0; i < length; i++) {
         var item = options.tiles[i];
         var tid = item.tid;
+        var rect = item.rect;
 
-        if(tiles[tid]) {
-            console.warn('duplicate tile tid "%s" in "%s"', id, src);
+        if (tiles[tid]) {
+            console.error('duplicate tile id "%s" in "%s"', tid, options.name);
+            continue;
+        }
+
+        if (!rect || rect.length !== 4) {
+            console.error('invalid tile rect! "%s" in "%s"', tid, options.name);
             continue;
         }
 
         var tile = new Tile(tid, tex);
-        tile.type = item.type;
-        tile.prop = item.prop;
         tile.mapTexture(
-            width, height,
-            item.x, item.y,
-            item.w, item.h
+            width,
+            height,
+            rect[0],
+            rect[1],
+            rect[2],
+            rect[3]
         );
 
         tiles[tid] = tile;
     }
 }
 
-function get(tid) {
-    return tiles[tid] || tiles[0];
-}
-
-class Tile {
-
-    constructor(id, tex) {
-        this.id = id || 0;
-        this.type = 0;
-        this.prop = 0;
-
-        this.tex = tex || 0;
-        // BL 0,0 -> TR 0,1
-        this.x1 = 0.0;
-        this.y1 = 1.0;
-        // TR 0,1 -> BL 0,0
-        this.x2 = 0.0;
-        this.y2 = 0.0;
-        // BR 1,0 -> TR 1,1
-        this.x3 = 1.0;
-        this.y3 = 1.0;
-        // TR 1,1 -> BR 1,0
-        this.x4 = 1.0;
-        this.y4 = 0.0;
-    }
-
-    mapTexture(texWidth, texHeight, destX, destY, destWidth, destHeight) {
-        var x0 = destX / texWidth;
-        var y0 = destY / texHeight;
-        var x1 = (destX + destWidth) / texWidth;
-        var y1 = (destY + destHeight) / texHeight;
-
-        // BL 0,0 -> TL 0,1
-        this.x1 = x0;
-        this.y1 = y1;
-
-        // TL 0,1 -> BL 0,0
-        this.x2 = x0;
-        this.y2 = y0;
-
-        // BR 1,0 -> TR 1,1
-        this.x3 = x1;
-        this.y3 = y1;
-
-        // TR 1,1 -> BR 1,0
-        this.x4 = x1;
-        this.y4 = y0;
-    }
-
+function get(id) {
+    return tiles[id] || tiles[0];
 }
 
 export default {
     get: get,
-    load: load
+    add: add
 };

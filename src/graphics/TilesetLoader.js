@@ -1,39 +1,9 @@
-import Graphics from './Graphics.js';
-import Request from '../core/Request.js';
+import Request from '../core/Request';
 import Tileset from './Tileset.js';
 
-const REGEX_TILES_JSON = /\.tiles\.json$/;
-
-class TilesetLoader {
-
-    handles(url) {
-        return url.match(REGEX_TILES_JSON);
-    }
-
-    load(url, done) {
-        Request.get(url, function(xhr, err) {
-            if(err) {
-                done(url, err);
-                return;
-            }
-
-            var data = null;
-
-            try {
-                data = JSON.parse(xhr.responseText);
-                Tileset.load(data);
-            } catch(err) {
-                done(url, err);
-                return;
-            }
-
-            Graphics.createTexture(data.tex, data.src, function(result, err) {
-                done(url, err);
-            });
-
-        });
-    }
-
+export default function(asset) {
+    return Request.get(asset.url).then(function(xhr) {
+        var data = JSON.parse(xhr.responseText);
+        Tileset.add(data);
+    });
 }
-
-export default TilesetLoader;

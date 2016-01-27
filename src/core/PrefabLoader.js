@@ -1,38 +1,11 @@
-import Request from '../core/Request.js';
+import Request from './Request';
 import Entity from './Entity.js';
 
-const REGEX_PREFAB_JSON = /\.prefab\.json$/;
-
-class PrefabLoader {
-
-    handles(url) {
-        return url.match(REGEX_PREFAB_JSON);
-    }
-
-    load(url, done) {
-        Request.get(url, function(xhr, err) {
-            if(err) {
-                done(url, err);
-                return;
-            }
-
-            try {
-                var data = JSON.parse(xhr.responseText);
-                var keys = Object.keys(data);
-                for(var i = 0, l = keys.length; i < l; i++) {
-                    var key = keys[i];
-                    Entity.addPrefab(key, data[key]);
-                }
-            } catch(err) {
-                done(url, err);
-                return;
-            }
-
-            done(url, null);
-
-        });
-    }
-
+export default function(asset) {
+    return Request.get(asset.url).then(function(xhr) {
+        var data = JSON.parse(xhr.responseText);
+        for (var i = 0, l = data.length; i < l; i++) {
+            Entity.addPrefab(data[i]);
+        }
+    });
 }
-
-export default PrefabLoader;

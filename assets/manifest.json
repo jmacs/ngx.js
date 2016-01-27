@@ -1,0 +1,49 @@
+[
+  {
+    "name": "prefabs/mobs",
+    "type": "prefab",
+    "url": "assets/prefabs/mobs.json"
+  },
+  {
+    "name": "prefabs/decor",
+    "type": "prefab",
+    "url": "assets/prefabs/decor.json"
+  },
+  {
+    "name": "prefabs/items",
+    "type": "prefab",
+    "url": "assets/prefabs/items.json"
+  },
+  {
+    "name": "images/smb3",
+    "type": "image",
+    "url": "assets/images/smb3.png",
+    "tex": 0
+  },
+  {
+    "name": "images/bisasam_font",
+    "type": "image",
+    "url": "assets/images/bisasam_font.png",
+    "tex": 3
+  },
+  {
+    "name": "tilesets/smb3",
+    "type": "tileset",
+    "url": "assets/tilesets/smb3.json"
+  },
+  {
+    "name": "animations/entity",
+    "type": "animation",
+    "url": "assets/animations/smb_entity.json"
+  },
+  {
+    "name": "glyphs/bisasam",
+    "type": "glyph",
+    "url": "assets/glyphs/bisasam.json"
+  },
+  {
+    "name": "config/walls",
+    "type": "walls",
+    "url": "assets/config/walls.json"
+  }
+]

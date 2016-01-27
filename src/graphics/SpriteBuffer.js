@@ -1,7 +1,5 @@
 import Graphics from './Graphics.js';
 
-const gl = Graphics.getContext();
-
 const GL_FLOAT = gl.FLOAT;
 const GL_ARRAY_BUFFER = gl.ARRAY_BUFFER;
 const GL_STATIC_DRAW = gl.STATIC_DRAW;
@@ -51,7 +49,7 @@ class SpriteBuffer {
              0 --------- 2
          */
 
-        for(var i=0; i < INDEX_BUFFER_LENGTH; i++) {
+        for (var i=0; i < INDEX_BUFFER_LENGTH; i++) {
             indices[i * INDICES_PER_SPRITE    ] = i * 4;
             indices[i * INDICES_PER_SPRITE + 1] = i * 4 + 1;
             indices[i * INDICES_PER_SPRITE + 2] = i * 4 + 2;
@@ -64,20 +62,24 @@ class SpriteBuffer {
     }
 
     draw(position, width, height, tile, color) {
-        if(this.index * VERTEX_PER_SPRITE >= VERTEX_BUFFER_LENGTH) {
+        if (this.index * VERTEX_PER_SPRITE >= VERTEX_BUFFER_LENGTH) {
             this.flush();
         }
 
         var tex = tile.tex;
 
         // flush then swap the active texture
-        if(tex != this.activeTexture) {
-            this.flush();
+        if (tex != this.activeTexture) {
+            if (this.index > 0) this.flush();
             var texture = Graphics.getTexture(tex);
-            gl.activeTexture(GL_TEXTURE0);
-            gl.bindTexture(GL_TEXTURE_2D, texture);
-            gl.uniform1i(this.u_image0, 0);
-            this.activeTexture = tex;
+            if (texture) {
+                gl.activeTexture(GL_TEXTURE0);
+                gl.bindTexture(GL_TEXTURE_2D, texture);
+                gl.uniform1i(this.u_image0, 0);
+                this.activeTexture = tex;
+            } else {
+                this.activeTexture = null;
+            }
         }
 
         var x = position[0];
@@ -164,14 +166,15 @@ class SpriteBuffer {
     }
 
     flush() {
-        // send the vertices to the gpu
-        gl.bufferData(GL_ARRAY_BUFFER, this.array, GL_STATIC_DRAW);
+        if (this.activeTexture != null) {
+            // send the vertices to the gpu
+            gl.bufferData(GL_ARRAY_BUFFER, this.array, GL_STATIC_DRAW);
 
-        // draw the vertices in the specified order
-        gl.bindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.ibuffer);
-        gl.bufferData(GL_ELEMENT_ARRAY_BUFFER, this.indices, GL_STATIC_DRAW);
-        gl.drawElements(GL_TRIANGLES, this.index * VERTEX_PER_SPRITE, GL_UNSIGNED_SHORT, 0);
-
+            // draw the vertices in the specified order
+            gl.bindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.ibuffer);
+            gl.bufferData(GL_ELEMENT_ARRAY_BUFFER, this.indices, GL_STATIC_DRAW);
+            gl.drawElements(GL_TRIANGLES, this.index * INDICES_PER_SPRITE, GL_UNSIGNED_SHORT, 0);
+        }
         // reset the index for the next draw call
         this.index = 0;
     }
@@ -197,7 +200,7 @@ function getBuffer(id) {
 }
 
 function createBuffer(id) {
-    if(cache[id]) return cache[id];
+    if (cache[id]) return cache[id];
     var buffer = new SpriteBuffer(id);
     cache[id] = buffer;
     return buffer;

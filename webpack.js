@@ -1,10 +1,8 @@
-var webpack = require('webpack');
-
 var config = {
     entry: {
-        game: './src/game/main'
+        game: './src/main'
     },
-    devtool: 'source-map',
+    devtool: 'cheap-source-map',
     output: {
         path: './dist',
         filename: '[name].bundle.js',
@@ -25,7 +23,7 @@ var config = {
                 exclude: /node_modules\//,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['es2015']
+                    plugins: ['babel-plugin-transform-es2015-modules-commonjs']
                 }
             }
         ]

@@ -1,0 +1,21 @@
+[
+  {
+    "id": 20100,
+    "type": 2,
+    "name": "hammer",
+    "components": {
+      "sprite": {
+        "width": 16,
+        "height": 16,
+        "tid": 2
+      },
+      "box": {
+        "width": 16,
+        "height": 16
+      },
+      "item": {
+        "type": 1
+      }
+    }
+  }
+]

@@ -1,10 +1,3 @@
-function push(arr, value) {
-    arr[arr.length] = value;
-}
-
-function pop(arr) {
-    return arr[arr.length--];
-}
 
 function removeIndex(arr, index) {
     var len = arr.length;
@@ -19,7 +12,7 @@ function removeIndex(arr, index) {
 
 function removeValue(arr, value) {
     var index = arr.indexOf(value);
-    if(index === -1) return false;
+    if (index === -1) return false;
     var len = arr.length;
     if (!len) return false;
     while (index < len) {
@@ -31,8 +24,6 @@ function removeValue(arr, value) {
 }
 
 export default {
-    push: push,
-    pop: pop,
     removeIndex: removeIndex,
     removeValue: removeValue
 }

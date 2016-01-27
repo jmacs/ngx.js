@@ -1,26 +1,21 @@
 const GET = 'GET';
 
-function get(url, callback) {
+// todo: refactor in favor of native fetch api
+function get(url) {
     var xhr = new XMLHttpRequest();
-    xhr.callback = callback;
-    xhr.onreadystatechange = onReadyStateChange;
-    xhr.open(GET, url, true);
-    xhr.send();
-}
-
-function onReadyStateChange() {
-    var xhr = this;
-    var callback = xhr.callback;
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-        callback(xhr, getError(xhr));
-    }
-}
-
-function getError(xhr) {
-    if(xhr.status < 200 || xhr.status >= 400) {
-        return {message: 'response error ' + xhr.status + ' ' + xhr.responseURL};
-    }
-    return null;
+    return new Promise(function(resolve, reject) {
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status < 200 || xhr.status >= 400) {
+                    reject(xhr);
+                } else {
+                    resolve(xhr);
+                }
+            }
+        };
+        xhr.open(GET, url, true);
+        xhr.send();
+    });
 }
 
 export default {

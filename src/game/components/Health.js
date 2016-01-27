@@ -6,10 +6,16 @@ class Health extends Component {
     constructor() {
         super();
         this.value = 0;
+        this.onKill = null;
     }
 
-    initialize(def) {
-        this.value = def.value;
+    hydrate(state) {
+        if (state.value) {
+            this.value = state.value;
+        }
+        if (state.onKill) {
+            this.onKill = state.onKill;
+        }
     }
 }
 

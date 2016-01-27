@@ -1,0 +1,49 @@
+{
+  "prefabs": [
+    {
+      "id": 30100,
+      "tileId": 5
+    }
+  ],
+  "prefabTypes": [
+    {
+      "id": 1,
+      "name": "Mobiles"
+    },
+    {
+      "id": 2,
+      "name": "Items"
+    },
+    {
+      "id": 3,
+      "name": "Doors"
+    },
+    {
+      "id": 4,
+      "name": "Chests"
+    }
+  ],
+  "components": [
+    {
+      "name": "door",
+      "properties": [
+        {
+          "name": "key",
+          "type": "entity"
+        },
+        {
+          "name": "locked",
+          "type": "boolean"
+        },
+        {
+          "name": "exit",
+          "type": "zone_connection"
+        },
+        {
+          "name": "onUnlock",
+          "type": "event"
+        }
+      ]
+    }
+  ]
+}
