@@ -1,7 +1,6 @@
 import Coroutine from '../../core/Coroutine';
 import Assets from '../../core/Assets';
 import Scene from '../../core/Scene';
-import World from '../../world/World';
 
 var script = Coroutine.create('startup');
 

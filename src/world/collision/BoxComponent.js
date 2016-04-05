@@ -9,9 +9,13 @@ class BoxComponent extends Component {
         this.minY = 0;  // left
         this.maxX = 0;  // top
         this.maxY = 0;  // right
+        this.centerX = 0;
+        this.centerY = 0;
         this.mask = 0;
         this.width = 0;
+        this.halfWidth = 0;
         this.height = 0;
+        this.halfHeight = 0;
         this.collider = 0;
         this.collidingWith = Object.create(null);
     }
@@ -28,16 +32,20 @@ class BoxComponent extends Component {
         this.minY = position[1];
         this.maxX = position[0] + this.width;
         this.maxY = position[1] + this.height;
+        this.centerX = this.halfWidth + position[0];
+        this.centerY = this.halfHeight + position[1];
         return this;
     }
 
     hydrate(state) {
         if (state.width) {
             this.width = state.width;
+            this.halfWidth = state.width * 0.5;
             this.maxX = this.width;
         }
         if (state.height) {
             this.height = state.height;
+            this.halfHeight = state.height * 0.5;
             this.maxY = this.height;
         }
         if (state.mask) {

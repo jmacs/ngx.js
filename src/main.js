@@ -1,7 +1,7 @@
 import GameClock from './core/GameClock';
 import Scene from './core/Scene';
 import Assets from './core/Assets';
-import World from './world/World';
+import Stage from './world/Stage';
 import './core/module';
 import './graphics/module';
 import './world/module';
@@ -16,11 +16,11 @@ GameClock.on('start', function() {
     Assets.downloadManifest('assets/manifest.json').then(function() {
         return Assets.downloadAll();
     }).then(function() {
-        return World.request('assets/maps/test.json');
+        return Stage.request('assets/maps/test.json');
     }).then(function() {
         return Scene.request('assets/scenes/sandbox.json', true);
     }).then(function() {
-        World.start(1234);
+        Stage.start(1234);
     });
 
 });

@@ -1,4 +1,4 @@
-import Request from '../../core/Request';
+import Request from '../core/Request';
 import Walls from './Walls.js';
 
 export default function(asset) {

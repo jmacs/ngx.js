@@ -2,10 +2,9 @@
   "name": "sandbox",
   "type": 1,
   "aspects": [
-    "world.input",
-    "world.agents",
     "world.physics",
     "world.collision",
+    "world.input",
     "ngx.animation",
     "ngx.coroutines",
     "ngx.events",

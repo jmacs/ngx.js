@@ -4,22 +4,23 @@ import System from '../core/GameClock';
 import Entity from '../core/Entity';
 import Assets from '../core/Assets';
 
-import CollisionWorld from './collision/SpatialIndex';
+import Stage from './Stage';
+import SpatialIndex from './collision/SpatialIndex';
 
 import './collision/CollisionAspect';
-import './maps/StageAspect';
+import './StageAspect';
 import './physics/PhysicsAspect';
 import './ai/AgentAspect';
 import './input/InputAspect';
-import StageAspect from './maps/StageAspect';
+import './StageAspect';
 
 import InputComponent from './input/InputComponent';
 import AgentComponent from './ai/AgentComponent';
 import BoxComponent from './collision/BoxComponent';
 
-import WallLoader from './maps/WallLoader';
+import WallLoader from './WallLoader';
 
-GameClock.on('bootstrap', function initialize() {
+GameClock.on('bootstrap', function() {
     Entity.addComponent('input', InputComponent);
     Entity.addComponent('agent', AgentComponent);
     Entity.addComponent('box', BoxComponent);
@@ -28,8 +29,8 @@ GameClock.on('bootstrap', function initialize() {
 });
 
 GameModules.include('world', {
-    AgentComponent: AgentComponent,
-    StageAspect: StageAspect,
+    Stage: Stage,
+    SpatialIndex: SpatialIndex,
     BoxComponent: BoxComponent,
-    CollisionWorld: CollisionWorld
+    AgentComponent: AgentComponent
 });

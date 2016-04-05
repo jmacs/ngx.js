@@ -19,6 +19,7 @@ var lineBuffer;
 var spriteBuffer;
 var debugText;
 var fpsText;
+var lastFps = 0;
 var red = new Color(1, 0, 0, 1);
 const GRID_SHIFT = 6;
 
@@ -38,14 +39,16 @@ aspect.onStageEnter = function(stage) {
 
 aspect.onUpdate = function() {
 
-
-
     spriteBuffer.enable(
         modelView(),
         projection()
     );
 
-    fpsText.setString(GameClock.getFPS().toString());
+    var fps = GameClock.fps();
+    if (fps !== lastFps) {
+        fpsText.setString(GameClock.fps().toString());
+        lastFps = fps
+    }
 
     GlyphRenderer.setGlyphMap(1);
     //GlyphRenderer.setColor(red);

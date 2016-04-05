@@ -1,18 +1,17 @@
 import GameModules from './GameModules';
-import GameClock from './GameClock';
 
+import GameClock from './GameClock';
 import ObjectPool from './ObjectPool';
 import Scene from './Scene';
 import Events from './Events';
 import Entity from './Entity';
 import Coroutine from './Coroutine';
 import Assets from './Assets';
-
-import EventSystem from './Events';
-import TaskSystem from './Coprocessor';
+import Coprocessor from './Coprocessor';
 import PrefabLoader from './PrefabLoader';
 
-GameClock.on('bootstrap', function initialize() {
+GameClock.on('bootstrap', function() {
+    Scene.bindGameClock();
     Assets.registerLoader('prefab', PrefabLoader);
 });
 
@@ -24,6 +23,5 @@ GameModules.include('core', {
     GameClock: GameClock,
     Scene: Scene,
     ObjectPool: ObjectPool,
-    EventSystem: EventSystem,
-    TaskSystem: TaskSystem
+    Coprocessor: Coprocessor
 });

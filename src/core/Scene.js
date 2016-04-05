@@ -73,12 +73,8 @@ function resume() {
 }
 
 function update(delta) {
-    var i;
-    for (i = 0; i < _aspectsLength; i++) {
+    for (var i = 0; i < _aspectsLength; i++) {
         _aspects[i].onUpdate(delta);
-    }
-    for (i = 0; i < _aspectsLength; i++) {
-        _aspects[i].onPostUpdate(delta);
     }
 }
 
@@ -86,39 +82,17 @@ function request(url, startWhenDone) {
     return fetch(url).then(function(response) {
         return response.json();
     }).then(function(data) {
-
-        if (!data.name) {
-            console.error('scene must have a name: %s', url);
-            return;
-        }
-
-        var config = {
-            name: data.name,
-            type: data.type || 0,
-            aspects: []
-        };
-
-        for(var i = 0, l = data.aspects.length; i < l; i++) {
-            var aspect = Aspect.get(data.aspects[i]);
-            if (!aspect) {
-                console.error('undefined aspect "%s" in scene "%s"', data.aspects[i], url);
-            } else {
-                config.aspects.push(aspect);
-            }
-        }
-
-        _config[config.name] = config;
-
-        if (startWhenDone) {
-            start(config.name);
-        }
-
-        return config;
+        return buildSceneConfiguration(data, startWhenDone);
     });
 }
 
 function start(name) {
-    var i, l, config = _config[name];
+    var config = _config[name];
+
+    if (!config) {
+        console.error('unknown scene "%s"', name);
+        return;
+    }
 
     if (_running) {
         for (i = 0; i < _aspectsLength; i++) {
@@ -130,7 +104,7 @@ function start(name) {
     _aspects.length = 0;
 
     var aspects = config.aspects;
-    for (i = 0, l = aspects.length; i < l; i++) {
+    for (var i = 0, l = aspects.length; i < l; i++) {
         var aspect = aspects[i];
         _aspects.push(aspect);
         aspect.onStart();
@@ -143,9 +117,42 @@ function start(name) {
     _running = true;
 }
 
-GameClock.onTick(update);
+function bindGameClock() {
+    GameClock.bind(update);
+}
+
+function buildSceneConfiguration(data, startWhenDone) {
+    if (!data.name) {
+        console.error('scene must have a name: %s', url);
+        return null;
+    }
+
+    var config = {
+        name: data.name,
+        type: data.type || 0,
+        aspects: []
+    };
+
+    for(var i = 0, l = data.aspects.length; i < l; i++) {
+        var aspect = Aspect.get(data.aspects[i]);
+        if (!aspect) {
+            console.error('undefined aspect "%s" in scene "%s"', data.aspects[i], url);
+        } else {
+            config.aspects.push(aspect);
+        }
+    }
+
+    _config[config.name] = config;
+
+    if (startWhenDone) {
+        start(config.name);
+    }
+
+    return config;
+}
 
 export default {
+    bindGameClock: bindGameClock,
     name: name,
     type: type,
     running: running,

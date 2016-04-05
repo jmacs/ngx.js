@@ -24,7 +24,7 @@ import GlyphLoader from './GlyphLoader';
 import Varchar from './Varchar';
 import Color from './Color';
 
-GameClock.on('bootstrap', function initialize() {
+GameClock.on('bootstrap', function() {
     Graphics.createProgram(0, SpriteVert, SpriteFrag);
     Graphics.createProgram(1, MeshVert, MeshFrag);
 

@@ -37,7 +37,7 @@ bootstrap.agents = function() {
     });
 };
 
-GameClock.on('bootstrap', function initialize() {
+GameClock.on('bootstrap', function() {
     Object.keys(bootstrap).forEach(function(key) {
         bootstrap[key]();
     });

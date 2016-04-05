@@ -1,80 +1,93 @@
 import CollisionInfo from './CollisionInfo';
 import ColliderScript from './ColliderScript';
 
-var counter = 0;
-var unitWidth = 0;
-var unitHeight = 0;
-var cellSize = 0;
-var shift = 0;
-var boundsX = 0;
-var boundsY = 0;
-var spatial = null;
-var keys = [];
-var keysLength = 0;
-var infoA = new CollisionInfo();
-var infoB = new CollisionInfo();
+var _counter = 0;
+var _unitWidth = 0;
+var _unitHeight = 0;
+var _cellSize = 0;
+var _shift = 0;
+var _boundsX = 0;
+var _boundsY = 0;
+var _objects = null;
+var _walls = null;
+var _keys = [];
+var _keysLength = 0;
+var _infoA = new CollisionInfo();
+var _infoB = new CollisionInfo();
 
 function build(cellUnits, widthUnits, heightUnits) {
-    clear();
-    shift = cellUnits;
-    cellSize = Math.pow(2, cellUnits);
-    unitWidth = widthUnits;
-    unitHeight = heightUnits;
-    boundsX = cellSize * widthUnits;
-    boundsY = cellSize * heightUnits;
-    spatial = Object.create(null);
-    counter = 0;
-    keys.length = 0;
+    clearObjects();
+    _shift = cellUnits;
+    _cellSize = Math.pow(2, cellUnits);
+    _unitWidth = widthUnits;
+    _unitHeight = heightUnits;
+    _boundsX = _cellSize * widthUnits;
+    _boundsY = _cellSize * heightUnits;
+    _objects = Object.create(null);
+    _walls = Object.create(null);
+    _counter = 0;
+    _keys.length = 0;
     for (var x = 0; x < widthUnits + 1; x++) {
         for (var y = 0; y <= heightUnits + 1; y++) {
             var key = pair(x, y);
-            keys.push(key);
-            spatial[key] = [];
+            _keys.push(key);
+            _objects[key] = [];
+            _walls[key] = [];
         }
     }
-    keysLength = keys.length;
+    _keysLength = _keys.length;
 }
 
-function inspect() {
-    return {
-        unitWidth: unitWidth,
-        unitHeight: unitHeight,
-        cellSize: cellSize,
-        shift: shift,
-        count: counter,
-        buckets: keysLength,
-        maxX: boundsX,
-        maxY: boundsY
+function insertWall(x, y) {
+    x = x * 16;
+    y = y * 16;
+    var sx = x >> _shift;
+    var sy = y >> _shift;
+    var key = pair(sx, sy);
+    if (_walls[key]) {
+        _walls[key].push({
+            minX: x,
+            minY: y,
+            maxX: x + 16,
+            maxY: y + 16
+        });
     }
 }
 
-function insert(box) {
+function insertObject(box) {
     if (!inBoundary(box)) return;
 
-    var sx = box.minX >> shift,
-        sy = box.minY >> shift,
-        ex = box.maxX >> shift,
-        ey = box.maxY >> shift,
+    var sx = box.minX >> _shift,
+        sy = box.minY >> _shift,
+        ex = box.maxX >> _shift,
+        ey = box.maxY >> _shift,
         x, y;
 
-    counter++;
+    _counter++;
 
     for (y = sy; y <= ey; y++) {
         for (x = sx; x <= ex; x++) {
             var key = pair(x, y);
-            spatial[key].push(box);
+            _objects[key].push(box);
         }
     }
 }
 
-function clear() {
-    if (counter === 0) return;
-    counter = 0;
-    for (var k = 0; k < keysLength; k++) {
-        var boxes = spatial[keys[k]];
+function clearObjects() {
+    if (_counter === 0) return;
+    _counter = 0;
+    for (var k = 0; k < _keysLength; k++) {
+        var boxes = _objects[_keys[k]];
         if (boxes.length > 0) {
             boxes.length = 0;
         }
+    }
+}
+
+function clearWalls() {
+    _counter = 0;
+    for (var k = 0; k < _keysLength; k++) {
+        _walls[_keys[k]].lenght = 0;
     }
 }
 
@@ -87,50 +100,53 @@ function shapecast(cuboid, callback) {
 }
 
 function broadphase() {
-    var i, j, k, c1, c2, collider1, collider2;
+    var i, j, k, c1, c2, script1, script2;
 
     var collisions = Object.create(null);
 
-    for (k = 0; k < keysLength; k++) {
-        var boxes = spatial[keys[k]];
+    for (k = 0; k < _keysLength; k++) {
+        var key = _keys[k];
+        var boxes = _objects[key];
 
         var length = boxes.length;
-        if (length <= 1) continue;
+        //if (length <= 1) continue;
 
         for (i = 0; i < length; i++) {
             c1 = boxes[i];
 
+            checkWallCollisions(_keys[k], c1);
+
             for (j = i + 1; j < length; j++) {
                 c2 = boxes[j];
 
-                var key = pair(c1.ref, c2.ref);
-                if (collisions[key]) continue;
-                collisions[key] = true;
+                var p = pair(c1.ref, c2.ref);
+                if (collisions[p]) continue;
+                collisions[p] = true;
 
                 var wasColliding = c1.collidingWith[c2.ref];
 
                 if (aabbIntersection(c1, c2) === true) {
-                    collider1 = ColliderScript.get(c1.collider);
-                    collider2 = ColliderScript.get(c2.collider);
+                    script1 = ColliderScript.get(c1.collider);
+                    script2 = ColliderScript.get(c2.collider);
 
                     if (wasColliding) {
-                        narrowPhase(c1, infoA, c2, infoB);
-                        collider1.onCollision(c1.entity, c2.entity, infoA);
-                        collider2.onCollision(c2.entity, c1.entity, infoB);
+                        narrowPhase(c1, _infoA, c2, _infoB);
+                        script1.onCollision(c1.entity, c2.entity, _infoA);
+                        script2.onCollision(c2.entity, c1.entity, _infoB);
                     } else {
                         c1.collidingWith[c2.ref] = true;
                         c2.collidingWith[c1.ref] = true;
-                        collider1.onEnter(c1.entity, c2.object);
-                        collider2.onEnter(c2.entity, c1.object);
+                        script1.onEnter(c1.entity, c2.object);
+                        script2.onEnter(c2.entity, c1.object);
                     }
                 }
                 else if (wasColliding) {
-                    collider1 = ColliderScript.get(c1.collider);
-                    collider2 = ColliderScript.get(c2.collider);
+                    script1 = ColliderScript.get(c1.collider);
+                    script2 = ColliderScript.get(c2.collider);
                     delete c1.collidingWith[c2.ref];
                     delete c2.collidingWith[c1.ref];
-                    collider1.onExit(c1.entity, c2.entity);
-                    collider2.onExit(c2.entity, c1.entity);
+                    script1.onExit(c1.entity, c2.entity);
+                    script2.onExit(c2.entity, c1.entity);
                 }
             }
         }
@@ -139,31 +155,29 @@ function broadphase() {
     collisions = null;
 }
 
-// TODO: make this faster
+function checkWallCollisions(key, box) {
+    var walls = _walls[key];
+    var length = walls.length;
+    if (!length) return;
+
+    for (var i = 0; i < length; i++) {
+        var wall = walls[i];
+        if (aabbIntersection(box, wall)) {
+            
+        }
+    }
+}
+
+function pointOverlap(x, y, box) {
+    return y < box.maxY && y > box.minY && x < box.maxX && x > box.minX;
+}
+
 function narrowPhase(a, infoA, b, infoB) {
-    // Calculate half sizes
-    var widthA = a.maxX - a.minX;
-    var heightA = a.maxY - a.minY;
-    var halfWidthA = widthA * 0.5;
-    var halfHeightA = heightA * 0.5;
-
-    var widthB = b.maxX - b.minX;
-    var heightB = b.maxY - b.minY;
-    var halfWidthB = widthB * 0.5;
-    var halfHeightB = heightB * 0.5;
-
-    // Calculate centers
-    var cax = a.minX + halfWidthA;
-    var cay = a.minY + halfHeightA;
-
-    var cbx = b.minX + halfWidthB;
-    var cby = b.minY + halfHeightB;
-
     // Calculate current and minimum-non-intersecting distances between centers.
-    var distanceX = cax - cbx;
-    var distanceY = cay - cby;
-    var minDistanceX = halfWidthA + halfWidthB;
-    var minDistanceY = halfHeightA + halfHeightB;
+    var distanceX = a.centerX - b.centerX;
+    var distanceY = a.centerY - b.centerY;
+    var minDistanceX = a.halfWidth + b.halfWidth;
+    var minDistanceY = a.halfHeight + b.halfHeight;
 
     // If we are not intersecting at all, return (0, 0).
     if (Math.abs(distanceX) >= minDistanceX || Math.abs(distanceY) >= minDistanceY) {
@@ -190,8 +204,12 @@ function aabbIntersection(a, b) {
 }
 
 function inBoundary(box) {
-    return !(box.minX < 0 || box.minY < 0 ||
-    box.maxX > boundsX || box.minY > boundsX);
+    return !(
+        box.minX < 0 ||
+        box.minY < 0 ||
+        box.maxX > _boundsX ||
+        box.minY > _boundsY
+    );
 }
 
 function pair(x, y) {
@@ -204,9 +222,10 @@ function depair(p) {
 
 export default {
     build: build,
-    inspect: inspect,
-    insert: insert,
-    clear: clear,
+    insertWall: insertWall,
+    clearWalls: clearWalls,
+    insertObject: insertObject,
+    clearObjects: clearObjects,
     raycast: raycast,
     shapecast: shapecast,
     aabbIntersection: aabbIntersection,

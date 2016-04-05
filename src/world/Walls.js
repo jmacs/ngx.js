@@ -1,4 +1,4 @@
-import Tileset from '../../graphics/Tileset';
+import Tileset from '../graphics/Tileset';
 
 var walls = Object.create(null);
 
