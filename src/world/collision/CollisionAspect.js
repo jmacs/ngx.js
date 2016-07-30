@@ -6,7 +6,6 @@ import Viewport from '../../graphics/Viewport.js';
 import LineBuilder from '../../graphics/LineBuilder.js';
 import LineBuffer from '../../graphics/LineBuffer.js';
 
-const WALL_SHIFT = 4;   // 16x16
 const GRID_SHIFT = 6;   // 64x64
 const GRID_WIDTH = 8;   // 512
 const GRID_HEIGHT = 8;  // 512
@@ -21,7 +20,7 @@ var projection = Viewport.getProjectionMatrix;
 var aspect = Aspect.create('world.collision');
 
 aspect.onInitialize = function() {
-    SpatialIndex.build(GRID_SHIFT, GRID_WIDTH, GRID_HEIGHT, WALL_SHIFT);
+    SpatialIndex.build(GRID_SHIFT, GRID_WIDTH, GRID_HEIGHT);
 };
 
 aspect.onUpdate = function() {
@@ -33,16 +32,8 @@ aspect.onUpdate = function() {
     SpatialIndex.broadphase();
 };
 
-aspect.onStageEnter = function() {
-    entities.length = 0;
-    Stage.selectSolidCells(function(cell) {
-        SpatialIndex.insertWall(cell.x, cell.y);
-    });
-};
-
 aspect.onStageExit = function() {
     entities.length = 0;
-    SpatialIndex.clearWalls();
 };
 
 aspect.onEntityEnter = function(entity) {

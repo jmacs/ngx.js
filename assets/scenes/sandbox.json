@@ -5,6 +5,7 @@
     "world.physics",
     "world.collision",
     "world.input",
+    "world.agents",
     "ngx.animation",
     "ngx.coroutines",
     "ngx.events",

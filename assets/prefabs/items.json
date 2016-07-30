@@ -11,7 +11,8 @@
       },
       "box": {
         "width": 16,
-        "height": 16
+        "height": 16,
+        "offset": [-0.125,0,-0.125,-0.125]
       },
       "item": {
         "type": 1
