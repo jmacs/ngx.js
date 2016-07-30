@@ -1,12 +1,10 @@
 import InputManager from './InputManager';
+import EntityStore from '../../core/EntityStore';
 import Aspect from '../../core/Aspect';
 
-var aspect = Aspect.create('world.input');
+var NullDevice = {type: null};
 
-var keys = InputManager.keys;
-var player1 = null;
-var player2 = null;
-
+const ASPECT_ID = 'world.input';
 const KEY_LEFT = 37;
 const KEY_UP = 38;
 const KEY_RIGHT = 39;
@@ -14,50 +12,68 @@ const KEY_DOWN = 40;
 
 const ZERO = 0.0;
 
+function onStart() {
+    EntityStore.addFilter(ASPECT_ID, filterEntity);
+}
 
-aspect.onUpdate = function(delta) {
-    if (!player1) return;
+function onStop() {
+    EntityStore.removeFilter(ASPECT_ID);
+}
 
-    if (keys[KEY_UP]) {
-        player1.up += delta;
+function filterEntity(entity) {
+    return entity.input && entity.input.human;
+}
+
+function onUpdate(delta) {
+    var entities = EntityStore.getCache(ASPECT_ID);
+
+    for (var i = 0, l = entities.length; i < l; i++) {
+        var entity = entities[i];
+        tick(delta, entity.input);
+    }
+}
+
+function tick(delta, component) {
+    var device = getDevice(component.index);
+
+    if (!device.type) return;
+
+    if (device[KEY_UP]) {
+        component.up += delta;
     } else {
-        player1.up = ZERO;
+        component.up = ZERO;
     }
 
-    if (keys[KEY_DOWN]) {
-        player1.down += delta;
+    if (device[KEY_DOWN]) {
+        component.down += delta;
     } else {
-        player1.down = ZERO;
+        component.down = ZERO;
     }
 
-    if (keys[KEY_RIGHT]) {
-        player1.right += delta;
+    if (device[KEY_RIGHT]) {
+        component.right += delta;
     } else {
-        player1.right = ZERO;
+        component.right = ZERO;
     }
 
-    if (keys[KEY_LEFT]) {
-        player1.left += delta;
+    if (device[KEY_LEFT]) {
+        component.left += delta;
     } else {
-        player1.left = ZERO;
+        component.left = ZERO;
     }
+}
 
-};
-
-aspect.onStageExit = function() {
-    player1 = null;
-    player2 = null;
-};
-
-aspect.onEntityEnter = function(entity) {
-    if (entity.input && entity.input.human) {
-        switch (entity.input.index) {
-            case 0:
-                player1 = entity.input;
-                break;
-            case 1:
-                player2 = entity.input;
-                break;
-        }
+function getDevice(index) {
+    if (index === 0) {
+        return InputManager.keys;
+    } else {
+        return NullDevice;
     }
-};
+}
+
+export default  Aspect.create({
+    id: ASPECT_ID,
+    onStart: onStart,
+    onStop: onStop,
+    onUpdate: onUpdate
+});

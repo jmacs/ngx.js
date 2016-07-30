@@ -1,14 +1,14 @@
 import Request from './Request';
-import Entity from './Entity.js';
+import Scene from './Scene';
 
-function PrefabLoader(asset) {
+function SceneLoader(asset) {
     return Request.get(asset.url).then(function(xhr) {
         var data = JSON.parse(xhr.responseText);
-        Entity.registerPrefabs(data);
+        Scene.registerPrefabs([data]);
     });
 }
 
 export default {
-    id: 'prefab',
-    load: PrefabLoader
+    id: 'scene',
+    load: SceneLoader
 };

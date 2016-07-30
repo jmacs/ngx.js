@@ -77,4 +77,6 @@ class BoxComponent extends Component {
     }
 }
 
+BoxComponent.id = 'box';
+
 export default BoxComponent;

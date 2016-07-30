@@ -1,49 +1,56 @@
-import GameModules from '../core/GameModules';
 import GameClock from '../core/GameClock';
+import Scene from '../core/Scene';
 import Entity from '../core/Entity';
 import Assets from '../core/Assets';
 import Graphics from './Graphics';
+import Viewport from './Viewport';
 
+// shaders
 import SpriteVert from './shaders/sprite.vert.glsl';
 import SpriteFrag from './shaders/sprite.frag.glsl';
 import MeshVert from './shaders/mesh.vert.glsl';
 import MeshFrag from './shaders/mesh.frag.glsl';
 
-import './AnimationAspect';
-import './SpriteAspect';
-import './DebugAspect';
-import './ViewportAspect';
+// aspects
+import AnimationAspect from './AnimationAspect';
+import SpriteAspect from './SpriteAspect';
+import DebugAspect from './DebugAspect';
+import ViewportAspect from './../world/CameraAspect';
 
+// components
 import SpriteComponent from './SpriteComponent';
 import AnimationComponent from './AnimationComponent';
+
+// loaders
 import ImageLoader from './ImageLoader';
 import TilesetLoader from './TilesetLoader';
 import AnimationLoader from './AnimationLoader';
 import GlyphLoader from './GlyphLoader';
 
-import Varchar from './Varchar';
-import Color from './Color';
-
-GameClock.on('bootstrap', function() {
+GameClock.addEventListener('GameClockLoaded', function() {
     Graphics.createProgram(0, SpriteVert, SpriteFrag);
     Graphics.createProgram(1, MeshVert, MeshFrag);
 
-    Entity.addComponent('sprite', SpriteComponent);
-    Entity.addComponent('animation', AnimationComponent);
+    Viewport.initialize({width: 1280, height: 720});
 
-    Assets.registerLoader('image', ImageLoader);
-    Assets.registerLoader('tileset', TilesetLoader);
-    Assets.registerLoader('animation', AnimationLoader);
-    Assets.registerLoader('glyph', GlyphLoader);
-});
+    Entity.registerComponents([
+        SpriteComponent,
+        AnimationComponent
+    ]);
 
-GameModules.include('graphics', {
-    Varchar: Varchar,
-    Color: Color,
-    SpriteComponent: SpriteComponent,
-    AnimationComponent: AnimationComponent,
-    ImageLoader: ImageLoader,
-    TilesetLoader: TilesetLoader,
-    AnimationLoader: AnimationLoader,
-    GlyphLoader: GlyphLoader
+    Assets.registerLoaders([
+        ImageLoader,
+        TilesetLoader,
+        AnimationLoader,
+        GlyphLoader
+    ]);
+
+    Scene.registerAspects([
+        AnimationAspect,
+        SpriteAspect,
+        DebugAspect,
+        ViewportAspect
+    ]);
+
+    Scene.setViewport(Viewport);
 });

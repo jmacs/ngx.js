@@ -1,4 +1,4 @@
-import Aspect from './Aspect';
+import Aspect from './../core/Aspect';
 
 const EXIT = 0;
 const RUNNING = 1;

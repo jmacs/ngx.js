@@ -1,5 +1,4 @@
 import Component from '../../core/Component';
-import Entity from '../../core/Entity.js';
 
 class Item extends Component {
 
@@ -15,4 +14,6 @@ class Item extends Component {
     }
 }
 
-Entity.addComponent('item', Item);
+Item.id = 'item';
+
+export default Item;

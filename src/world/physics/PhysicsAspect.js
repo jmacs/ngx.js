@@ -1,17 +1,29 @@
-import Aspect from '../../core/Aspect.js';
-import Arrays from '../../core/Arrays.js';
+import EntityStore from '../../core/EntityStore';
+import Aspect from '../../core/Aspect';
+import Arrays from '../../core/Arrays';
 
 const MOVEMENT_SPEED = 1.0;
+const ASPECT_ID = 'world.physics';
 
-var aspect = Aspect.create('world.physics');
-var entities = [];
+function onStart() {
+    EntityStore.addFilter(ASPECT_ID, filterEntity);
+}
+
+function onStop() {
+    EntityStore.removeFilter(ASPECT_ID);
+}
+
+function filterEntity(entity) {
+    return entity.input;
+}
 
 // todo: implement realish physics
-aspect.onUpdate = function() {
+function onUpdate() {
+    var entities = EntityStore.getCache(ASPECT_ID);
     for (var i = 0, len = entities.length; i < len; i++) {
         tick(entities[i]);
     }
-};
+}
 
 function tick(entity) {
     var input = entity.input;
@@ -34,16 +46,9 @@ function tick(entity) {
     }
 }
 
-aspect.onStageExit = function() {
-    entities.length = 0;
-};
-
-aspect.onEntityEnter = function(entity) {
-    if (entity.input) {
-        entities[entities.length] = entity;
-    }
-};
-
-aspect.onEntityExit = function(entity) {
-    Arrays.removeValue(entities, entity);
-};
+export default  Aspect.create({
+    id: ASPECT_ID,
+    onUpdate: onUpdate,
+    onStart: onStart,
+    onStop: onStop
+});

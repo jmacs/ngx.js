@@ -1,17 +1,30 @@
+import EntityStore from '../../core/EntityStore';
 import Aspect from '../../core/Aspect';
-import Arrays from '../../core/Arrays';
 import AgentScript from './AgentScript';
 
-var aspect = Aspect.create('world.agents');
+const ASPECT_ID = 'world.agents';
 
-var entities = [];
 var limit = 500; // ~2 thoughts per second
 var time = 0;
 var timeToThink = false;
 
-aspect.onUpdate = function(delta) {
+function onStart() {
+    EntityStore.addFilter(ASPECT_ID, filterEntity);
+}
+
+function onStop() {
+    EntityStore.removeFilter(ASPECT_ID);
+}
+
+function filterEntity(entity) {
+    return entity.agent;
+}
+
+function onUpdate(delta) {
     time -= delta;
     timeToThink = time < 0;
+
+    var entities = EntityStore.getCache(ASPECT_ID);
 
     for (var i = 0, l = entities.length; i < l; i++) {
         var entity = entities[i];
@@ -37,24 +50,17 @@ aspect.onUpdate = function(delta) {
     if (timeToThink) {
         time = limit;
     }
-};
+}
 
 function isInActivationRange(entity) {
     return true;
 }
 
-aspect.onStageExit = function() {
-    entities.length = 0;
-};
+export default Aspect.create({
+    id: ASPECT_ID,
+    onUpdate: onUpdate,
+    isInActivationRange: isInActivationRange,
+    onStart: onStart,
+    onStop: onStop
+});
 
-aspect.onEntityEnter = function(entity) {
-    if (entity.agent) {
-        entities[entities.length] = entity;
-    }
-};
-
-aspect.onEntityExit = function(entity) {
-    if (entity.agent) {
-        Arrays.removeValue(entities, entity);
-    }
-};

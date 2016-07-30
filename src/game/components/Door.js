@@ -1,5 +1,4 @@
 import Component from '../../core/Component';
-import Entity from '../../core/Entity.js';
 
 class Door extends Component {
 
@@ -25,4 +24,6 @@ class Door extends Component {
     }
 }
 
-Entity.addComponent('door', Door);
+Door.id = 'door';
+
+export default Door;

@@ -1,9 +1,10 @@
 import Component from '../../core/Component';
-import Entity from '../../core/Entity.js';
 
 class ItemBox extends Component {
 
 
 }
 
-Entity.addComponent('itembox', ItemBox);
+ItemBox.id = 'itembox';
+
+export default ItemBox;

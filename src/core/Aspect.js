@@ -1,50 +1,38 @@
-import GameClock from './GameClock';
+var noop = function(){};
 
-var _aspects = Object.create(null);
+var template = {
+    id: '<undefined>',
+    onInitialize: noop,
+    onStart: noop,
+    onStageEnter: noop,
+    onStageExit: noop,
+    onUpdate: noop,
+    onPostUpdate: noop,
+    onDraw: noop,
+    onPause: noop,
+    onResume: noop,
+    onEnable: noop,
+    onDisable: noop,
+    onStop: noop,
+    onDestroy: noop
+};
 
-class Aspect {
-
-    constructor(name) {
-        this.__name = name;
+function mixin(a, b) {
+    for (var prop in b) {
+        if (!a.hasOwnProperty(prop)) {
+            a[prop] = b[prop];
+        }
     }
-
-    get name() {
-        return this.__name;
-    }
-
-    onInitialize() {}
-    onStart() {}
-    onStageEnter(stage) {}
-    onStageExit(stage) {}
-    onUpdate(delta) {}
-    onPostUpdate(delta) {}
-    onEntityEnter(entity) {}
-    onEntityExit(entity) {}
-    onPause() {}
-    onResume() {}
-    onEnable() {}
-    onDisable() {}
-    onStop() {}
+    return a;
 }
-
-function create(name) {
-    var aspect = new Aspect(name);
-    _aspects[name] = aspect;
-    return aspect;
-}
-
-function get(name) {
-    return _aspects[name];
-}
-
-// todo: refactor this out
-GameClock.on('initialize', function() {
-    Object.keys(_aspects).forEach(function(key) {
-        _aspects[key].onInitialize();
-    });
-});
 
 export default {
-    create: create,
-    get: get
+    create: function (obj) {
+        try {
+            return mixin(obj, template);
+        } catch (ex) {
+            console.error(ex);
+            debugger;
+        }
+    }
 }

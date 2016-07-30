@@ -8,12 +8,6 @@ import Varchar from './Varchar';
 import GlyphRenderer from './GlyphRenderer';
 import Color from './Color';
 
-var aspect = Aspect.create('ngx.debugger');
-
-// todo: add a static tool for drawing lines?
-
-var modelView = Viewport.getModelViewMatrix;
-var projection = Viewport.getProjectionMatrix;
 var spatialGrid;
 var lineBuffer;
 var spriteBuffer;
@@ -23,25 +17,24 @@ var lastFps = 0;
 var red = new Color(1, 0, 0, 1);
 const GRID_SHIFT = 6;
 
-aspect.onInitialize = function() {
+function onStart() {
     lineBuffer = LineBuffer.createBuffer(0);
     spriteBuffer = SpriteBuffer.createBuffer(0);
     debugText = Varchar.parseString('0123456789_0123456789_012');
     fpsText = new Varchar(2);
-};
+}
 
-aspect.onStageEnter = function(stage) {
+function onStageEnter(stage) {
     var gridWidth = ~~(stage.pixelWidth / GRID_SHIFT) + 1;
     var gridHeight = ~~(stage.pixelHeight / GRID_SHIFT) + 1;
     spatialGrid = LineBuilder.buildGrid(0, 0, 8, 8, Math.pow(2, GRID_SHIFT));
+}
 
-};
-
-aspect.onUpdate = function() {
+function onDraw() {
 
     spriteBuffer.enable(
-        modelView(),
-        projection()
+        Viewport.getModelViewMatrix(),
+        Viewport.getProjectionMatrix()
     );
 
     var fps = GameClock.fps();
@@ -56,4 +49,12 @@ aspect.onUpdate = function() {
     GlyphRenderer.render(spriteBuffer, 0, 0, fpsText);
 
     spriteBuffer.flush();
-};
+}
+
+export default Aspect.create({
+    id: 'graphics.debugger',
+    onStart: onStart,
+    onStageEnter: onStageEnter,
+    onDraw: onDraw
+});
+

@@ -1,4 +1,5 @@
 import Entity from '../core/Entity';
+import EntityStore from '../core/EntityStore';
 import Scene from '../core/Scene';
 import Color from '../graphics/Color';
 import Walls from './Walls';
@@ -128,7 +129,7 @@ function createEntities() {
     for (var i = 0, ii = _manifest.length; i < ii; i++) {
         var entity = createEntity(_manifest[i]);
         if (entity === null) continue;
-        Scene.enterEntity(entity);
+        EntityStore.addEntity(entity);
     }
 }
 

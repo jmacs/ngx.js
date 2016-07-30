@@ -1,5 +1,10 @@
 import Graphics from './Graphics.js';
 
-export default function(asset) {
+function ImageLoader(asset) {
     return Graphics.createTexture(asset.tex, asset.url);
+}
+
+export default {
+    id: 'image',
+    load: ImageLoader
 }

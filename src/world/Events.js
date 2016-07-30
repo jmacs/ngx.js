@@ -1,6 +1,6 @@
-import Aspect from './Aspect';
-import Arrays from './Arrays';
-import ObjectPool from './ObjectPool';
+import Aspect from './../core/Aspect';
+import Arrays from './../core/Arrays';
+import ObjectPool from './../core/ObjectPool';
 
 var aspect = Aspect.create('ngx.events');
 

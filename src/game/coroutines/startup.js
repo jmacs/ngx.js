@@ -1,4 +1,4 @@
-import Coroutine from '../../core/Coroutine';
+/*import Coroutine from '../../world/Coroutine';
 import Assets from '../../core/Assets';
 import Scene from '../../core/Scene';
 
@@ -23,4 +23,4 @@ script.downloadAssets = function(process) {
 script.startStage = function() {
     console.debug('startup -> start stage');
     World.loadStage('test');
-};
+};*/

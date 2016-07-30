@@ -1,18 +1,29 @@
+import EntityStore from '../core/EntityStore';
 import Aspect from '../core/Aspect';
-import Arrays from '../core/Arrays';
 
-var aspect = Aspect.create('ngx.animation');
+const ASPECT_ID = 'graphics.animation';
 
-var entities = [];
+function filterEntity(entity) {
+    return entity.sprite && entity.animation;
+}
 
-aspect.onUpdate = function(delta) {
+function onStart() {
+    EntityStore.addFilter(ASPECT_ID, filterEntity);
+}
+
+function onStop() {
+    EntityStore.removeFilter(ASPECT_ID);
+}
+
+function onDraw(delta) {
+    var entities = EntityStore.getCache(ASPECT_ID);
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
         var sprite = entity.sprite;
         var state = entity.animation;
         tick(state, sprite, delta);
     }
-};
+}
 
 function tick(state, sprite, delta) {
     if (state.length <= 1) return;
@@ -36,16 +47,9 @@ function tick(state, sprite, delta) {
     state.time = time;
 }
 
-aspect.onStageExit = function() {
-    entities.length = 0;
-};
-
-aspect.onEntityEnter = function(entity) {
-    if (entity.animation && entity.sprite) {
-        entities[entities.length] = entity;
-    }
-};
-
-aspect.onEntityExit = function(entity) {
-    Arrays.removeValue(entities, entity);
-};
+export default Aspect.create({
+    id: ASPECT_ID,
+    onStart: onStart,
+    onStop: onStop,
+    onDraw: onDraw
+});

@@ -6,7 +6,8 @@ var STATE_RUN = 1;
 var STATE_STOP = 2;
 
 var _listeners = Object.create(null);
-var _updateFunction = function(){};
+var _noop = function(){};
+var _updateFunction = _noop;
 var _actualFps = 0;
 var _targetFps = 0;
 var _skip = 0;
@@ -22,27 +23,25 @@ var _frameTimer = 1000;
 function start() {
     if (_state === STATE_STOP) {
 
-        console.info('game clock restarted');
+        trigger('GameClockRestarted');
 
         _state = STATE_RUN;
 
-        trigger('restart');
         tick(0);
 
     } else if (_state === STATE_NEW) {
-
-        trigger('bootstrap');
-        trigger('initialize');
 
         _targetFps = DEFAULT_FPS;
         _skip = DEFAULT_SKIP_MS;
         _interval = 1000 / _targetFps;
         _state = STATE_RUN;
 
-        console.info('game clock started');
+        trigger('GameClockLoaded');
 
-        trigger('start');
         tick(0);
+
+        trigger('GameClockStarted');
+
     }
 }
 
@@ -74,10 +73,20 @@ function tick(now) {
     _updateFunction(_delta);
 }
 
+function trigger(event) {
+    var callbacks = _listeners[event] || [];
+    for (var i = 0, l = callbacks.length; i < l; i++) {
+        callbacks[i]();
+    }
+}
+
+function addEventListener(event, callback) {
+    _listeners[event] = _listeners[event] || [];
+    _listeners[event].push(callback);
+}
+
 function stop() {
-    console.info('game clock stopped');
     _state = STATE_STOP;
-    trigger('stop');
 }
 
 function delta() {
@@ -96,34 +105,17 @@ function elapsed() {
     return _elapsed;
 }
 
-function on(event, callback) {
-    if (_listeners[event]) {
-        _listeners[event].push(callback);
-    } else {
-        _listeners[event] = [callback];
-    }
-}
-
-function trigger(event) {
-    if (_listeners[event]) {
-        var callbacks = _listeners[event];
-        for (var i = 0, l = callbacks.length; i < l; i++) {
-            callbacks[i]();
-        }
-    }
-}
-
-function bind(callback) {
-    _updateFunction = callback;
+function onTick(callback) {
+    _updateFunction = callback || _noop;
 }
 
 export default {
     start: start,
     stop: stop,
-    on: on,
     delta: delta,
     now: now,
     fps: fps,
     elapsed: elapsed,
-    bind: bind
+    onTick: onTick,
+    addEventListener: addEventListener
 }

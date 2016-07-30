@@ -12,15 +12,17 @@ document.addEventListener('DOMContentLoaded', function() {
     GameClock.start();
 });
 
-GameClock.on('start', function() {
+GameClock.addEventListener('GameClockStarted', function() {
+    console.info('GameClockStarted');
+    window.clock = GameClock;
     Assets.downloadManifest('assets/manifest.json').then(function() {
         return Assets.downloadAll();
     }).then(function() {
-        return Stage.request('assets/maps/test.json');
+        Scene.create('main', 'sandbox');
+        Scene.activate('main');
     }).then(function() {
-        return Scene.request('assets/scenes/sandbox.json', true);
+        return Stage.request('assets/maps/test.json');
     }).then(function() {
         Stage.start(1234);
     });
-
 });

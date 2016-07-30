@@ -1,5 +1,4 @@
 import Component from '../../core/Component';
-import Entity from '../../core/Entity.js';
 
 class Health extends Component {
 
@@ -19,4 +18,6 @@ class Health extends Component {
     }
 }
 
-Entity.addComponent('health', Health);
+Health.id = 'health';
+
+export default Health;
