@@ -2,8 +2,11 @@ import GameClock from './core/GameClock';
 import Scene from './core/Scene';
 import Assets from './core/Assets';
 import Stage from './world/Stage';
+import InputManager from './input/InputManager';
+
 import './core/module';
 import './graphics/module';
+import './input/module';
 import './world/module';
 import './game/module';
 
@@ -15,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 GameClock.addEventListener('GameClockStarted', function() {
     console.info('GameClockStarted');
     window.clock = GameClock;
+    InputManager.enableDevice('keyboard');
     Assets.downloadManifest('assets/manifest.json').then(function() {
         return Assets.downloadAll();
     }).then(function() {

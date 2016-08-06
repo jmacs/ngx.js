@@ -1,8 +1,9 @@
-import InputManager from './InputManager';
+import InputManager from '../../input/InputManager';
 import EntityStore from '../../core/EntityStore';
 import Aspect from '../../core/Aspect';
 
-var NullDevice = {type: null};
+var keyboard;
+var mouse;
 
 const ASPECT_ID = 'world.input';
 const KEY_LEFT = 37;
@@ -13,6 +14,8 @@ const KEY_DOWN = 40;
 const ZERO = 0.0;
 
 function onStart() {
+    keyboard = InputManager.getDevice('keyboard');
+    mouse = InputManager.getDevice('mouse');
     EntityStore.addFilter(ASPECT_ID, filterEntity);
 }
 
@@ -31,43 +34,34 @@ function onUpdate(delta) {
         var entity = entities[i];
         tick(delta, entity.input);
     }
+
 }
 
 function tick(delta, component) {
-    var device = getDevice(component.index);
+    var state = keyboard.getState();
 
-    if (!device.type) return;
-
-    if (device[KEY_UP]) {
+    if (state.keys[KEY_UP]) {
         component.up += delta;
     } else {
         component.up = ZERO;
     }
 
-    if (device[KEY_DOWN]) {
+    if (state.keys[KEY_DOWN]) {
         component.down += delta;
     } else {
         component.down = ZERO;
     }
 
-    if (device[KEY_RIGHT]) {
+    if (state.keys[KEY_RIGHT]) {
         component.right += delta;
     } else {
         component.right = ZERO;
     }
 
-    if (device[KEY_LEFT]) {
+    if (state.keys[KEY_LEFT]) {
         component.left += delta;
     } else {
         component.left = ZERO;
-    }
-}
-
-function getDevice(index) {
-    if (index === 0) {
-        return InputManager.keys;
-    } else {
-        return NullDevice;
     }
 }
 
