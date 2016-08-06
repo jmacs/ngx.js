@@ -45,5 +45,10 @@
     "name": "config/walls",
     "type": "walls",
     "url": "assets/config/walls.json"
+  },
+  {
+    "name": "scenes/sandbox",
+    "type": "scene",
+    "url": "assets/scenes/sandbox.json"
   }
 ]

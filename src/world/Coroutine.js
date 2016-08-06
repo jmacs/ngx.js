@@ -1,4 +1,4 @@
-import ObjectPool from './ObjectPool';
+import ObjectPool from './../core/ObjectPool';
 import CoroutineSystem from './Coprocessor';
 
 var noop = function() {};

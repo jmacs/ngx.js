@@ -2,7 +2,7 @@ import Request from './Request';
 
 var indexed = Object.create(null);
 var manifest = [];
-var loaders = Object.create(null);
+var _loaders = Object.create(null);
 
 function downloadManifest(url) {
     return fetch(url).then(function(response) {
@@ -41,10 +41,10 @@ function download(bundle) {
     var promises = [];
     for (var i = 0, ii = bundle.length; i < ii; i++) {
         var asset = bundle[i];
-        var load = loaders[asset.type];
+        var module = _loaders[asset.type];
         if (!asset) throw new Error('undefined asset: ' + bundle[i]);
-        if (!load) throw new Error('no loader registered for asset type: ' + asset.type);
-        promises.push(load(asset));
+        if (!module) throw new Error('no loader registered for asset type: ' + asset.type);
+        promises.push(module.load(asset));
     }
     return Promise.all(promises);
 }
@@ -77,12 +77,15 @@ function downloadAllOfType(type) {
     return download(bundle);
 }
 
-function registerLoader(name, loader) {
-    loaders[name] = loader;
+function registerLoaders(modules) {
+    for (var i = 0, l = modules.length; i < l; i++) {
+        var module = modules[i];
+        _loaders[module.id] = module;
+    }
 }
 
 export default {
-    registerLoader: registerLoader,
+    registerLoaders: registerLoaders,
     downloadManifest: downloadManifest,
     downloadBundle: downloadBundle,
     downloadAll: downloadAll,

@@ -22,4 +22,6 @@ class InputComponent extends Component {
     }
 }
 
+InputComponent.id = 'input';
+
 export default InputComponent;

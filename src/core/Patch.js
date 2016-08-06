@@ -1,4 +1,3 @@
-
 Array.prototype.removeAt = function(index) {
     var arr = this;
     var len = arr.length;
@@ -27,4 +26,13 @@ Array.prototype.remove = function(value) {
 
 Array.prototype.add = function(value) {
     this[this.length] = value;
+};
+
+Object.prototype.extend = function(a, b) {
+    for (var prop in b) {
+        if (!a.hasOwnProperty(prop)) {
+            a[prop] = b[prop];
+        }
+    }
+    return a;
 };

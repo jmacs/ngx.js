@@ -16,4 +16,6 @@ class AgentComponent extends Component {
     }
 }
 
+AgentComponent.id = 'agent';
+
 export default AgentComponent;

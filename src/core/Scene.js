@@ -1,168 +1,148 @@
 import GameClock from './GameClock';
-import Arrays from './Arrays';
-import Aspect from './Aspect';
 
-var _config = Object.create(null);
-var _name = null;
-var _type = 0;
+const noop = function(){};
+const DEFAULT_VIEWPORT = {
+    clear: noop
+};
+
+var i = 0;
+var l = 0;
+var _prefabs = Object.create(null);
+var _sceneCache = Object.create(null);
+var _aspectCache = Object.create(null);
+var _activeSceneId = null;
 var _aspects = [];
 var _aspectsLength = 0;
-var _running = false;
-var _paused = false;
+var _viewport = DEFAULT_VIEWPORT;
 
-function reset() {
-    _aspects.length = 0;
-    _running = false;
-    _paused = false;
+class Scene {
+    constructor(id, options) {
+        this.id = id;
+        this.options = options;
+        this.aspects = [];
+    }
 }
 
-function name() {
-    return _name;
+function setViewport(viewport) {
+    _viewport = viewport || DEFAULT_VIEWPORT;
 }
 
-function type() {
-    return _type;
+function registerPrefabs(modules) {
+    for (i = 0, l = modules.length; i < l; i++) {
+        var module = modules[i];
+        _prefabs[module.name] = module;
+    }
 }
 
-function running() {
-    return _running;
-}
-
-function paused() {
-    return _paused;
+function registerAspects(modules) {
+    for (i = 0, l = modules.length; i < l; i++) {
+        var module = modules[i];
+        _aspectCache[module.id] = module;
+    }
 }
 
 function enterStage(stage) {
-    for (var i = 0; i < _aspectsLength; i++) {
+    for (i = 0; i < _aspectsLength; i++) {
         _aspects[i].onStageEnter(stage);
     }
 }
 
 function exitStage(stage) {
-    for (var i = 0; i < _aspectsLength; i++) {
+    for (i = 0; i < _aspectsLength; i++) {
         _aspects[i].onStageExit(stage);
     }
 }
 
-function enterEntity(entity) {
-    for (var i = 0; i < _aspectsLength; i++) {
-        _aspects[i].onEntityEnter(entity);
-    }
-}
-
-function exitEntity(entity) {
-    for (var i = 0; i < _aspectsLength; i++) {
-        _aspects[i].onEntityExit(entity);
-    }
-}
-
-function pause() {
-    if (_paused) return;
-    _paused = true;
-    for (var i = 0; i < _aspectsLength; i++) {
-        _aspects[i].onPause();
-    }
-}
-
-function resume() {
-    if (!_paused) return;
-    _paused = false;
-    for (var i = 0; i < _aspectsLength; i++) {
-        _aspects[i].onResume();
+function start() {
+    for (i = 0; i < _aspectsLength; i++) {
+        _aspects[i].onStart();
     }
 }
 
 function update(delta) {
-    for (var i = 0; i < _aspectsLength; i++) {
+
+    for (i = 0; i < _aspectsLength; i++) {
         _aspects[i].onUpdate(delta);
+    }
+
+    for (i = 0; i < _aspectsLength; i++) {
+        _aspects[i].onPostUpdate(delta);
+    }
+
+    _viewport.clear();
+
+    for (i = 0; i < _aspectsLength; i++) {
+        _aspects[i].onDraw(delta);
     }
 }
 
-function request(url, startWhenDone) {
-    return fetch(url).then(function(response) {
-        return response.json();
-    }).then(function(data) {
-        return buildSceneConfiguration(data, startWhenDone);
-    });
+function stop() {
+    for (var i = 0; i < _aspectsLength; i++) {
+        _aspects[i].onStop();
+    }
 }
 
-function start(name) {
-    var config = _config[name];
+function create(id, prefabName, options) {
+    var prefab = _prefabs[prefabName];
 
-    if (!config) {
-        console.error('unknown scene "%s"', name);
+    if (!prefab) {
+        console.error('unknown scene prefab "%s"', id);
         return;
     }
 
-    if (_running) {
-        for (i = 0; i < _aspectsLength; i++) {
-            _aspects[i].onStop();
-        }
-        reset();
-    }
+    var scene = new Scene(id, options);
 
-    _aspects.length = 0;
+    for (var i = 0, l = prefab.aspects.length; i < l; i++) {
 
-    var aspects = config.aspects;
-    for (var i = 0, l = aspects.length; i < l; i++) {
-        var aspect = aspects[i];
-        _aspects.push(aspect);
-        aspect.onStart();
-    }
+        var aspectId = prefab.aspects[i];
+        var aspect = _aspectCache[aspectId];
 
-    _aspectsLength = _aspects.length;
-    _name = config.name;
-    _type = config.type;
-    _paused = false;
-    _running = true;
-}
-
-function bindGameClock() {
-    GameClock.bind(update);
-}
-
-function buildSceneConfiguration(data, startWhenDone) {
-    if (!data.name) {
-        console.error('scene must have a name: %s', url);
-        return null;
-    }
-
-    var config = {
-        name: data.name,
-        type: data.type || 0,
-        aspects: []
-    };
-
-    for(var i = 0, l = data.aspects.length; i < l; i++) {
-        var aspect = Aspect.get(data.aspects[i]);
         if (!aspect) {
-            console.error('undefined aspect "%s" in scene "%s"', data.aspects[i], url);
-        } else {
-            config.aspects.push(aspect);
+            console.error('unknown aspect "%s" in scene prefab "%s"', aspectId, prefabName);
+            continue;
         }
+
+        scene.aspects.push(aspect);
     }
 
-    _config[config.name] = config;
+    _sceneCache[id] = scene;
+}
 
-    if (startWhenDone) {
-        start(config.name);
+function activate(id) {
+    var scene = _sceneCache[id];
+
+    if (!scene) {
+        console.error('unknown scene: %s', id);
+        return;
     }
 
-    return config;
+    stop();
+    _activeSceneId = id;
+    _aspects = scene.aspects;
+    _aspectsLength = _aspects.length;
+    start();
+
+    GameClock.onTick(update);
+}
+
+function destroy(id) {
+    delete _sceneCache[id];
+    if (id === _activeSceneId) {
+        stop();
+        _activeSceneId = null;
+        _aspects = [];
+        _aspectsLength = 0;
+        GameClock.unbind();
+    }
 }
 
 export default {
-    bindGameClock: bindGameClock,
-    name: name,
-    type: type,
-    running: running,
-    paused: paused,
-    start: start,
-    pause: pause,
-    resume: resume,
-    request: request,
+    setViewport: setViewport,
+    registerPrefabs: registerPrefabs,
+    registerAspects: registerAspects,
     enterStage: enterStage,
     exitStage: exitStage,
-    enterEntity: enterEntity,
-    exitEntity: exitEntity
+    create: create,
+    activate: activate,
+    destroy: destroy
 };

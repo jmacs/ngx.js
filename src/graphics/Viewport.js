@@ -1,6 +1,8 @@
 import Graphics from './Graphics.js';
+import Color from './Color.js';
 import {mat4} from 'gl-matrix';
 
+const gl = Graphics.getContext();
 const DEFAULT_ZOOM = 500.0;
 const MAX_ZOOM = 100.0;
 const MIN_ZOOM = 0;
@@ -18,6 +20,35 @@ var rotationAngle = 0.0;
 var zoomFactor = DEFAULT_ZOOM;
 var isDirty = true;
 var canvas = null;
+var clearbit = 0;
+
+function initialize(options) {
+    var color = Color.fromHex(0x75ffff);
+    clearbit = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
+
+    gl.enable(gl.BLEND);
+    gl.clearColor(color.r, color.b, color.g, 1.0);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.enable(gl.BLEND);
+
+    width = options.width || DEFAULT_WIDTH;
+    height = options.height || DEFAULT_HEIGHT;
+    aspect = width / height;
+
+    gl.canvas.width = width;
+    gl.canvas.height = height;
+    gl.viewport(posX, posY, width, height);
+
+    isDirty = true;
+    if (!canvas) {
+        zoomFactor = width;
+        canvas = gl.canvas;
+        document.body.appendChild(canvas);
+    }
+
+    zoomTo(256);
+    lookAt(150, 100);
+}
 
 function getProjectionMatrix() {
     return pMatrix;
@@ -35,11 +66,6 @@ function lookAt(x, y) {
 
 function zoomTo(value) {
     zoomFactor = value;
-    isDirty = true;
-}
-
-function angle(value) {
-    rotationAngle = value;
     isDirty = true;
 }
 
@@ -64,22 +90,6 @@ function rotate(value) {
     isDirty = true;
 }
 
-function initialize(options) {
-    var gl = Graphics.getContext();
-    width = options.width || DEFAULT_WIDTH;
-    height = options.height || DEFAULT_HEIGHT;
-    aspect = width / height;
-    gl.canvas.width = width;
-    gl.canvas.height = height;
-    gl.viewport(posX, posY, width, height);
-    isDirty = true;
-    if (!canvas) {
-        zoomFactor = width;
-        canvas = gl.canvas;
-        document.body.appendChild(canvas);
-    }
-}
-
 function transform() {
     if (!isDirty) return;
     mat4.perspective(pMatrix, 45, aspect, 0, 100);
@@ -87,6 +97,10 @@ function transform() {
     mat4.translate(vMatrix, vMatrix, [-posX, -posY, -zoomFactor]);
     mat4.rotateZ(vMatrix, vMatrix, rotationAngle);
     isDirty = false;
+}
+
+function clear() {
+    gl.clear(clearbit);
 }
 
 export default {
@@ -98,6 +112,7 @@ export default {
     rotate: rotate,
     initialize: initialize,
     transform: transform,
+    clear: clear,
     getProjectionMatrix: getProjectionMatrix,
     getModelViewMatrix: getModelViewMatrix
 }

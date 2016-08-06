@@ -19,7 +19,6 @@ function getTexture(id) {
 
 function createContext(contextType, contextAttributes) {
     if (window.gl) return gl;
-    console.info('creating webgl context');
     try {
         canvas = document.createElement('canvas');
         gl = canvas.getContext(contextType, contextAttributes);

@@ -1,76 +1,71 @@
+import EntityStore from '../../core/EntityStore';
 import Aspect from '../../core/Aspect';
 import Stage from '../Stage';
 import SpatialIndex from './SpatialIndex';
-import Arrays from '../../core/Arrays.js';
 import Viewport from '../../graphics/Viewport.js';
 import LineBuilder from '../../graphics/LineBuilder.js';
 import LineBuffer from '../../graphics/LineBuffer.js';
+
+const ASPECT_ID = 'world.collision';
 
 const GRID_SHIFT = 6;   // 64x64
 const GRID_WIDTH = 8;   // 512
 const GRID_HEIGHT = 8;  // 512
 
-var entities = [];
 var lineBuffer;
 var debugGrid;
 
-var modelView = Viewport.getModelViewMatrix;
-var projection = Viewport.getProjectionMatrix;
-
-var aspect = Aspect.create('world.collision');
-
-aspect.onInitialize = function() {
+function onStart() {
     SpatialIndex.build(GRID_SHIFT, GRID_WIDTH, GRID_HEIGHT);
-};
+    lineBuffer = LineBuffer.createBuffer(0);
+    EntityStore.addFilter(ASPECT_ID, filterEntity);
+}
 
-aspect.onUpdate = function() {
+function onStop() {
+    EntityStore.removeFilter(ASPECT_ID);
+}
+
+function filterEntity(entity) {
+    return entity.box;
+}
+
+function onUpdate() {
     SpatialIndex.clearObjects();
+    var entities = EntityStore.getCache(ASPECT_ID);
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
         SpatialIndex.insertObject(entity.box.sync());
     }
     SpatialIndex.broadphase();
-};
+}
 
-aspect.onStageExit = function() {
-    entities.length = 0;
-};
-
-aspect.onEntityEnter = function(entity) {
-    if (entity.box) {
-        entities[entities.length] = entity;
-    }
-};
-
-aspect.onEntityExit = function(entity) {
-    if (entity.box) {
-        Arrays.removeValue(entities, entity);
-    }
-};
-
-var debug = Aspect.create('world.collision.debug');
-
-debug.onInitialize = function() {
-    lineBuffer = LineBuffer.createBuffer(0);
-};
-
-debug.onStageEnter = function() {
+function onStageEnter() {
     debugGrid = LineBuilder.buildGrid(0, 0,
         Stage.pixelWidth() >> GRID_SHIFT,
         Stage.pixelHeight() >> GRID_SHIFT,
         Math.pow(2, GRID_SHIFT)
     );
-};
+}
 
-debug.onUpdate = function() {
+function onDraw() {
     if (debugGrid) {
+
         lineBuffer.enable(
-            modelView(),
-            projection()
+            Viewport.getModelViewMatrix(),
+            Viewport.getProjectionMatrix()
         );
 
         lineBuffer.drawLines(debugGrid);
 
         lineBuffer.flush();
     }
-};
+}
+
+export default Aspect.create({
+    id: ASPECT_ID,
+    onStageEnter: onStageEnter,
+    onUpdate: onUpdate,
+    onStart: onStart,
+    onStop: onStop,
+    onDraw: onDraw
+});

@@ -6,10 +6,13 @@
     "world.collision",
     "world.input",
     "world.agents",
-    "graphics.animation",
-    "world.camera",
+    "ngx.animation",
+    "ngx.coroutines",
+    "ngx.events",
+    "ngx.viewport",
+    "world.collision.debug",
     "world.stage",
-    "graphics.debugger",
-    "graphics.sprites"
+    "ngx.debugger",
+    "ngx.sprites"
   ]
 }

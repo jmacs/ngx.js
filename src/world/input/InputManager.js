@@ -1,4 +1,5 @@
 function KeyboardInfo() {
+    this.type = 'keyboard';
     for (var i = 8; i < 223; i++) {
         this[i] = false;
     }

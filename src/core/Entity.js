@@ -2,14 +2,19 @@ import Prefab from './Prefab';
 
 var componentClasses = Object.create(null);
 var prefabs = Object.create(null);
+var identity = 0;
 
 class Entity {
 
-    constructor(ref, prefab) {
+    constructor(id, ref, prefab) {
+        this.__id = id;
         this.__ref = ref || 0;
         this.__prefab = prefab;
         this.position = [0.0, 0.0, 0.0];
-        this.visible = false;
+    }
+
+    get id() {
+        return this.__id;
     }
 
     get ref() {
@@ -21,7 +26,7 @@ class Entity {
     }
 }
 
-function prefabType(prefabId) {
+function getPrefabType(prefabId) {
     var prefab = prefabs[prefabId];
     return prefab ? prefab.type : 0;
 }
@@ -33,7 +38,7 @@ function create(ref, prefabId) {
     }
 
     // todo: pool entities
-    var entity = new Entity(ref, prefab);
+    var entity = new Entity(++identity, ref, prefab);
     for (var i = 0, ii = prefab.size; i < ii; i++) {
         var component = prefab.componentAt(i);
         attachComponent(component.type, entity, component.state);
@@ -46,17 +51,23 @@ function release(entity) {
     // todo: release to pool
 }
 
-function addComponent(name, ComponentClass) {
-    if (!validateComponentName(name)) return;
-    componentClasses[name] = ComponentClass;
+function registerComponents(modules) {
+    for (var i = 0, l = modules.length; i < l; i++) {
+        var module = modules[i];
+        if (!validateComponent(module)) continue;
+        componentClasses[module.id] = module;
+    }
 }
 
-function addPrefab(options) {
-    var prefab = new Prefab(options);
-    if (!prefabs[prefab.id]) {
-        prefabs[prefab.id] = prefab;
-    } else {
-        console.warn('prefab "%s:%s" is already defined', prefab.id, prefab.name);
+function registerPrefabs(modules) {
+    for (var i = 0, l = modules.length; i < l; i++) {
+        var module = modules[i];
+        var prefab = new Prefab(module);
+        if (!prefabs[prefab.id]) {
+            prefabs[prefab.id] = prefab;
+        } else {
+            console.warn('prefab "%s:%s" is already defined', prefab.id, prefab.name);
+        }
     }
 }
 
@@ -94,7 +105,12 @@ function detachComponent(componentType, entity) {
     delete entity[componentType];
 }
 
-function validateComponentName(name) {
+function validateComponent(module) {
+    var name = module.id || '';
+    if (name.length === 0) {
+        console.warn('component "%s" does not define a static id', module.name);
+        return false;
+    }
     if (componentClasses[name]) {
         console.warn('component "%s" is already defined', name);
         return false;
@@ -107,12 +123,12 @@ function validateComponentName(name) {
         console.error('reserved component name "position"');
         return false;
     }
-    if (name === 'visible') {
-        console.error('reserved component name "position"');
-        return false;
-    }
     if (name === 'ref') {
         console.error('reserved component name "ref"');
+        return false;
+    }
+    if (name === 'id') {
+        console.error('reserved component name "id"');
         return false;
     }
     if (name.charAt(0) === '_') {
@@ -125,9 +141,9 @@ function validateComponentName(name) {
 export default {
     create: create,
     release: release,
-    prefabType: prefabType,
-    addPrefab: addPrefab,
-    addComponent: addComponent,
+    getPrefabType: getPrefabType,
+    registerPrefabs: registerPrefabs,
     attachComponent: attachComponent,
-    detachComponent: detachComponent
+    detachComponent: detachComponent,
+    registerComponents: registerComponents
 }

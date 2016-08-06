@@ -28,4 +28,6 @@ class SpriteComponent extends Component {
 
 }
 
+SpriteComponent.id = 'sprite';
+
 export default SpriteComponent;

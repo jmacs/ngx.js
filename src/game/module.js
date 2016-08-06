@@ -1,19 +1,16 @@
 import GameClock from '../core/GameClock';
+import Entity from '../core/Entity';
 
 var bootstrap = Object.create(null);
 
-bootstrap.console = function() {
-    var req = require.context('./console', true, /^(.*\.(js$))[^.]*$/igm);
-    req.keys().forEach(function(key){
-        req(key);
-    });
-};
 
 bootstrap.components = function() {
     var req = require.context('./components', true, /^(.*\.(js$))[^.]*$/igm);
+    var modules = [];
     req.keys().forEach(function(key){
-        req(key);
+        modules.push(req(key).default);
     });
+    Entity.registerComponents(modules);
 };
 
 bootstrap.colliders = function() {
@@ -37,7 +34,7 @@ bootstrap.agents = function() {
     });
 };
 
-GameClock.on('bootstrap', function() {
+GameClock.addEventListener('GameClockLoaded', function() {
     Object.keys(bootstrap).forEach(function(key) {
         bootstrap[key]();
     });

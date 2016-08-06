@@ -1,40 +1,35 @@
+import EntityStore from '../core/EntityStore';
 import SpriteBuffer from './SpriteBuffer';
 import Viewport from './Viewport';
 import Tileset from './Tileset';
 import Aspect from '../core/Aspect';
-import Arrays from '../core/Arrays';
 
-var aspect = Aspect.create('ngx.sprites');
+const ASPECT_ID = 'graphics.sprites';
 
-var entities = [];
 var spriteBuffer = null;
 
-aspect.onInitialize = function() {
+function onStart() {
     spriteBuffer = SpriteBuffer.createBuffer(0);
-};
+    EntityStore.addFilter(ASPECT_ID, filterEntity);
+}
 
-aspect.onStageExit = function() {
-    entities.length = 0;
-};
+function onStop() {
+    spriteBuffer = null;
+    EntityStore.removeFilter(ASPECT_ID);
+}
 
-aspect.onEntityEnter = function(entity) {
-    if (entity.sprite) {
-        entities.push(entity);
-    }
-};
+function filterEntity(entity) {
+    return entity.sprite;
+}
 
-aspect.onEntityExit = function(entity) {
-    if (entity.sprite) {
-        Arrays.removeValue(entities, entity);
-    }
-};
-
-aspect.onUpdate = function() {
+function onDraw() {
 
     spriteBuffer.enable(
         Viewport.getModelViewMatrix(),
         Viewport.getProjectionMatrix()
     );
+
+    var entities = EntityStore.getCache(ASPECT_ID);
 
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
@@ -50,4 +45,11 @@ aspect.onUpdate = function() {
     }
 
     spriteBuffer.flush();
-};
+}
+
+export default Aspect.create({
+    id: ASPECT_ID,
+    onStart: onStart,
+    onStop: onStop,
+    onDraw: onDraw
+});

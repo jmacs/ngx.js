@@ -33,4 +33,6 @@ class AnimationComponent extends Component {
 
 }
 
+AnimationComponent.id = 'animation';
+
 export default AnimationComponent;
