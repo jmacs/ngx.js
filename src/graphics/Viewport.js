@@ -1,6 +1,6 @@
-import Graphics from './Graphics.js';
-import Color from './Color.js';
-import {mat4} from 'gl-matrix';
+var Graphics = require('./Graphics.js');
+var Color = require('./Color.js');
+var {mat4} = require('gl-matrix');
 
 const gl = Graphics.getContext();
 const DEFAULT_ZOOM = 500.0;
@@ -103,7 +103,7 @@ function clear() {
     gl.clear(clearbit);
 }
 
-export default {
+module.exports = {
     lookAt: lookAt,
     pan: pan,
     zoom: zoom,

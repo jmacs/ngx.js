@@ -1,8 +1,8 @@
-import EntityStore from '../core/EntityStore';
-import SpriteBuffer from './SpriteBuffer';
-import Viewport from './Viewport';
-import Tileset from './Tileset';
-import Aspect from '../core/Aspect';
+var EntityStore = require('../core/EntityStore');
+var SpriteBuffer = require('./SpriteBuffer');
+var Viewport = require('./Viewport');
+var Tileset = require('./Tileset');
+var Aspect = require('../core/Aspect');
 
 const ASPECT_ID = 'graphics.sprites';
 
@@ -47,7 +47,7 @@ function onDraw() {
     spriteBuffer.flush();
 }
 
-export default Aspect.create({
+module.exports = Aspect.create({
     id: ASPECT_ID,
     onStart: onStart,
     onStop: onStop,

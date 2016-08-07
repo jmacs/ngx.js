@@ -20,7 +20,7 @@ function get(id) {
     return scripts[id] || noop;
 }
 
-export default {
+module.exports = {
     get: get,
     create: create
 }

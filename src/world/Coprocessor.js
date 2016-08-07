@@ -1,4 +1,4 @@
-import Aspect from './../core/Aspect';
+var Aspect = require('./../core/Aspect');
 
 const EXIT = 0;
 const RUNNING = 1;
@@ -124,7 +124,7 @@ function wait(coroutine, delta) {
     }
 }
 
-export default {
+module.exports = {
     start: start,
     await: await,
     cancel: cancel,

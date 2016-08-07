@@ -1,4 +1,4 @@
-import GameClock from './GameClock';
+var GameClock = require('./GameClock');
 
 const noop = function(){};
 const DEFAULT_VIEWPORT = {
@@ -136,7 +136,7 @@ function destroy(id) {
     }
 }
 
-export default {
+module.exports = {
     setViewport: setViewport,
     registerPrefabs: registerPrefabs,
     registerAspects: registerAspects,

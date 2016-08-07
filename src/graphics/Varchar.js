@@ -1,4 +1,4 @@
-import Color from './Color';
+var Color = require('./Color');
 
 class Varchar {
 
@@ -75,4 +75,4 @@ Varchar.parseString = function(value) {
     return varchar;
 };
 
-export default Varchar;
+module.exports = Varchar;

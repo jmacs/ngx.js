@@ -1,4 +1,4 @@
-import ColliderScript from '../../world/collision/ColliderScript';
+var ColliderScript = require('../../world/collision/ColliderScript');
 
 var script = ColliderScript.create(100);
 

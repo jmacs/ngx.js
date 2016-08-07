@@ -1,5 +1,5 @@
-import GameClock from '../core/GameClock';
-import Entity from '../core/Entity';
+var GameClock = require('../core/GameClock');
+var Entity = require('../core/Entity');
 
 var bootstrap = Object.create(null);
 
@@ -8,7 +8,7 @@ bootstrap.components = function() {
     var req = require.context('./components', true, /^(.*\.(js$))[^.]*$/igm);
     var modules = [];
     req.keys().forEach(function(key){
-        modules.push(req(key).default);
+        modules.push(req(key));
     });
     Entity.registerComponents(modules);
 };

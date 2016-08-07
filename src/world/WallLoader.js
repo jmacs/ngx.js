@@ -1,5 +1,5 @@
-import Request from '../core/Request';
-import Walls from './Walls.js';
+var Request = require('../core/Request');
+var Walls = require('./Walls.js');
 
 function WallLoader(asset) {
     return Request.get(asset.url).then(function(xhr) {
@@ -8,7 +8,7 @@ function WallLoader(asset) {
     });
 }
 
-export default {
+module.exports = {
     id: 'walls',
     load: WallLoader
 }

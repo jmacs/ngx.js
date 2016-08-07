@@ -1,5 +1,6 @@
-import Request from './Request';
+var Request = require('./Request');
 
+var _resources = Object.create(null);
 var indexed = Object.create(null);
 var manifest = [];
 var _loaders = Object.create(null);
@@ -84,7 +85,14 @@ function registerLoaders(modules) {
     }
 }
 
-export default {
+function createResource(name) {
+    var resource = Object.create(null);
+    _resources[name] = resource;
+    return resource;
+}
+
+module.exports = {
+    createResource: createResource,
     registerLoaders: registerLoaders,
     downloadManifest: downloadManifest,
     downloadBundle: downloadBundle,

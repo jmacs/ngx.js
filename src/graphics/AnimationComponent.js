@@ -1,5 +1,5 @@
-import Component from '../core/Component';
-import Animation from './Animation';
+var Component = require('../core/Component');
+var Animation = require('./Animation');
 
 const NO_FRAMES = [];
 
@@ -35,4 +35,4 @@ class AnimationComponent extends Component {
 
 AnimationComponent.id = 'animation';
 
-export default AnimationComponent;
+module.exports = AnimationComponent;

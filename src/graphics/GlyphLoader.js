@@ -1,5 +1,5 @@
-import Request from '../core/Request';
-import GlyphMap from './GlyphMap';
+var Request = require('../core/Request');
+var GlyphMap = require('./GlyphMap');
 
 function GlyphLoader(asset) {
     return Request.get(asset.url).then(function(xhr) {
@@ -8,7 +8,7 @@ function GlyphLoader(asset) {
     });
 }
 
-export default {
+module.exports = {
     id: 'glyph',
     load: GlyphLoader
 }

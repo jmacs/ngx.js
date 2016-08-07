@@ -1,14 +1,14 @@
-import GameClock from './core/GameClock';
-import Scene from './core/Scene';
-import Assets from './core/Assets';
-import Stage from './world/Stage';
-import InputManager from './input/InputManager';
+var GameClock = require('./core/GameClock');
+var Scene = require('./core/Scene');
+var Assets = require('./core/Assets');
+var Stage = require('./world/Stage');
+var InputManager = require('./input/InputManager');
 
-import './core/module';
-import './graphics/module';
-import './input/module';
-import './world/module';
-import './game/module';
+require('./core/module');
+require('./graphics/module');
+require('./input/module');
+require('./world/module');
+require('./game/module');
 
 document.addEventListener('DOMContentLoaded', function() {
     console.info('DOMContentLoaded');

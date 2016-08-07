@@ -1,5 +1,5 @@
-import Component from '../core/Component';
-import Color from './Color.js';
+var Component = require('../core/Component');
+var Color = require('./Color.js');
 
 class SpriteComponent extends Component {
 
@@ -30,4 +30,4 @@ class SpriteComponent extends Component {
 
 SpriteComponent.id = 'sprite';
 
-export default SpriteComponent;
+module.exports = SpriteComponent;

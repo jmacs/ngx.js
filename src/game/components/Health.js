@@ -1,4 +1,4 @@
-import Component from '../../core/Component';
+var Component = require('../../core/Component');
 
 class Health extends Component {
 
@@ -20,4 +20,4 @@ class Health extends Component {
 
 Health.id = 'health';
 
-export default Health;
+module.exports = Health;

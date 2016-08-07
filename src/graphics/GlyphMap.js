@@ -1,4 +1,4 @@
-import Tile from './Tile';
+var Tile = require('./Tile');
 
 var cache = Object.create(null);
 
@@ -57,7 +57,7 @@ function get(id) {
     return cache[id] || null;
 }
 
-export default {
+module.exports = {
     create: create,
     get: get
 }

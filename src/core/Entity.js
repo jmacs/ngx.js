@@ -1,4 +1,4 @@
-import Prefab from './Prefab';
+var Prefab = require('./Prefab');
 
 var componentClasses = Object.create(null);
 var prefabs = Object.create(null);
@@ -138,7 +138,7 @@ function validateComponent(module) {
     return true;
 }
 
-export default {
+module.exports = {
     create: create,
     release: release,
     getPrefabType: getPrefabType,

@@ -107,7 +107,7 @@ function onImageLoaded(tex, image) {
     return texture;
 }
 
-export default {
+module.exports = {
     getContext: getContext,
     getProgram: getProgram,
     getTexture: getTexture,

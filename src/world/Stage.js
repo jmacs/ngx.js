@@ -1,9 +1,9 @@
-import Entity from '../core/Entity';
-import EntityStore from '../core/EntityStore';
-import Scene from '../core/Scene';
-import Color from '../graphics/Color';
-import Walls from './Walls';
-import Cell from './Cell';
+var Entity = require('../core/Entity');
+var EntityStore = require('../core/EntityStore');
+var Scene = require('../core/Scene');
+var Color = require('../graphics/Color');
+var Walls = require('./Walls');
+var Cell = require('./Cell');
 
 var _cache = Object.create(null);
 var _id = 0;
@@ -176,7 +176,7 @@ function start(id) {
     createEntities();
 }
 
-export default {
+module.exports = {
     id: id,
     request: request,
     shift: shift,

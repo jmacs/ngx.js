@@ -1,6 +1,6 @@
-import Viewport from '../graphics/Viewport.js';
-import Aspect from '../core/Aspect';
-import InputManager from '../input/InputManager.js';
+var Viewport = require('../graphics/Viewport.js');
+var Aspect = require('../core/Aspect');
+var InputManager = require('../input/InputManager.js');
 
 // todo: remove dep on input manager (with scripted camera man)
 const ASPECT_ID = 'world.camera';
@@ -51,7 +51,7 @@ function onUpdate() {
     Viewport.transform();
 }
 
-export default Aspect.create({
+module.exports = Aspect.create({
     id: ASPECT_ID,
     onUpdate: onUpdate,
     onStart: onStart

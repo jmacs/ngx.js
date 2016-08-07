@@ -109,7 +109,7 @@ function onTick(callback) {
     _updateFunction = callback || _noop;
 }
 
-export default {
+module.exports = {
     start: start,
     stop: stop,
     delta: delta,

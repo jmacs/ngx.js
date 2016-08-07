@@ -1,4 +1,4 @@
-import System from './../../core/GameClock';
+var System = require('./../../core/GameClock');
 
 window.cmd = window.cmd || Object.create(null);
 

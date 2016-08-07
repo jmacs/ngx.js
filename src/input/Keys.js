@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     BACKSPACE: 8,
     TAB: 9,
     ENTER: 13,

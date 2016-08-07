@@ -79,7 +79,7 @@ function clear() {
     clearCache();
 }
 
-export default {
+module.exports = {
     clear: clear,
     rebuildCache: rebuildCache,
     addFilter: addFilter,

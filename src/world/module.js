@@ -1,24 +1,24 @@
-import Scene from '../core/Scene';
-import GameClock from '../core/GameClock';
-import System from '../core/GameClock';
-import Entity from '../core/Entity';
-import Assets from '../core/Assets';
+var Scene = require('../core/Scene');
+var GameClock = require('../core/GameClock');
+var System = require('../core/GameClock');
+var Entity = require('../core/Entity');
+var Assets = require('../core/Assets');
 
-import Stage from './Stage';
-import SpatialIndex from './collision/SpatialIndex';
+var Stage = require('./Stage');
+var SpatialIndex = require('./collision/SpatialIndex');
 
-import CollisionAspect from './collision/CollisionAspect';
-import PhysicsAspect from './physics/PhysicsAspect';
-import AgentAspect from './ai/AgentAspect';
-import InputAspect from './input/InputAspect';
-import StageAspect from './StageAspect';
-import CameraAspect from './CameraAspect';
+var CollisionAspect = require('./collision/CollisionAspect');
+var PhysicsAspect = require('./physics/PhysicsAspect');
+var AgentAspect = require('./ai/AgentAspect');
+var InputAspect = require('./input/InputAspect');
+var StageAspect = require('./StageAspect');
+var CameraAspect = require('./CameraAspect');
 
-import InputComponent from './input/InputComponent';
-import AgentComponent from './ai/AgentComponent';
-import BoxComponent from './collision/BoxComponent';
+var InputComponent = require('./input/InputComponent');
+var AgentComponent = require('./ai/AgentComponent');
+var BoxComponent = require('./collision/BoxComponent');
 
-import WallLoader from './WallLoader';
+var WallLoader = require('./WallLoader');
 
 GameClock.addEventListener('GameClockLoaded', function() {
 

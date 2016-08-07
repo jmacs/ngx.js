@@ -34,4 +34,4 @@ Color.fromHex = function(hex) {
     return new Color(r/x, g/x, b/x);
 };
 
-export default Color;
+module.exports = Color;

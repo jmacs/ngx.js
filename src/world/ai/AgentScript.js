@@ -18,7 +18,7 @@ function get(id) {
     return scripts[id] || null;
 }
 
-export default {
+module.exports = {
     create: create,
     get: get
 }

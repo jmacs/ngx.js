@@ -1,6 +1,6 @@
-import InputManager from '../../input/InputManager';
-import EntityStore from '../../core/EntityStore';
-import Aspect from '../../core/Aspect';
+var InputManager = require('../../input/InputManager');
+var EntityStore = require('../../core/EntityStore');
+var Aspect = require('../../core/Aspect');
 
 var keyboard;
 var mouse;
@@ -65,7 +65,7 @@ function tick(delta, component) {
     }
 }
 
-export default  Aspect.create({
+module.exports =  Aspect.create({
     id: ASPECT_ID,
     onStart: onStart,
     onStop: onStop,

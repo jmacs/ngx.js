@@ -31,6 +31,6 @@ function buildGrid(x, y, gridx, gridy, size) {
     return lines;
 }
 
-export default {
+module.exports = {
     buildGrid: buildGrid
 }

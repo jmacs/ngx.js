@@ -1,5 +1,5 @@
-import EntityStore from '../core/EntityStore';
-import Aspect from '../core/Aspect';
+var EntityStore = require('../core/EntityStore');
+var Aspect = require('../core/Aspect');
 
 const ASPECT_ID = 'graphics.animation';
 
@@ -47,7 +47,7 @@ function tick(state, sprite, delta) {
     state.time = time;
 }
 
-export default Aspect.create({
+module.exports = Aspect.create({
     id: ASPECT_ID,
     onStart: onStart,
     onStop: onStop,

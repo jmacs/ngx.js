@@ -1,4 +1,4 @@
-import CollisionInfo from './CollisionInfo';
+var CollisionInfo = require('./CollisionInfo');
 
 var info = new CollisionInfo();
 
@@ -41,7 +41,7 @@ function aabbIntersection(a, b) {
     );
 }
 
-export default {
+module.exports = {
     blockEntityMovement: blockEntityMovement,
     intersectionDepth: intersectionDepth,
     aabbIntersection: aabbIntersection

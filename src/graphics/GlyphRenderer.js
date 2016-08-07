@@ -1,6 +1,6 @@
-import SpriteBuffer from './SpriteBuffer';
-import GlyphMap from './GlyphMap';
-import Color from './Color';
+var SpriteBuffer = require('./SpriteBuffer');
+var GlyphMap = require('./GlyphMap');
+var Color = require('./Color');
 
 const NULL_CHAR = 0;
 const NEW_LINE = 10;
@@ -54,7 +54,7 @@ function render(spriteBuffer, x, y, varchar) {
     }
 }
 
-export default {
+module.exports = {
     setColor: setColor,
     setGlyphMap: setGlyphMap,
     setGlyphSize: setGlyphSize,

@@ -1,4 +1,4 @@
-import Component from '../../core/Component';
+var Component = require('../../core/Component');
 
 class ItemBox extends Component {
 
@@ -7,4 +7,4 @@ class ItemBox extends Component {
 
 ItemBox.id = 'itembox';
 
-export default ItemBox;
+module.exports = ItemBox;

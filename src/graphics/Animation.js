@@ -20,7 +20,7 @@ function add(animationData) {
     }
 }
 
-export default {
+module.exports = {
     get: get,
     add: add
 }

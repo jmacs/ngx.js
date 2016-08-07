@@ -1,4 +1,4 @@
-import Tileset from '../graphics/Tileset';
+var Tileset = require('../graphics/Tileset');
 
 var walls = Object.create(null);
 
@@ -28,7 +28,7 @@ function get(id) {
     return walls[id] || null;
 }
 
-export default {
+module.exports = {
     add: add,
     get: get
 };

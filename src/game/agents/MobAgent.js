@@ -1,4 +1,4 @@
-import AgentScript from '../../world/ai/AgentScript';
+var AgentScript = require('../../world/ai/AgentScript');
 
 var script = AgentScript.create(100);
 

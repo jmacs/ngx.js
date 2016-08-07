@@ -1,8 +1,8 @@
-import GameClock from './GameClock';
-import Assets from './Assets';
-import PrefabLoader from './PrefabLoader';
-import SceneLoader from './SceneLoader';
-import './Arrays';
+var GameClock = require('./GameClock');
+var Assets = require('./Assets');
+var PrefabLoader = require('./PrefabLoader');
+var SceneLoader = require('./SceneLoader');
+require('./Arrays');
 
 GameClock.addEventListener('GameClockLoaded', function() {
     Assets.registerLoaders([

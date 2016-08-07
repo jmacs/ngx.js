@@ -1,5 +1,5 @@
-import GameClock from '../core/GameClock';
-import KeyboardState from './KeyboardState';
+var GameClock = require('../core/GameClock');
+var KeyboardState = require('./KeyboardState');
 
 var _keyboard;
 
@@ -27,7 +27,7 @@ function getState() {
     return _keyboard;
 }
 
-export default {
+module.exports = {
     type: 'keyboard',
     enable: enable,
     disable: disable,

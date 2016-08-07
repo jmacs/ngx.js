@@ -1,6 +1,6 @@
-import EntityStore from '../../core/EntityStore';
-import Aspect from '../../core/Aspect';
-import Arrays from '../../core/Arrays';
+var EntityStore = require('../../core/EntityStore');
+var Aspect = require('../../core/Aspect');
+var Arrays = require('../../core/Arrays');
 
 const MOVEMENT_SPEED = 1.0;
 const ASPECT_ID = 'world.physics';
@@ -46,7 +46,7 @@ function tick(entity) {
     }
 }
 
-export default  Aspect.create({
+module.exports =  Aspect.create({
     id: ASPECT_ID,
     onUpdate: onUpdate,
     onStart: onStart,

@@ -1,31 +1,31 @@
-import GameClock from '../core/GameClock';
-import Scene from '../core/Scene';
-import Entity from '../core/Entity';
-import Assets from '../core/Assets';
-import Graphics from './Graphics';
-import Viewport from './Viewport';
+var GameClock = require('../core/GameClock');
+var Scene = require('../core/Scene');
+var Entity = require('../core/Entity');
+var Assets = require('../core/Assets');
+var Graphics = require('./Graphics');
+var Viewport = require('./Viewport');
 
 // shaders
-import SpriteVert from './shaders/sprite.vert.glsl';
-import SpriteFrag from './shaders/sprite.frag.glsl';
-import MeshVert from './shaders/mesh.vert.glsl';
-import MeshFrag from './shaders/mesh.frag.glsl';
+var SpriteVert = require('./shaders/sprite.vert.glsl');
+var SpriteFrag = require('./shaders/sprite.frag.glsl');
+var MeshVert = require('./shaders/mesh.vert.glsl');
+var MeshFrag = require('./shaders/mesh.frag.glsl');
 
 // aspects
-import AnimationAspect from './AnimationAspect';
-import SpriteAspect from './SpriteAspect';
-import DebugAspect from './DebugAspect';
-import ViewportAspect from './../world/CameraAspect';
+var AnimationAspect = require('./AnimationAspect');
+var SpriteAspect = require('./SpriteAspect');
+var DebugAspect = require('./DebugAspect');
+var ViewportAspect = require('./../world/CameraAspect');
 
 // components
-import SpriteComponent from './SpriteComponent';
-import AnimationComponent from './AnimationComponent';
+var SpriteComponent = require('./SpriteComponent');
+var AnimationComponent = require('./AnimationComponent');
 
 // loaders
-import ImageLoader from './ImageLoader';
-import TilesetLoader from './TilesetLoader';
-import AnimationLoader from './AnimationLoader';
-import GlyphLoader from './GlyphLoader';
+var ImageLoader = require('./ImageLoader');
+var TilesetLoader = require('./TilesetLoader');
+var AnimationLoader = require('./AnimationLoader');
+var GlyphLoader = require('./GlyphLoader');
 
 GameClock.addEventListener('GameClockLoaded', function() {
     Graphics.createProgram(0, SpriteVert, SpriteFrag);

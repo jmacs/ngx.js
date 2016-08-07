@@ -1,6 +1,6 @@
-/*import Coroutine from '../../world/Coroutine';
-import Assets from '../../core/Assets';
-import Scene from '../../core/Scene';
+/*var Coroutine = require('../../world/Coroutine');
+var Assets = require('../../core/Assets');
+var Scene = require('../../core/Scene');
 
 var script = Coroutine.create('startup');
 

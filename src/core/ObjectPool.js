@@ -43,4 +43,4 @@ class ObjectPool {
     }
 }
 
-export default ObjectPool;
+module.exports = ObjectPool;

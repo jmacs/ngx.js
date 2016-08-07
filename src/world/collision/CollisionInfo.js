@@ -30,4 +30,4 @@ class CollisionInfo {
     }
 }
 
-export default CollisionInfo;
+module.exports = CollisionInfo;

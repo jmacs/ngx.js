@@ -1,5 +1,5 @@
-import Request from '../core/Request';
-import Tileset from './Tileset.js';
+var Request = require('../core/Request');
+var Tileset = require('./Tileset.js');
 
 function TilesetLoader(asset) {
     return Request.get(asset.url).then(function(xhr) {
@@ -8,7 +8,7 @@ function TilesetLoader(asset) {
     });
 }
 
-export default {
+module.exports = {
     id: 'tileset',
     load: TilesetLoader
 }

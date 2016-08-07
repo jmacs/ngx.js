@@ -1,4 +1,4 @@
-import Component from '../../core/Component';
+var Component = require('../../core/Component');
 
 class Door extends Component {
 
@@ -26,4 +26,4 @@ class Door extends Component {
 
 Door.id = 'door';
 
-export default Door;
+module.exports = Door;

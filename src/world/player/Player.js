@@ -1,6 +1,6 @@
 var pvar;
 
-export default {
+module.exports = {
 
 
 }

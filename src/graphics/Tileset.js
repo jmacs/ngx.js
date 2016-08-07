@@ -1,5 +1,4 @@
-import Graphics from './Graphics';
-import Tile from './Tile';
+var Tile = require('./Tile');
 
 var tiles = Object.create(null);
 
@@ -42,7 +41,7 @@ function get(id) {
     return tiles[id] || tiles[0];
 }
 
-export default {
+module.exports = {
     get: get,
     add: add
 };

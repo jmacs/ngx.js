@@ -1,8 +1,8 @@
-import GameClock from '../core/GameClock';
-import InputManager from './InputManager';
-import KeyboardDevice from './KeyboardDevice';
-import MouseDevice from './MouseDevice';
-import GamepadDevice from './GamepadDevice';
+var GameClock = require('../core/GameClock');
+var InputManager = require('./InputManager');
+var KeyboardDevice = require('./KeyboardDevice');
+var MouseDevice = require('./MouseDevice');
+var GamepadDevice = require('./GamepadDevice');
 
 GameClock.addEventListener('GameClockLoaded', function() {
     InputManager.registerDevice(KeyboardDevice);

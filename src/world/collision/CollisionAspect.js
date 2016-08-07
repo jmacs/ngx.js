@@ -1,10 +1,10 @@
-import EntityStore from '../../core/EntityStore';
-import Aspect from '../../core/Aspect';
-import Stage from '../Stage';
-import SpatialIndex from './SpatialIndex';
-import Viewport from '../../graphics/Viewport.js';
-import LineBuilder from '../../graphics/LineBuilder.js';
-import LineBuffer from '../../graphics/LineBuffer.js';
+var EntityStore = require('../../core/EntityStore');
+var Aspect = require('../../core/Aspect');
+var Stage = require('../Stage');
+var SpatialIndex = require('./SpatialIndex');
+var Viewport = require('../../graphics/Viewport.js');
+var LineBuilder = require('../../graphics/LineBuilder.js');
+var LineBuffer = require('../../graphics/LineBuffer.js');
 
 const ASPECT_ID = 'world.collision';
 
@@ -61,7 +61,7 @@ function onDraw() {
     }
 }
 
-export default Aspect.create({
+module.exports = Aspect.create({
     id: ASPECT_ID,
     onStageEnter: onStageEnter,
     onUpdate: onUpdate,

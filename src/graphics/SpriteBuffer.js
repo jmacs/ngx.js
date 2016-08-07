@@ -1,4 +1,4 @@
-import Graphics from './Graphics.js';
+var Graphics = require('./Graphics.js');
 
 const GL_FLOAT = gl.FLOAT;
 const GL_ARRAY_BUFFER = gl.ARRAY_BUFFER;
@@ -206,7 +206,7 @@ function createBuffer(id) {
     return buffer;
 }
 
-export default {
+module.exports = {
     getBuffer: getBuffer,
     createBuffer: createBuffer
 }

@@ -1,5 +1,5 @@
-import Request from './Request';
-import Entity from './Entity.js';
+var Request = require('./Request');
+var Entity = require('./Entity.js');
 
 function PrefabLoader(asset) {
     return Request.get(asset.url).then(function(xhr) {
@@ -8,7 +8,7 @@ function PrefabLoader(asset) {
     });
 }
 
-export default {
+module.exports = {
     id: 'prefab',
     load: PrefabLoader
 };

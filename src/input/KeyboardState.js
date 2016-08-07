@@ -13,4 +13,4 @@ class KeyboardState {
     }
 }
 
-export default KeyboardState;
+module.exports = KeyboardState;

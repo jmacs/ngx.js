@@ -1,5 +1,5 @@
-import ObjectPool from './../core/ObjectPool';
-import CoroutineSystem from './Coprocessor';
+var ObjectPool = require('./../core/ObjectPool');
+var CoroutineSystem = require('./Coprocessor');
 
 var noop = function() {};
 var scripts = Object.create(null);
@@ -108,7 +108,7 @@ function start(name) {
     return CoroutineSystem.start(coroutine);
 }
 
-export default {
+module.exports = {
     start: start,
     create: create
 };

@@ -1,6 +1,6 @@
-import EntityStore from '../../core/EntityStore';
-import Aspect from '../../core/Aspect';
-import AgentScript from './AgentScript';
+var EntityStore = require('../../core/EntityStore');
+var Aspect = require('../../core/Aspect');
+var AgentScript = require('./AgentScript');
 
 const ASPECT_ID = 'world.agents';
 
@@ -56,7 +56,7 @@ function isInActivationRange(entity) {
     return true;
 }
 
-export default Aspect.create({
+module.exports = Aspect.create({
     id: ASPECT_ID,
     onUpdate: onUpdate,
     isInActivationRange: isInActivationRange,

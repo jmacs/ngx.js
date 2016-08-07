@@ -1,4 +1,4 @@
-import Component from '../../core/Component';
+var Component = require('../../core/Component');
 
 class AgentComponent extends Component {
 
@@ -18,4 +18,4 @@ class AgentComponent extends Component {
 
 AgentComponent.id = 'agent';
 
-export default AgentComponent;
+module.exports = AgentComponent;

@@ -1,5 +1,5 @@
-import Request from '../core/Request';
-import Animation from './Animation.js';
+var Request = require('../core/Request');
+var Animation = require('./Animation.js');
 
 function AnimationLoader(asset) {
     return Request.get(asset.url).then(function(xhr) {
@@ -8,7 +8,7 @@ function AnimationLoader(asset) {
     });
 }
 
-export default {
+module.exports = {
     id: 'animation',
     load: AnimationLoader
 }

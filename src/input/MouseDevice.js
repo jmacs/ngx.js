@@ -1,5 +1,5 @@
-import GameClock from '../core/GameClock';
-import MouseState from './MouseState';
+var GameClock = require('../core/GameClock');
+var MouseState = require('./MouseState');
 
 var _mouse;
 
@@ -42,7 +42,7 @@ function getState() {
     return _mouse;
 }
 
-export default {
+module.exports = {
     type: 'mouse',
     enable: enable,
     disable: disable,

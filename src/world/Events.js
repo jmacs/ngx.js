@@ -1,6 +1,6 @@
-import Aspect from './../core/Aspect';
-import Arrays from './../core/Arrays';
-import ObjectPool from './../core/ObjectPool';
+var Aspect = require('./../core/Aspect');
+var Arrays = require('./../core/Arrays');
+var ObjectPool = require('./../core/ObjectPool');
 
 var aspect = Aspect.create('ngx.events');
 
@@ -60,7 +60,7 @@ function trigger(e) {
     }
 }
 
-export default {
+module.exports = {
     on: on,
     off: off,
     send: send

@@ -38,4 +38,4 @@ class Prefab {
     }
 }
 
-export default Prefab;
+module.exports = Prefab;

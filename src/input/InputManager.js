@@ -31,7 +31,7 @@ function getDevice(type) {
     }
 }
 
-export default {
+module.exports = {
     registerDevice: registerDevice,
     enableDevice: enableDevice,
     disableDevice: disableDevice,

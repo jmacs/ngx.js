@@ -26,7 +26,7 @@ function mixin(a, b) {
     return a;
 }
 
-export default {
+module.exports = {
     create: function (obj) {
         try {
             return mixin(obj, template);

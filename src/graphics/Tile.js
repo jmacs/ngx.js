@@ -42,4 +42,4 @@ class Tile {
 
 }
 
-export default Tile;
+module.exports = Tile;

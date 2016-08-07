@@ -18,6 +18,6 @@ function get(url) {
     });
 }
 
-export default {
+module.exports = {
     get: get
 }

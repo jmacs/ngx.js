@@ -15,4 +15,4 @@ class MouseState {
         }
     }
 }
-export default MouseState;
+module.exports = MouseState;

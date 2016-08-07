@@ -6,4 +6,4 @@ class GamepadDevice {
 
 }
 
-export default GamepadDevice;
+module.exports = GamepadDevice;

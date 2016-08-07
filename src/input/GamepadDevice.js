@@ -1,4 +1,4 @@
-import GamepadState from './GamepadState';
+var GamepadState = require('./GamepadState');
 
 var _gamepads;
 
@@ -28,7 +28,7 @@ function getState(index) {
     return _gamepads[index];
 }
 
-export default {
+module.exports = {
     type: 'gamepad',
     enable: enable,
     disable: disable,

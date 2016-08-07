@@ -1,7 +1,7 @@
-import Aspect from '../core/Aspect';
-import Stage from './Stage';
-import SpriteBuffer from '../graphics/SpriteBuffer';
-import Viewport from '../graphics/Viewport';
+var Aspect = require('../core/Aspect');
+var Stage = require('./Stage');
+var SpriteBuffer = require('../graphics/SpriteBuffer');
+var Viewport = require('../graphics/Viewport');
 
 const ASPECT_ID = 'world.stage';
 const CELL_SHIFT = 4;   // 16x16
@@ -45,7 +45,7 @@ function drawCell(cell, cellSize, color) {
     );
 }
 
-export default Aspect.create({
+module.exports = Aspect.create({
     id: ASPECT_ID,
     onStart: onStart,
     onStageEnter: onStageEnter,

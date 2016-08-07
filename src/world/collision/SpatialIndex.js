@@ -1,5 +1,5 @@
-import BoxFunctions from './BoxFunctions';
-import ColliderScript from './ColliderScript';
+var BoxFunctions = require('./BoxFunctions');
+var ColliderScript = require('./ColliderScript');
 
 var _counter = 0;
 var _unitWidth = 0;
@@ -143,7 +143,7 @@ function depair(p) {
     return [p >> 16 & 0xFFFF, p & 0xFFFF];
 }
 
-export default {
+module.exports = {
     build: build,
     insertObject: insertObject,
     clearObjects: clearObjects,

@@ -1,5 +1,5 @@
-import Request from './Request';
-import Scene from './Scene';
+var Request = require('./Request');
+var Scene = require('./Scene');
 
 function SceneLoader(asset) {
     return Request.get(asset.url).then(function(xhr) {
@@ -8,7 +8,7 @@ function SceneLoader(asset) {
     });
 }
 
-export default {
+module.exports = {
     id: 'scene',
     load: SceneLoader
 };

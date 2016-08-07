@@ -17,14 +17,6 @@ var config = {
             {
                 test: [/\.txt$/,/\.glsl$/],
                 loader: "raw"
-            },
-            {
-                test: /\.js$/,
-                exclude: /node_modules\//,
-                loader: 'babel-loader',
-                query: {
-                    plugins: ['babel-plugin-transform-es2015-modules-commonjs']
-                }
             }
         ]
     }

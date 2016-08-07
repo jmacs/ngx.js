@@ -1,5 +1,5 @@
-import ColliderScript from '../../world/collision/ColliderScript';
-import BoxFunctions from '../../world/collision/BoxFunctions';
+var ColliderScript = require('../../world/collision/ColliderScript');
+var BoxFunctions = require('../../world/collision/BoxFunctions');
 
 var script = ColliderScript.create(200);
 

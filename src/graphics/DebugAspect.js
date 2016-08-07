@@ -1,12 +1,12 @@
-import Aspect from '../core/Aspect';
-import GameClock from '../core/GameClock';
-import Viewport from './Viewport.js';
-import LineBuilder from './LineBuilder.js';
-import LineBuffer from './LineBuffer.js';
-import SpriteBuffer from './SpriteBuffer';
-import Varchar from './Varchar';
-import GlyphRenderer from './GlyphRenderer';
-import Color from './Color';
+var Aspect = require('../core/Aspect');
+var GameClock = require('../core/GameClock');
+var Viewport = require('./Viewport.js');
+var LineBuilder = require('./LineBuilder.js');
+var LineBuffer = require('./LineBuffer.js');
+var SpriteBuffer = require('./SpriteBuffer');
+var Varchar = require('./Varchar');
+var GlyphRenderer = require('./GlyphRenderer');
+var Color = require('./Color');
 
 var spatialGrid;
 var lineBuffer;
@@ -51,7 +51,7 @@ function onDraw() {
     spriteBuffer.flush();
 }
 
-export default Aspect.create({
+module.exports = Aspect.create({
     id: 'graphics.debugger',
     onStart: onStart,
     onStageEnter: onStageEnter,
