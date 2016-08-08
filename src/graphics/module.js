@@ -11,20 +11,8 @@ var SpriteFrag = require('./shaders/sprite.frag.glsl');
 var MeshVert = require('./shaders/mesh.vert.glsl');
 var MeshFrag = require('./shaders/mesh.frag.glsl');
 
-// aspects
-var AnimationAspect = require('./AnimationAspect');
-var SpriteAspect = require('./SpriteAspect');
-var DebugAspect = require('./DebugAspect');
-var ViewportAspect = require('./../world/CameraAspect');
-
-// components
-var SpriteComponent = require('./SpriteComponent');
-var AnimationComponent = require('./AnimationComponent');
-
-// loaders
+// resources
 var ImageLoader = require('./ImageLoader');
-var TilesetLoader = require('./TilesetLoader');
-var AnimationLoader = require('./AnimationLoader');
 var GlyphLoader = require('./GlyphLoader');
 
 GameClock.addEventListener('GameClockLoaded', function() {
@@ -34,22 +22,22 @@ GameClock.addEventListener('GameClockLoaded', function() {
     Viewport.initialize({width: 1280, height: 720});
 
     Entity.registerComponents([
-        SpriteComponent,
-        AnimationComponent
+        require('./SpriteComponent'),
+        require('./AnimationComponent')
     ]);
 
-    Assets.registerLoaders([
+    Assets.registerResources([
         ImageLoader,
-        TilesetLoader,
-        AnimationLoader,
+        require('./Tileset'),
+        require('./Animation'),
         GlyphLoader
     ]);
 
     Scene.registerAspects([
-        AnimationAspect,
-        SpriteAspect,
-        DebugAspect,
-        ViewportAspect
+        require('./AnimationAspect'),
+        require('./SpriteAspect'),
+        require('./DebugAspect'),
+        require('./../world/CameraAspect')
     ]);
 
     Scene.setViewport(Viewport);

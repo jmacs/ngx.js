@@ -36,13 +36,13 @@ function onUpdate() {
 }
 
 function drawCell(cell, cellSize, color) {
-    _spriteBuffer.draw(
+    /*_spriteBuffer.draw(
         cell.position,
         cellSize,
         cellSize,
         cell.layers[0],
         color
-    );
+    );*/
 }
 
 module.exports = Aspect.create({

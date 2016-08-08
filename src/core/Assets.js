@@ -1,9 +1,15 @@
-var Request = require('./Request');
-
-var _resources = Object.create(null);
+var _cache = Object.create(null);
 var indexed = Object.create(null);
 var manifest = [];
 var _loaders = Object.create(null);
+
+function parseJSON(response) {
+    return response.json();
+}
+
+function httpGetJSON(url) {
+    return fetch(url).then(parseJSON);
+}
 
 function downloadManifest(url) {
     return fetch(url).then(function(response) {
@@ -85,17 +91,31 @@ function registerLoaders(modules) {
     }
 }
 
-function createResource(name) {
-    var resource = Object.create(null);
-    _resources[name] = resource;
-    return resource;
+function registerResources(modules) {
+    for (var i = 0, l = modules.length; i < l; i++) {
+        var module = modules[i];
+        _loaders[module.id] = module;
+    }
+}
+
+function createCache(name) {
+    var cache = Object.create(null);
+    _cache[name] = cache;
+    return cache;
+}
+
+function getCache(name) {
+    return _cache[name] || null;
 }
 
 module.exports = {
-    createResource: createResource,
+    httpGetJSON: httpGetJSON,
+    createCache: createCache,
+    getCache: getCache,
     registerLoaders: registerLoaders,
+    registerResources: registerResources,
     downloadManifest: downloadManifest,
     downloadBundle: downloadBundle,
     downloadAll: downloadAll,
     downloadAllOfType: downloadAllOfType
-}
+};

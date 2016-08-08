@@ -1,6 +1,7 @@
+var Assets = require('../core/Assets');
 var Tile = require('./Tile');
 
-var tiles = Object.create(null);
+var _tiles = Object.create(null);
 
 function add(options) {
     var tex = options.tex;
@@ -13,7 +14,7 @@ function add(options) {
         var tid = item.tid;
         var rect = item.rect;
 
-        if (tiles[tid]) {
+        if (_tiles[tid]) {
             console.error('duplicate tile id "%s" in "%s"', tid, options.name);
             continue;
         }
@@ -24,6 +25,9 @@ function add(options) {
         }
 
         var tile = new Tile(tid, tex);
+        tile.set = item.set;
+        tile.mat = item.mat;
+
         tile.mapTexture(
             width,
             height,
@@ -33,15 +37,21 @@ function add(options) {
             rect[3]
         );
 
-        tiles[tid] = tile;
+        _tiles[tid] = tile;
     }
 }
 
 function get(id) {
-    return tiles[id] || tiles[0];
+    return _tiles[id] || _tiles[0];
+}
+
+function load(asset) {
+    return Assets.httpGetJSON(asset.url).then(add);
 }
 
 module.exports = {
+    id: 'tileset',
     get: get,
-    add: add
+    add: add,
+    load: load
 };

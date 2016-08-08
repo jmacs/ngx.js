@@ -18,6 +18,15 @@ function get(url) {
     });
 }
 
-module.exports = {
-    get: get
+function parseJSON(response) {
+    return response.json();
 }
+
+function getJSON(url) {
+    return fetch(url).then(parseJSON);
+}
+
+module.exports = {
+    get: get,
+    getJSON: getJSON
+};
