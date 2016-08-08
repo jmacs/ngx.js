@@ -1,6 +1,10 @@
+var Assets = require('../core/Assets');
 var Tileset = require('../graphics/Tileset');
 
-var walls = Object.create(null);
+const SOLID = 1;
+const SOLID_ANIMATED = 2;
+
+var walls = Assets.createCache('walls');
 
 class Wall {
     constructor(options) {
@@ -28,7 +32,13 @@ function get(id) {
     return walls[id] || null;
 }
 
+function load(asset) {
+    return Assets.httpGetJSON(asset.url).then(add);
+}
+
 module.exports = {
+    id: 'walls',
+    load: load,
     add: add,
     get: get
 };

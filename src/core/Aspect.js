@@ -26,13 +26,10 @@ function mixin(a, b) {
     return a;
 }
 
-module.exports = {
-    create: function (obj) {
-        try {
-            return mixin(obj, template);
-        } catch (ex) {
-            console.error(ex);
-            debugger;
-        }
-    }
+function create(obj) {
+    return mixin(obj, template);
 }
+
+module.exports = {
+    create: create
+};

@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 GameClock.addEventListener('GameClockStarted', function() {
     console.info('GameClockStarted');
     window.clock = GameClock;
+    window.Assets = Assets;
     InputManager.enableDevice('keyboard');
     Assets.downloadManifest('assets/manifest.json').then(function() {
         return Assets.downloadAll();

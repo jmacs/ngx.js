@@ -18,7 +18,7 @@ var InputComponent = require('./input/InputComponent');
 var AgentComponent = require('./ai/AgentComponent');
 var BoxComponent = require('./collision/BoxComponent');
 
-var WallLoader = require('./WallLoader');
+var WallLoader = require('./Walls');
 
 GameClock.addEventListener('GameClockLoaded', function() {
 

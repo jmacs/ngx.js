@@ -3,6 +3,8 @@ class Tile {
     constructor(tid, tex) {
         this.tid = tid || 0;
         this.tex = tex || 0;
+        this.set = 0;
+        this.mat = 0;
         // BL 0,0 -> TR 0,1
         this.x1 = 0.0;
         this.y1 = 1.0;

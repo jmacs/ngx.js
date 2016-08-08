@@ -146,4 +146,4 @@ module.exports = {
     attachComponent: attachComponent,
     detachComponent: detachComponent,
     registerComponents: registerComponents
-}
+};
