@@ -1,54 +1,64 @@
 [
   {
-    "name": "prefabs/mobs",
-    "type": "prefab",
-    "url": "assets/prefabs/mobs.json"
+    "url": "assets/prefabs/mobs.json",
+    "type": "prefab"
   },
   {
-    "name": "prefabs/decor",
-    "type": "prefab",
-    "url": "assets/prefabs/decor.json"
+    "url": "assets/prefabs/decor.json",
+    "type": "prefab"
   },
   {
-    "name": "prefabs/items",
-    "type": "prefab",
-    "url": "assets/prefabs/items.json"
+    "url": "assets/prefabs/items.json",
+    "type": "prefab"
   },
   {
-    "name": "images/smb3",
-    "type": "image",
     "url": "assets/images/smb3.png",
-    "tex": 0
+    "type": "texture",
+    "id": 0
   },
   {
-    "name": "images/bisasam_font",
-    "type": "image",
     "url": "assets/images/bisasam_font.png",
-    "tex": 3
+    "type": "texture",
+    "id": 3
   },
   {
-    "name": "tilesets/smb3",
-    "type": "tileset",
-    "url": "assets/tilesets/smb3.json"
+    "url": "assets/tilesets/smb3.json",
+    "type": "tile"
   },
   {
-    "name": "animations/entity",
-    "type": "animation",
-    "url": "assets/animations/smb_entity.json"
+    "url": "assets/animations/smb_entity.json",
+    "type": "animation"
   },
   {
-    "name": "glyphs/bisasam",
-    "type": "glyph",
-    "url": "assets/glyphs/bisasam.json"
+    "url": "assets/glyphs/bisasam.json",
+    "type": "glyph"
   },
   {
-    "name": "config/walls",
-    "type": "walls",
-    "url": "assets/config/walls.json"
+    "url": "assets/scenes/sandbox.json",
+    "type": "scene"
   },
   {
-    "name": "scenes/sandbox",
-    "type": "scene",
-    "url": "assets/scenes/sandbox.json"
+    "url": "assets/shaders/mesh.frag.glsl",
+    "type": "shader",
+    "vertex": false,
+    "shaderId": 1
+  },
+  {
+    "url": "assets/shaders/mesh.vert.glsl",
+    "type": "shader",
+    "vertex": true,
+    "shaderId": 2
+  },
+  {
+    "url": "assets/shaders/sprite.frag.glsl",
+    "type": "shader",
+    "vertex": false,
+    "shaderId": 3
+  },
+  {
+    "url": "assets/shaders/sprite.vert.glsl",
+    "type": "shader",
+    "vertex": true,
+    "shaderId": 4
   }
 ]

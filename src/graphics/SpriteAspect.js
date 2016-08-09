@@ -1,19 +1,22 @@
 var EntityStore = require('../core/EntityStore');
 var SpriteBuffer = require('./SpriteBuffer');
 var Viewport = require('./Viewport');
-var Tileset = require('./Tileset');
+var ResourceManager = require('../core/ResourceManager');
 var Aspect = require('../core/Aspect');
 
 const ASPECT_ID = 'graphics.sprites';
 
 var spriteBuffer = null;
+var tiles = null;
 
 function onStart() {
+    tiles = ResourceManager.getResources().tile;
     spriteBuffer = SpriteBuffer.createBuffer(0);
     EntityStore.addFilter(ASPECT_ID, filterEntity);
 }
 
 function onStop() {
+    tiles = null;
     spriteBuffer = null;
     EntityStore.removeFilter(ASPECT_ID);
 }
@@ -34,7 +37,7 @@ function onDraw() {
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
         var sprite = entity.sprite;
-        var tile = Tileset.get(sprite.tid);
+        var tile = tiles.get(sprite.tid);
         spriteBuffer.draw(
             entity.position,
             sprite.width,

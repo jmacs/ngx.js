@@ -1,7 +1,5 @@
 var Tile = require('./Tile');
 
-var cache = Object.create(null);
-
 class GlyphMap {
 
     constructor(options) {
@@ -47,17 +45,4 @@ class GlyphMap {
     }
 }
 
-function create(options) {
-    var map = new GlyphMap(options);
-    cache[map.id] = map;
-    return map;
-}
-
-function get(id) {
-    return cache[id] || null;
-}
-
-module.exports = {
-    create: create,
-    get: get
-}
+module.exports = GlyphMap;

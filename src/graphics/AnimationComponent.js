@@ -1,5 +1,5 @@
 var Component = require('../core/Component');
-var Animation = require('./Animation');
+var ResourceManager = require('../core/ResourceManager');
 
 const NO_FRAMES = [];
 
@@ -21,7 +21,7 @@ class AnimationComponent extends Component {
     }
 
     change(animationId) {
-        var animation = Animation.get(animationId);
+        var animation = ResourceManager.get('animation', animationId);
         if (!animation) return;
         var frames = animation.frames;
         this.animationId = animationId;

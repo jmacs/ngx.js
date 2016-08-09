@@ -2,13 +2,13 @@ var Graphics = require('./Graphics.js');
 var Color = require('./Color.js');
 var {mat4} = require('gl-matrix');
 
-const gl = Graphics.getContext();
 const DEFAULT_ZOOM = 500.0;
 const MAX_ZOOM = 100.0;
 const MIN_ZOOM = 0;
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 
+var gl = null;
 var pMatrix = mat4.create();
 var vMatrix = mat4.create();
 var posX = 0.0;
@@ -21,6 +21,10 @@ var zoomFactor = DEFAULT_ZOOM;
 var isDirty = true;
 var canvas = null;
 var clearbit = 0;
+
+Graphics.addEventListener('ContextCreated', function() {
+    gl = Graphics.getContext();
+});
 
 function initialize(options) {
     var color = Color.fromHex(0x75ffff);

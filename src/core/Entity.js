@@ -1,7 +1,6 @@
-var Prefab = require('./Prefab');
+var ResourceManager = require('./ResourceManager');
 
 var componentClasses = Object.create(null);
-var prefabs = Object.create(null);
 var identity = 0;
 
 class Entity {
@@ -26,13 +25,9 @@ class Entity {
     }
 }
 
-function getPrefabType(prefabId) {
-    var prefab = prefabs[prefabId];
-    return prefab ? prefab.type : 0;
-}
-
 function create(ref, prefabId) {
-    var prefab = prefabs[prefabId];
+    var prefab = ResourceManager.get('prefab', prefabId);
+
     if (!prefab) {
         throw new Error('unknown prefab: ' + prefabId);
     }
@@ -56,18 +51,6 @@ function registerComponents(modules) {
         var module = modules[i];
         if (!validateComponent(module)) continue;
         componentClasses[module.id] = module;
-    }
-}
-
-function registerPrefabs(modules) {
-    for (var i = 0, l = modules.length; i < l; i++) {
-        var module = modules[i];
-        var prefab = new Prefab(module);
-        if (!prefabs[prefab.id]) {
-            prefabs[prefab.id] = prefab;
-        } else {
-            console.warn('prefab "%s:%s" is already defined', prefab.id, prefab.name);
-        }
     }
 }
 
@@ -141,8 +124,6 @@ function validateComponent(module) {
 module.exports = {
     create: create,
     release: release,
-    getPrefabType: getPrefabType,
-    registerPrefabs: registerPrefabs,
     attachComponent: attachComponent,
     detachComponent: detachComponent,
     registerComponents: registerComponents
