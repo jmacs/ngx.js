@@ -54,7 +54,7 @@
     [21, 0, 1],
     [21, 13, 1]
   ],
-  "manifest": [
+  "entities": [
     {
       "ref": 1234,
       "pos": [200,208],
@@ -89,5 +89,8 @@
       "pos": [300,30],
       "prefab": 30101
     }
+  ],
+  "scripts": [
+    "onCastleDoorUnlock"
   ]
 }

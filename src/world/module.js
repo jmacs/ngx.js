@@ -1,44 +1,29 @@
 var Scene = require('../core/Scene');
 var GameClock = require('../core/GameClock');
-var System = require('../core/GameClock');
 var Entity = require('../core/Entity');
-var Assets = require('../core/Assets');
+var ResourceManager = require('../core/ResourceManager');
 
-var Stage = require('./Stage');
-var SpatialIndex = require('./collision/SpatialIndex');
-
-var CollisionAspect = require('./collision/CollisionAspect');
-var PhysicsAspect = require('./physics/PhysicsAspect');
-var AgentAspect = require('./ai/AgentAspect');
-var InputAspect = require('./input/InputAspect');
-var StageAspect = require('./StageAspect');
-var CameraAspect = require('./CameraAspect');
-
-var InputComponent = require('./input/InputComponent');
-var AgentComponent = require('./ai/AgentComponent');
-var BoxComponent = require('./collision/BoxComponent');
-
-var WallLoader = require('./Walls');
+// resources
+var MapResource = require('./maps/MapResource');
 
 GameClock.addEventListener('GameClockLoaded', function() {
 
-    Entity.registerComponents([
-        InputComponent,
-        AgentComponent,
-        BoxComponent
+    ResourceManager.registerResources([
+        new MapResource()
     ]);
 
-    Assets.registerLoaders([
-        WallLoader
+    Entity.registerComponents([
+        require('./input/InputComponent'),
+        require('./ai/AgentComponent'),
+        require('./collision/BoxComponent')
     ]);
 
     Scene.registerAspects([
-        StageAspect,
-        PhysicsAspect,
-        AgentAspect,
-        InputAspect,
-        StageAspect,
-        CollisionAspect,
-        CameraAspect
+        require('./collision/CollisionAspect'),
+        require('./physics/PhysicsAspect'),
+        require('./ai/AgentAspect'),
+        require('./input/InputAspect'),
+        require('./camera/CameraAspect')
     ]);
+
 });

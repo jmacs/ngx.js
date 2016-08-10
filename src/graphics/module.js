@@ -14,11 +14,10 @@ var TileResource = require('./TileResource');
 var GlyphResource = require('./GlyphResource');
 
 GameClock.addEventListener('GameClockLoaded', function() {
-    Graphics.createContext('webgl');
-
     Viewport.initialize({width: 1280, height: 720});
 
     ResourceManager.registerResources([
+        new ProgramResource(),
         new ShaderResource(),
         new TextureResource(),
         new AnimationResource(),
@@ -35,7 +34,7 @@ GameClock.addEventListener('GameClockLoaded', function() {
         require('./AnimationAspect'),
         require('./SpriteAspect'),
         require('./DebugAspect'),
-        require('./../world/CameraAspect')
+        require('./../world/camera/CameraAspect')
     ]);
 
     Scene.setViewport(Viewport);

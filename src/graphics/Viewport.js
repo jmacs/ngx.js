@@ -8,7 +8,7 @@ const MIN_ZOOM = 0;
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 
-var gl = null;
+var gl = Graphics.getContext();
 var pMatrix = mat4.create();
 var vMatrix = mat4.create();
 var posX = 0.0;
@@ -21,10 +21,6 @@ var zoomFactor = DEFAULT_ZOOM;
 var isDirty = true;
 var canvas = null;
 var clearbit = 0;
-
-Graphics.addEventListener('ContextCreated', function() {
-    gl = Graphics.getContext();
-});
 
 function initialize(options) {
     var color = Color.fromHex(0x75ffff);

@@ -20,7 +20,8 @@ class ShaderResource extends Resource {
         this.__cache = Object.create(null);
     }
 
-    createProgram(vertexShader, fragmentShader) {
+    createProgram(id, vertexShader, fragmentShader) {
+        if (this.__cache[id]) return;
         var program = Graphics.createProgram(vertexShader, fragmentShader);
         this.set(id, program);
     }

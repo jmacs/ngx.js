@@ -10,7 +10,7 @@ var spriteBuffer = null;
 var tiles = null;
 
 function onStart() {
-    tiles = ResourceManager.getResources().tile;
+    tiles = ResourceManager.getResource('tile');
     spriteBuffer = SpriteBuffer.createBuffer(0);
     EntityStore.addFilter(ASPECT_ID, filterEntity);
 }

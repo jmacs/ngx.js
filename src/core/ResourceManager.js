@@ -49,15 +49,6 @@ function readManifestData(data) {
     }
 }
 
-var defer = function() {
-    var result = {};
-    result.promise = new Promise(function(resolve, reject) {
-        result.resolve = resolve;
-        result.reject = reject;
-    });
-    return result;
-};
-
 function download(assets) {
     var promises = [];
     for (var i = 0, ii = assets.length; i < ii; i++) {
@@ -84,7 +75,7 @@ function download(assets) {
         var deferred = createDeferred();
         mediaLoader.downloadAsset(asset, resource, deferred);
 
-        promises.push(deferred);
+        promises.push(deferred.promise);
     }
     return Promise.all(promises);
 }
@@ -103,35 +94,49 @@ function downloadAll() {
     for(var key in _manifest) {
         assets.push(_manifest[key]);
     }
-    download(assets);
+    return download(assets);
+}
+
+function downloadTypeOf(resourceType) {
+    var assets = [];
+    var keys = Object.keys(_manifest);
+    for (var i = 0, l = keys.length; i < l; i++) {
+        var asset = _manifest[keys[i]];
+        if (asset.type === resourceType) {
+            assets.push(asset);
+        }
+    }
+    return download(assets);
+}
+
+function clearAll() {
+    var keys = Object.keys(_resources);
+    for (var i = 0, l = keys.length; i < l; i++) {
+        _resources[keys[i]].clear();
+    }
 }
 
 function get(resourceName, id) {
     return _resources[resourceName].get(id);
 }
 
-function clearAll() {
-    for (var key in _resources) {
-        _resources[key].clear();
-    }
+function getResource(resourceName) {
+    return _resources[resourceName];
 }
 
-function getResources() {
-    return _resources;
-}
-
-function memorySize() {
+function getObjectSize() {
     return Profiler.sizeOf(_resources);
 }
 
 module.exports = {
     registerMediaLoaders: registerMediaLoaders,
     registerResources: registerResources,
-    getResources: getResources,
+    getResource: getResource,
     loadManifest: loadManifest,
     download: download,
     downloadAll: downloadAll,
+    downloadTypeOf: downloadTypeOf,
     clearAll: clearAll,
-    memorySize: memorySize,
+    getObjectSize: getObjectSize,
     get: get
 };

@@ -1,5 +1,9 @@
 [
   {
+    "url": "assets/maps/test.json",
+    "type": "map"
+  },
+  {
     "url": "assets/prefabs/mobs.json",
     "type": "prefab"
   },
@@ -14,12 +18,12 @@
   {
     "url": "assets/images/smb3.png",
     "type": "texture",
-    "id": 0
+    "textureId": 0
   },
   {
     "url": "assets/images/bisasam_font.png",
     "type": "texture",
-    "id": 3
+    "textureId": 3
   },
   {
     "url": "assets/tilesets/smb3.json",
@@ -38,7 +42,13 @@
     "type": "scene"
   },
   {
-    "url": "assets/shaders/mesh.frag.glsl",
+    "url": "assets/shaders/sprite.vert.glsl",
+    "type": "shader",
+    "vertex": true,
+    "shaderId": 0
+  },
+  {
+    "url": "assets/shaders/sprite.frag.glsl",
     "type": "shader",
     "vertex": false,
     "shaderId": 1
@@ -50,15 +60,9 @@
     "shaderId": 2
   },
   {
-    "url": "assets/shaders/sprite.frag.glsl",
+    "url": "assets/shaders/mesh.frag.glsl",
     "type": "shader",
     "vertex": false,
     "shaderId": 3
-  },
-  {
-    "url": "assets/shaders/sprite.vert.glsl",
-    "type": "shader",
-    "vertex": true,
-    "shaderId": 4
   }
 ]

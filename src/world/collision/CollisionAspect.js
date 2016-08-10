@@ -1,6 +1,5 @@
 var EntityStore = require('../../core/EntityStore');
 var Aspect = require('../../core/Aspect');
-var Stage = require('../Stage');
 var SpatialIndex = require('./SpatialIndex');
 var Viewport = require('../../graphics/Viewport.js');
 var LineBuilder = require('../../graphics/LineBuilder.js');

@@ -1,7 +1,7 @@
-var Entity = require('../core/Entity');
-var EntityStore = require('../core/EntityStore');
-var Scene = require('../core/Scene');
-var Color = require('../graphics/Color');
+var Entity = require('../../core/Entity');
+var EntityStore = require('../../core/EntityStore');
+var Scene = require('../../core/Scene');
+var Color = require('../../graphics/Color');
 var Walls = require('./Walls');
 var Cell = require('./Cell');
 

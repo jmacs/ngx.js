@@ -1,5 +1,7 @@
-var Graphics = require('./Graphics.js');
+var Graphics = require('./Graphics');
+var ResourceManager = require('../core/ResourceManager');
 
+const gl = Graphics.getContext();
 const GL_FLOAT = gl.FLOAT;
 const GL_ARRAY_BUFFER = gl.ARRAY_BUFFER;
 const GL_STATIC_DRAW = gl.STATIC_DRAW;
@@ -19,7 +21,7 @@ var cache = Object.create(null);
 class MeshBuffer {
 
     constructor() {
-        this.program = Graphics.getProgram(1);
+        this.program = ResourceManager.get('program', 1);
 
         this.a_position = gl.getAttribLocation(this.program, 'a_position');
 

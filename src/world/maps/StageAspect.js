@@ -1,7 +1,7 @@
-var Aspect = require('../core/Aspect');
+var Aspect = require('../../core/Aspect');
 var Stage = require('./Stage');
-var SpriteBuffer = require('../graphics/SpriteBuffer');
-var Viewport = require('../graphics/Viewport');
+var SpriteBuffer = require('../../graphics/SpriteBuffer');
+var Viewport = require('../../graphics/Viewport');
 
 const ASPECT_ID = 'world.stage';
 const CELL_SHIFT = 4;   // 16x16

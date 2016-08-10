@@ -1,6 +1,6 @@
-var Viewport = require('../graphics/Viewport.js');
-var Aspect = require('../core/Aspect');
-var InputManager = require('../input/InputManager.js');
+var Viewport = require('../../graphics/Viewport.js');
+var Aspect = require('../../core/Aspect');
+var InputManager = require('../../input/InputManager.js');
 
 // todo: remove dep on input manager (with scripted camera man)
 const ASPECT_ID = 'world.camera';

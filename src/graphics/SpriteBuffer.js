@@ -1,5 +1,7 @@
 var Graphics = require('./Graphics.js');
+var ResourceManager = require('../core/ResourceManager');
 
+const gl = Graphics.getContext();
 const GL_FLOAT = gl.FLOAT;
 const GL_ARRAY_BUFFER = gl.ARRAY_BUFFER;
 const GL_STATIC_DRAW = gl.STATIC_DRAW;
@@ -21,7 +23,7 @@ var cache = Object.create(null);
 class SpriteBuffer {
 
     constructor() {
-        this.program = Graphics.getProgram(0);
+        this.program = ResourceManager.get('program', 0);
 
         this.a_position = gl.getAttribLocation(this.program, 'a_position');
         this.a_color = gl.getAttribLocation(this.program, 'a_color');
@@ -209,4 +211,4 @@ function createBuffer(id) {
 module.exports = {
     getBuffer: getBuffer,
     createBuffer: createBuffer
-}
+};

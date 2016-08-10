@@ -21,8 +21,9 @@ class TextureResource extends Resource {
     }
 
     onAssetDownloaded(image, asset) {
+        if (this.__cache[asset.textureId]) return;
         var texture = Graphics.createTexture(image);
-        this.set(asset.id, texture);
+        this.set(asset.textureId, texture);
     }
 }
 

@@ -1,5 +1,5 @@
 var events = Object.create(null);
-var gl = null;
+var gl = createContext('webgl');
 var canvas = null;
 
 function getContext() {
@@ -22,10 +22,7 @@ function createContext(contextType, contextAttributes) {
     if (window.gl) return gl;
     try {
         canvas = document.createElement('canvas');
-        gl = canvas.getContext(contextType, contextAttributes);
-        window.gl = gl;
-        trigger('ContextCreated', {context: gl, canvas: canvas});
-        return gl;
+        return canvas.getContext(contextType, contextAttributes);
     } catch(ex) {
         console.error('unable to create WebGL rendering context: ', ex.message);
         return null;
@@ -49,6 +46,7 @@ function createProgram(vertexShader, fragmentShader) {
         var message = 'error in program linking: ' + lastError;
         gl.deleteProgram(program);
         trigger('GraphicsError', {message: message});
+        return;
     }
     return program;
 }
@@ -68,6 +66,7 @@ function createShader(shaderSource, isVertexShader) {
         var message = '\n*** Error compiling shader ***\n' + lastError + '\n\n' + addLineNumbers(shaderSource);
         gl.deleteShader(shader);
         trigger('GraphicsError', {message: message});
+        return;
     }
     return shader;
 }
@@ -92,10 +91,8 @@ function deleteTexture(texture) {
 }
 
 module.exports = {
-    createContext: createContext,
     addEventListener: addEventListener,
     getContext: getContext,
-    createContext: createContext,
     createProgram: createProgram,
     deleteProgram: deleteProgram,
     createTexture: createTexture,

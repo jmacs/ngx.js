@@ -21,6 +21,7 @@ class ShaderResource extends Resource {
     }
 
     onAssetDownloaded(shaderSource, asset) {
+        if (this.__cache[asset.shaderId]) return;
         var shader = Graphics.createShader(shaderSource, asset.vertex);
         this.set(asset.shaderId, shader);
     }
