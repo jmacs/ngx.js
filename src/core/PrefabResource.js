@@ -4,7 +4,7 @@ var Resource = require('./Resource');
 class PrefabResource extends Resource {
 
     getMediaType() {
-        return 'text/json';
+        return 'application/json';
     }
 
     getResourceType() {

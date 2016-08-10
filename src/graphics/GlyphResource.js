@@ -4,7 +4,7 @@ var Resource = require('../core/Resource');
 class GlyphResource extends Resource {
 
     getMediaType() {
-        return 'text/json';
+        return 'application/json';
     }
 
     getResourceType() {

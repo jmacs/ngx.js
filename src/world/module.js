@@ -12,13 +12,13 @@ GameClock.addEventListener('GameClockLoaded', function() {
         new MapResource()
     ]);
 
-    Entity.registerComponents([
+    ResourceManager.getResource('component').register([
         require('./input/InputComponent'),
         require('./ai/AgentComponent'),
         require('./collision/BoxComponent')
     ]);
 
-    Scene.registerAspects([
+    ResourceManager.getResource('aspect').register([
         require('./collision/CollisionAspect'),
         require('./physics/PhysicsAspect'),
         require('./ai/AgentAspect'),

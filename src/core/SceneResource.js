@@ -1,9 +1,10 @@
 var Resource = require('./Resource');
+var Scene = require('./Scene');
 
 class SceneResource extends Resource {
 
     getMediaType() {
-        return 'text/json';
+        return 'application/json';
     }
 
     getResourceType() {
@@ -11,7 +12,8 @@ class SceneResource extends Resource {
     }
 
     onAssetDownloaded(data) {
-        this.set(data.id, data);
+        var scene = Scene.create(data);
+        this.set(scene.name, scene);
     }
 }
 

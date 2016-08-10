@@ -1,6 +1,6 @@
 
 function sizeOf(object){
-    // initialise the list of objects and size
+    // initialize the list of objects and size
     var objects = [object];
     var size    = 0;
 

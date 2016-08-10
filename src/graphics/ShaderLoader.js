@@ -25,7 +25,7 @@ function downloadAsset(asset, resource, promise) {
 }
 
 function getSupportedMediaTypes() {
-    return ['xml/shader'];
+    return ['x-ngx/shader'];
 }
 
 module.exports = {

@@ -44,5 +44,9 @@
   {
     "url": "assets/shaders/mesh.xml",
     "type": "shader"
+  },
+  {
+    "url": "assets/shaders/sprite.xml",
+    "type": "shader"
   }
 ]

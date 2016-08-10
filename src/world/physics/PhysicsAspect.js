@@ -1,4 +1,4 @@
-var EntityStore = require('../../core/EntityStore');
+var EntityManager = require('../../core/EntityManager');
 var Aspect = require('../../core/Aspect');
 var Arrays = require('../../core/Arrays');
 
@@ -6,11 +6,11 @@ const MOVEMENT_SPEED = 1.0;
 const ASPECT_ID = 'world.physics';
 
 function onStart() {
-    EntityStore.addFilter(ASPECT_ID, filterEntity);
+    EntityManager.addFilter(ASPECT_ID, filterEntity);
 }
 
 function onStop() {
-    EntityStore.removeFilter(ASPECT_ID);
+    EntityManager.removeFilter(ASPECT_ID);
 }
 
 function filterEntity(entity) {
@@ -19,7 +19,7 @@ function filterEntity(entity) {
 
 // todo: implement realish physics
 function onUpdate() {
-    var entities = EntityStore.getCache(ASPECT_ID);
+    var entities = EntityManager.getCache(ASPECT_ID);
     for (var i = 0, len = entities.length; i < len; i++) {
         tick(entities[i]);
     }

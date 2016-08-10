@@ -14,7 +14,7 @@ function downloadAsset(asset, resource, promise) {
 }
 
 function getSupportedMediaTypes() {
-    return ['text/json'];
+    return ['application/json'];
 }
 
 module.exports = {

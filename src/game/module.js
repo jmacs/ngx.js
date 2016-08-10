@@ -1,5 +1,5 @@
 var GameClock = require('../core/GameClock');
-var Entity = require('../core/Entity');
+var ResourceManager = require('../core/ResourceManager');
 
 var bootstrap = Object.create(null);
 
@@ -10,7 +10,7 @@ bootstrap.components = function() {
     req.keys().forEach(function(key){
         modules.push(req(key));
     });
-    Entity.registerComponents(modules);
+    ResourceManager.getResource('component').register(modules);
 };
 
 bootstrap.colliders = function() {

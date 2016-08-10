@@ -1,4 +1,4 @@
-var EntityStore = require('../../core/EntityStore');
+var EntityManager = require('../../core/EntityManager');
 var Aspect = require('../../core/Aspect');
 var SpatialIndex = require('./SpatialIndex');
 var Viewport = require('../../graphics/Viewport.js');
@@ -17,11 +17,11 @@ var debugGrid;
 function onStart() {
     SpatialIndex.build(GRID_SHIFT, GRID_WIDTH, GRID_HEIGHT);
     lineBuffer = LineBuffer.createBuffer(0);
-    EntityStore.addFilter(ASPECT_ID, filterEntity);
+    EntityManager.addFilter(ASPECT_ID, filterEntity);
 }
 
 function onStop() {
-    EntityStore.removeFilter(ASPECT_ID);
+    EntityManager.removeFilter(ASPECT_ID);
 }
 
 function filterEntity(entity) {
@@ -30,7 +30,7 @@ function filterEntity(entity) {
 
 function onUpdate() {
     SpatialIndex.clearObjects();
-    var entities = EntityStore.getCache(ASPECT_ID);
+    var entities = EntityManager.getCache(ASPECT_ID);
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
         SpatialIndex.insertObject(entity.box.sync());

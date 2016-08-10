@@ -1,4 +1,4 @@
-var EntityStore = require('../core/EntityStore');
+var EntityManager = require('../core/EntityManager');
 var SpriteBuffer = require('./SpriteBuffer');
 var Viewport = require('./Viewport');
 var ResourceManager = require('../core/ResourceManager');
@@ -12,13 +12,13 @@ var tiles = null;
 function onStart() {
     tiles = ResourceManager.getResource('tile');
     spriteBuffer = SpriteBuffer.createBuffer(0);
-    EntityStore.addFilter(ASPECT_ID, filterEntity);
+    EntityManager.addFilter(ASPECT_ID, filterEntity);
 }
 
 function onStop() {
     tiles = null;
     spriteBuffer = null;
-    EntityStore.removeFilter(ASPECT_ID);
+    EntityManager.removeFilter(ASPECT_ID);
 }
 
 function filterEntity(entity) {
@@ -32,7 +32,7 @@ function onDraw() {
         Viewport.getProjectionMatrix()
     );
 
-    var entities = EntityStore.getCache(ASPECT_ID);
+    var entities = EntityManager.getCache(ASPECT_ID);
 
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];

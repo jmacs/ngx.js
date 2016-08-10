@@ -1,5 +1,5 @@
 var Entity = require('../../core/Entity');
-var EntityStore = require('../../core/EntityStore');
+var EntityManager = require('../../core/EntityManager');
 var Scene = require('../../core/Scene');
 var Color = require('../../graphics/Color');
 var Walls = require('./Walls');
@@ -129,7 +129,7 @@ function createEntities() {
     for (var i = 0, ii = _manifest.length; i < ii; i++) {
         var entity = createEntity(_manifest[i]);
         if (entity === null) continue;
-        EntityStore.addEntity(entity);
+        EntityManager.addEntity(entity);
     }
 }
 

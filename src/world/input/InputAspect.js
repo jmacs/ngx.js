@@ -1,5 +1,5 @@
 var InputManager = require('../../input/InputManager');
-var EntityStore = require('../../core/EntityStore');
+var EntityManager = require('../../core/EntityManager');
 var Aspect = require('../../core/Aspect');
 
 var keyboard;
@@ -16,11 +16,11 @@ const ZERO = 0.0;
 function onStart() {
     keyboard = InputManager.getDevice('keyboard');
     mouse = InputManager.getDevice('mouse');
-    EntityStore.addFilter(ASPECT_ID, filterEntity);
+    EntityManager.addFilter(ASPECT_ID, filterEntity);
 }
 
 function onStop() {
-    EntityStore.removeFilter(ASPECT_ID);
+    EntityManager.removeFilter(ASPECT_ID);
 }
 
 function filterEntity(entity) {
@@ -28,7 +28,7 @@ function filterEntity(entity) {
 }
 
 function onUpdate(delta) {
-    var entities = EntityStore.getCache(ASPECT_ID);
+    var entities = EntityManager.getCache(ASPECT_ID);
 
     for (var i = 0, l = entities.length; i < l; i++) {
         var entity = entities[i];

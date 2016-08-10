@@ -1,7 +1,6 @@
 var GameClock = require('../core/GameClock');
 var ResourceManager = require('../core/ResourceManager');
-var Scene = require('../core/Scene');
-var Entity = require('../core/Entity');
+var SceneManager = require('../core/SceneManager');
 var Graphics = require('./Graphics');
 var Viewport = require('./Viewport');
 
@@ -27,17 +26,16 @@ GameClock.addEventListener('GameClockLoaded', function() {
         new ShaderResource()
     ]);
 
-    Entity.registerComponents([
+    ResourceManager.getResource('component').register([
         require('./SpriteComponent'),
         require('./AnimationComponent')
     ]);
 
-    Scene.registerAspects([
+    ResourceManager.getResource('aspect').register([
         require('./AnimationAspect'),
         require('./SpriteAspect'),
-        require('./DebugAspect'),
-        require('./../world/camera/CameraAspect')
+        require('./DebugAspect')
     ]);
 
-    Scene.setViewport(Viewport);
+    SceneManager.setViewport(Viewport);
 });

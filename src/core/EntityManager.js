@@ -89,4 +89,4 @@ module.exports = {
     count: count,
     getCache: getCache,
     getEntity: getEntity
-}
+};

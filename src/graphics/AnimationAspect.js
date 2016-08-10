@@ -1,4 +1,4 @@
-var EntityStore = require('../core/EntityStore');
+var EntityManager = require('../core/EntityManager');
 var Aspect = require('../core/Aspect');
 
 const ASPECT_ID = 'graphics.animation';
@@ -8,15 +8,15 @@ function filterEntity(entity) {
 }
 
 function onStart() {
-    EntityStore.addFilter(ASPECT_ID, filterEntity);
+    EntityManager.addFilter(ASPECT_ID, filterEntity);
 }
 
 function onStop() {
-    EntityStore.removeFilter(ASPECT_ID);
+    EntityManager.removeFilter(ASPECT_ID);
 }
 
 function onDraw(delta) {
-    var entities = EntityStore.getCache(ASPECT_ID);
+    var entities = EntityManager.getCache(ASPECT_ID);
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
         var sprite = entity.sprite;

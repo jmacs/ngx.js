@@ -1,4 +1,4 @@
-var EntityStore = require('../../core/EntityStore');
+var EntityManager = require('../../core/EntityManager');
 var Aspect = require('../../core/Aspect');
 var AgentScript = require('./AgentScript');
 
@@ -9,11 +9,11 @@ var time = 0;
 var timeToThink = false;
 
 function onStart() {
-    EntityStore.addFilter(ASPECT_ID, filterEntity);
+    EntityManager.addFilter(ASPECT_ID, filterEntity);
 }
 
 function onStop() {
-    EntityStore.removeFilter(ASPECT_ID);
+    EntityManager.removeFilter(ASPECT_ID);
 }
 
 function filterEntity(entity) {
@@ -24,7 +24,7 @@ function onUpdate(delta) {
     time -= delta;
     timeToThink = time < 0;
 
-    var entities = EntityStore.getCache(ASPECT_ID);
+    var entities = EntityManager.getCache(ASPECT_ID);
 
     for (var i = 0, l = entities.length; i < l; i++) {
         var entity = entities[i];

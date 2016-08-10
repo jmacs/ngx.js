@@ -8,7 +8,6 @@
     "world.agents",
     "graphics.animation",
     "world.camera",
-    "world.stage",
     "graphics.debugger",
     "graphics.sprites"
   ]

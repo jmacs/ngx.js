@@ -141,6 +141,10 @@ function getObjectSize() {
     return Profiler.sizeOf(_resources);
 }
 
+function logResources() {
+    console.log(_resources);
+}
+
 module.exports = {
     registerMediaLoaders: registerMediaLoaders,
     registerResources: registerResources,
@@ -152,5 +156,6 @@ module.exports = {
     clearAll: clearAll,
     clearTypeOf: clearTypeOf,
     getObjectSize: getObjectSize,
+    logResources: logResources,
     get: get
 };

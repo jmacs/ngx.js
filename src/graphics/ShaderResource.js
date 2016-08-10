@@ -5,7 +5,7 @@ var Resource = require('../core/Resource');
 class ShaderResource extends Resource {
 
     getMediaType() {
-        return 'xml/shader';
+        return 'x-ngx/shader';
     }
 
     getResourceType() {
