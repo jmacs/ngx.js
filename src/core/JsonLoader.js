@@ -1,5 +1,8 @@
 
 function parseJSON(response) {
+    if (!response.ok) {
+        throw new Error(response.status + ': ' + response.url);
+    }
     return response.json();
 }
 
@@ -11,7 +14,7 @@ function downloadAsset(asset, resource, promise) {
 }
 
 function getSupportedMediaTypes() {
-    return ['json', 'text/json', 'application/json'];
+    return ['text/json'];
 }
 
 module.exports = {

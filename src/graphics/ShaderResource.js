@@ -1,29 +1,32 @@
 var Graphics = require('./Graphics');
+var Shader = require('./Shader');
 var Resource = require('../core/Resource');
 
 class ShaderResource extends Resource {
 
     getMediaType() {
-        return 'x/shader';
+        return 'xml/shader';
     }
 
     getResourceType() {
         return 'shader';
     }
 
+    get(id) {
+        return this.__cache[id].program;
+    }
+
     clear() {
         var keys = this.keys();
         for (var i = 0, l = keys.length; i < l; i++) {
-            var shader = this.__cache[keys[i]];
-            Graphics.deleteShader(shader);
+            Shader.delete(this.__cache[keys[i]]);
         }
         this.__cache = Object.create(null);
     }
 
-    onAssetDownloaded(shaderSource, asset) {
-        if (this.__cache[asset.shaderId]) return;
-        var shader = Graphics.createShader(shaderSource, asset.vertex);
-        this.set(asset.shaderId, shader);
+    onAssetDownloaded(shaderData, asset) {
+        var shader = Shader.create(shaderData);
+        this.set(shader.name, shader);
     }
 
 }

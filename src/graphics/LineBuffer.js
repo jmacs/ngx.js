@@ -21,7 +21,7 @@ var cache = Object.create(null);
 class MeshBuffer {
 
     constructor() {
-        this.program = ResourceManager.get('program', 1);
+        this.program = ResourceManager.get('program', 'mesh');
 
         this.a_position = gl.getAttribLocation(this.program, 'a_position');
 

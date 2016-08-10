@@ -9,7 +9,8 @@ GameClock.addEventListener('GameClockLoaded', function() {
     ResourceManager.registerMediaLoaders([
         require('./TextLoader'),
         require('./JsonLoader'),
-        require('./ImageLoader')
+        require('./ImageLoader'),
+        require('./XmlLoader')
     ]);
 
     ResourceManager.registerResources([

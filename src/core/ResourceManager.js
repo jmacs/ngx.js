@@ -35,14 +35,17 @@ function readManifestData(data) {
     for (var i = 0, ii = data.length; i < ii; i++) {
         var item = data[i];
         var hasError = false;
-        if (!item.type) {
-            console.error('manifest "%s" has undefined type', item.name);
-            hasError = true;
-        }
+
         if (!item.url) {
-            console.error('manifest "%s" has undefined url', item.name);
+            console.warn('Manifest asset has undefined url, skipping');
             hasError = true;
         }
+
+        if (!item.type) {
+            console.warn('Manifest asset "%s" has undefined type, skipping', item.url);
+            hasError = true;
+        }
+
         if (!hasError) {
             _manifest[item.url] = item;
         }
@@ -55,20 +58,20 @@ function download(assets) {
         var asset = assets[i];
 
         if (!asset) {
-            console.error('missing manifest asset "%s"', urls[i]);
+            console.warn('Missing manifest asset "%s"', asset.url);
             continue;
         }
 
         var resource = _resources[asset.type];
         if (!resource) {
-            console.error('unregistered resource type "%s" for asset "%s"', asset.type, asset.url);
+            console.warn('Unregistered resource type "%s" for asset "%s"', asset.type, asset.url);
             continue;
         }
 
         var mediaType = resource.getMediaType();
         var mediaLoader = _mediaLoaders[mediaType];
         if (!mediaLoader) {
-            console.error('no loader for media type "%s" in asset "%s"', mediaType, asset.url);
+            console.warn('No registered loader for "%s" required by asset "%s"', mediaType, asset.url);
             continue;
         }
 
@@ -109,6 +112,16 @@ function downloadTypeOf(resourceType) {
     return download(assets);
 }
 
+function clearTypeOf(resourceType) {
+    var keys = Object.keys(_resources);
+    for (var i = 0, l = keys.length; i < l; i++) {
+        var resource = _resources[keys[i]];
+        if (resource.getResourceType() === resourceType) {
+            resource.clear();
+        }
+    }
+}
+
 function clearAll() {
     var keys = Object.keys(_resources);
     for (var i = 0, l = keys.length; i < l; i++) {
@@ -137,6 +150,7 @@ module.exports = {
     downloadAll: downloadAll,
     downloadTypeOf: downloadTypeOf,
     clearAll: clearAll,
+    clearTypeOf: clearTypeOf,
     getObjectSize: getObjectSize,
     get: get
 };

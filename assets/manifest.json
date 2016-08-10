@@ -42,27 +42,7 @@
     "type": "scene"
   },
   {
-    "url": "assets/shaders/sprite.vert.glsl",
-    "type": "shader",
-    "vertex": true,
-    "shaderId": 0
-  },
-  {
-    "url": "assets/shaders/sprite.frag.glsl",
-    "type": "shader",
-    "vertex": false,
-    "shaderId": 1
-  },
-  {
-    "url": "assets/shaders/mesh.vert.glsl",
-    "type": "shader",
-    "vertex": true,
-    "shaderId": 2
-  },
-  {
-    "url": "assets/shaders/mesh.frag.glsl",
-    "type": "shader",
-    "vertex": false,
-    "shaderId": 3
+    "url": "assets/shaders/mesh.xml",
+    "type": "shader"
   }
 ]

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shader name="mesh">
+    <vertex>
+        attribute vec2 a_position;
+
+        uniform mat4 u_model;
+        uniform mat4 u_projection;
+
+        void main(void) {
+            gl_Position = u_projection * u_model * vec4(a_position, 0, 1.0);
+        }
+    </vertex>
+    <fragment><![CDATA[
+        precision highp float;
+
+        void main(void) {
+            gl_FragColor = vec4(0, 0, 0, 1);
+        }
+   ]]></fragment>
+</shader>

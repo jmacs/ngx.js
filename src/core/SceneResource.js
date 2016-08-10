@@ -3,7 +3,7 @@ var Resource = require('./Resource');
 class SceneResource extends Resource {
 
     getMediaType() {
-        return 'json';
+        return 'text/json';
     }
 
     getResourceType() {

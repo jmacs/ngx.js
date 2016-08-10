@@ -4,7 +4,7 @@ var Resource = require('../../core/Resource');
 class MapResource extends Resource {
 
     getMediaType() {
-        return 'json';
+        return 'text/json';
     }
 
     getResourceType() {

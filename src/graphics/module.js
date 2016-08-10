@@ -6,7 +6,6 @@ var Graphics = require('./Graphics');
 var Viewport = require('./Viewport');
 
 // resources
-var ProgramResource = require('./ProgramResource');
 var ShaderResource = require('./ShaderResource');
 var TextureResource = require('./TextureResource');
 var AnimationResource = require('./AnimationResource');
@@ -16,13 +15,16 @@ var GlyphResource = require('./GlyphResource');
 GameClock.addEventListener('GameClockLoaded', function() {
     Viewport.initialize({width: 1280, height: 720});
 
+    ResourceManager.registerMediaLoaders([
+        require('./ShaderLoader')
+    ]);
+
     ResourceManager.registerResources([
-        new ProgramResource(),
-        new ShaderResource(),
         new TextureResource(),
         new AnimationResource(),
         new TileResource(),
-        new GlyphResource()
+        new GlyphResource(),
+        new ShaderResource()
     ]);
 
     Entity.registerComponents([

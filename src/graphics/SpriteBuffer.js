@@ -23,7 +23,7 @@ var cache = Object.create(null);
 class SpriteBuffer {
 
     constructor() {
-        this.program = ResourceManager.get('program', 0);
+        this.program = ResourceManager.get('program', 'sprite');
 
         this.a_position = gl.getAttribLocation(this.program, 'a_position');
         this.a_color = gl.getAttribLocation(this.program, 'a_color');

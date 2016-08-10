@@ -21,14 +21,6 @@ class Resource {
         return Object.keys(this.__cache);
     }
 
-    values() {
-        var values = [];
-        for (var key in this.__cache) {
-            values.push(this.__cache[key]);
-        }
-        return values;
-    }
-
     clear() {
         this.__cache = Object.create(null);
     }

@@ -1,4 +1,3 @@
-var events = Object.create(null);
 var gl = createContext('webgl');
 var canvas = null;
 
@@ -6,25 +5,17 @@ function getContext() {
     return gl;
 }
 
-function addEventListener(name, callback) {
-    events[name] = events[name] || [];
-    events[name].push(callback);
-}
-
-function trigger(name, args) {
-    var callbacks = events[name] || [];
-    for (var i = 0, l = callbacks.length; i < l; i++) {
-        callbacks[i](args);
-    }
+function getCanvas() {
+    return canvas;
 }
 
 function createContext(contextType, contextAttributes) {
-    if (window.gl) return gl;
+    if (gl) return gl;
     try {
         canvas = document.createElement('canvas');
         return canvas.getContext(contextType, contextAttributes);
     } catch(ex) {
-        console.error('unable to create WebGL rendering context: ', ex.message);
+        console.error('unable to create WebGL rendering context: %s', ex.message);
         return null;
     }
 }
@@ -43,10 +34,9 @@ function createProgram(vertexShader, fragmentShader) {
     var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
     if (!linked) {
         var lastError = gl.getProgramInfoLog(program);
-        var message = 'error in program linking: ' + lastError;
+        var message = 'Error in program linking: ' + lastError;
         gl.deleteProgram(program);
-        trigger('GraphicsError', {message: message});
-        return;
+        throw new Error(message);
     }
     return program;
 }
@@ -65,8 +55,7 @@ function createShader(shaderSource, isVertexShader) {
         var lastError = gl.getShaderInfoLog(shader);
         var message = '\n*** Error compiling shader ***\n' + lastError + '\n\n' + addLineNumbers(shaderSource);
         gl.deleteShader(shader);
-        trigger('GraphicsError', {message: message});
-        return;
+        throw new Error(message);
     }
     return shader;
 }
@@ -91,8 +80,8 @@ function deleteTexture(texture) {
 }
 
 module.exports = {
-    addEventListener: addEventListener,
     getContext: getContext,
+    getCanvas: getCanvas,
     createProgram: createProgram,
     deleteProgram: deleteProgram,
     createTexture: createTexture,
