@@ -5,6 +5,7 @@ class Scene {
     constructor(name) {
         this.name = name;
         this.aspects = [];
+        this.scripts = [];
     }
 
 }
@@ -21,6 +22,10 @@ function create(sceneData) {
         if (!aspect) {
             console.error('unknown aspect "%s" in scene "%s"', aspectId, scene.name);
             continue;
+        }
+
+        if (sceneData.scripts) {
+            scene.scripts = sceneData.scripts;
         }
 
         scene.aspects.push(aspect);

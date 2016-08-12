@@ -7,6 +7,8 @@ var PrefabResource = require('./PrefabResource');
 var SceneResource = require('./SceneResource');
 var ComponentResource = require('./ComponentResource');
 var AspectResource = require('./AspectResource');
+var ScriptResource = require('./ScriptResource');
+var ConfigResource = require('./ConfigResource');
 
 GameClock.addEventListener('GameClockLoaded', function() {
 
@@ -21,7 +23,9 @@ GameClock.addEventListener('GameClockLoaded', function() {
         new PrefabResource(),
         new SceneResource(),
         new ComponentResource(),
-        new AspectResource()
+        new AspectResource(),
+        new ScriptResource(),
+        new ConfigResource()
     ]);
 
 });

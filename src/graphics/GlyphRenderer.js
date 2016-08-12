@@ -1,5 +1,5 @@
 var SpriteBuffer = require('./SpriteBuffer');
-var GlyphMap = require('./GlyphMap');
+var ResourceManager = require('../core/ResourceManager');
 var Color = require('./Color');
 
 const NULL_CHAR = 0;
@@ -14,7 +14,7 @@ var glyphWidthPx = 16;
 
 
 function setGlyphMap(id) {
-    glyphMap = GlyphMap.get(id);
+    glyphMap = ResourceManager.get('glyph', id);
 }
 
 function setColor(glyphColor) {

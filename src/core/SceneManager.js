@@ -1,6 +1,7 @@
 var GameClock = require('./GameClock');
 var ResourceManager = require('./ResourceManager');
 
+const EMPTY = {};
 const DEFAULT_VIEWPORT = {
     clear: function(){}
 };
@@ -8,29 +9,24 @@ const DEFAULT_VIEWPORT = {
 var i = 0;
 var _scene = null;
 var _aspects = [];
+var _aspectHash = Object.create(null);
 var _aspectsLength = 0;
 var _viewport = DEFAULT_VIEWPORT;
+var _listeners = Object.create(null);
 
 function setViewport(viewport) {
     _viewport = viewport || DEFAULT_VIEWPORT;
 }
 
-function enterStage(stage) {
-    for (i = 0; i < _aspectsLength; i++) {
-        _aspects[i].onStageEnter(stage);
-    }
-}
-
-function exitStage(stage) {
-    for (i = 0; i < _aspectsLength; i++) {
-        _aspects[i].onStageExit(stage);
-    }
+function getViewport() {
+    return _viewport;
 }
 
 function start() {
     for (i = 0; i < _aspectsLength; i++) {
         _aspects[i].onStart();
     }
+    triggerEvent('SceneStart');
 }
 
 function update(delta) {
@@ -43,6 +39,8 @@ function update(delta) {
         _aspects[i].onPostUpdate(delta);
     }
 
+    triggerScriptUpdate();
+
     _viewport.clear();
 
     for (i = 0; i < _aspectsLength; i++) {
@@ -54,10 +52,11 @@ function stop() {
     for (var i = 0; i < _aspectsLength; i++) {
         _aspects[i].onStop();
     }
+    triggerEvent('SceneStop');
 }
 
-function activateScene(id) {
-    var scene = ResourceManager.getResource('scene', id);
+function activateScene(id, options) {
+    var scene = ResourceManager.get('scene', id);
 
     if (!scene) {
         console.error('unknown scene: %s', id);
@@ -65,17 +64,83 @@ function activateScene(id) {
     }
 
     stop();
-    _scene = scene;
-    _aspects = scene.aspects;
-    _aspectsLength = _aspects.length;
+    triggerEvent('SceneUnload', ResourceManager);
+    detachScripts();
+    setScene(scene);
+    attachScripts(options);
+    triggerEvent('SceneLoad', ResourceManager);
     start();
 
     GameClock.onTick(update);
 }
 
-module.exports = {
+function setScene(scene) {
+    _scene = scene;
+    _aspects = scene.aspects;
+    _aspectsLength = _aspects.length;
+    _aspectHash = Object.create(null);
+    for (var i = 0, l = _aspectsLength; i < l; i++) {
+        var aspect = _aspects[i];
+        _aspectHash[aspect.id] = aspect;
+    }
+}
+
+function attachScripts(options) {
+    var scripts = ResourceManager.getResource('script');
+    for (var i = 0, l = _scene.scripts.length; i < l; i++) {
+        var scriptName = _scene.scripts[i];
+        var script = scripts.get(scriptName);
+        if (!script) {
+            console.warn('Unknown script "%s" defined in scene "%s', scriptName, _scene.name);
+            continue;
+        }
+        script.attach(SceneManager, options || EMPTY);
+    }
+}
+
+function detachScripts() {
+    _listeners = Object.create(null);
+}
+
+function addEventListener(event, callback) {
+    _listeners[event] = _listeners[event] || [];
+    _listeners[event].push(callback);
+}
+
+function removeEventListener(event, callback) {
+    _listeners = _listeners[event];
+    if (!_listeners) return;
+    _listeners.remove(callback);
+}
+
+function triggerEvent(event, arg1, arg2, arg3) {
+    var callbacks = _listeners[event];
+    if (!callbacks) return;
+    for (var i = 0, l = callbacks.length; i < l; i++) {
+        callbacks[i](arg1, arg2, arg3);
+    }
+}
+
+function triggerScriptUpdate() {
+    var callbacks = _listeners.SceneUpdate;
+    if (!callbacks) return;
+    for (var i = 0, l = callbacks.length; i < l; i++) {
+        callbacks[i]();
+    }
+}
+
+function getAspect(id) {
+    return _aspectHash[id];
+}
+
+var SceneManager = {
+    getViewport: getViewport,
     setViewport: setViewport,
-    enterStage: enterStage,
-    exitStage: exitStage,
-    activateScene: activateScene
+    getAspect: getAspect,
+    activateScene: activateScene,
+    triggerEvent: triggerEvent,
+    addEventListener: addEventListener,
+    removeEventListener: removeEventListener
 };
+
+module.exports = SceneManager;

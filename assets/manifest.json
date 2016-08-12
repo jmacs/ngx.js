@@ -1,5 +1,10 @@
 [
   {
+    "url": "assets/config/game.json",
+    "type": "config",
+    "name": "game"
+  },
+  {
     "url": "assets/maps/test.json",
     "type": "map"
   },
@@ -26,7 +31,7 @@
     "textureId": 3
   },
   {
-    "url": "assets/tilesets/smb3.json",
+    "url": "assets/tiles/smb3.json",
     "type": "tile"
   },
   {

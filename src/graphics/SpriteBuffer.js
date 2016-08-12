@@ -11,6 +11,7 @@ const GL_UNSIGNED_SHORT = gl.UNSIGNED_SHORT;
 const GL_TEXTURE0 = gl.TEXTURE0;
 const GL_TEXTURE_2D = gl.TEXTURE_2D;
 
+const RESOURCE_NAME = 'texture';
 const VERTEX_PER_SPRITE = 32;
 const INDICES_PER_SPRITE = 6;
 const SPRITES_PER_BATCH = 128;
@@ -23,7 +24,7 @@ var cache = Object.create(null);
 class SpriteBuffer {
 
     constructor() {
-        this.program = ResourceManager.get('program', 'sprite');
+        this.program = ResourceManager.get('shader', 'sprite');
 
         this.a_position = gl.getAttribLocation(this.program, 'a_position');
         this.a_color = gl.getAttribLocation(this.program, 'a_color');
@@ -73,7 +74,7 @@ class SpriteBuffer {
         // flush then swap the active texture
         if (tex != this.activeTexture) {
             if (this.index > 0) this.flush();
-            var texture = Graphics.getTexture(tex);
+            var texture = ResourceManager.get(RESOURCE_NAME, tex);
             if (texture) {
                 gl.activeTexture(GL_TEXTURE0);
                 gl.bindTexture(GL_TEXTURE_2D, texture);

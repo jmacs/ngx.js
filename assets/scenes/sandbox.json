@@ -1,6 +1,5 @@
 {
   "name": "sandbox",
-  "type": 1,
   "aspects": [
     "world.physics",
     "world.collision",
@@ -10,5 +9,9 @@
     "world.camera",
     "graphics.debugger",
     "graphics.sprites"
+  ],
+  "scripts": [
+    "./SandboxLoader.js",
+    "./foobar/DoorTrigger.js"
   ]
 }

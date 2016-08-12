@@ -2,13 +2,13 @@ var ResourceManager = require('./core/ResourceManager');
 var GameClock = require('./core/GameClock');
 var Scene = require('./core/Scene');
 var InputManager = require('./input/InputManager');
-var SceneManager = require();
+var SceneManager = require('./core/SceneManager');
 
 require('./core/module');
 require('./graphics/module');
 require('./input/module');
 require('./world/module');
-require('./game/module');
+require('./scripts/module');
 
 document.addEventListener('DOMContentLoaded', function() {
     console.info('DOMContentLoaded');
@@ -21,12 +21,8 @@ GameClock.addEventListener('GameClockStarted', function() {
     window.resources = ResourceManager;
     InputManager.enableDevice('keyboard');
     ResourceManager.loadManifest('assets/manifest.json').then(function() {
-        return ResourceManager.downloadAll()
+        return ResourceManager.downloadTypeOf(['shader', 'scene', 'config']);
     }).then(function() {
         SceneManager.activateScene('sandbox');
-    });/*.then(function() {
-        return Stage.request('assets/maps/test.json');
-    }).then(function() {
-        Stage.start(1234);
-    });*/
+    });
 });

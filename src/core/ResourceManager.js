@@ -100,12 +100,12 @@ function downloadAll() {
     return download(assets);
 }
 
-function downloadTypeOf(resourceType) {
+function downloadTypeOf(resourceTypes) {
     var assets = [];
     var keys = Object.keys(_manifest);
     for (var i = 0, l = keys.length; i < l; i++) {
         var asset = _manifest[keys[i]];
-        if (asset.type === resourceType) {
+        if (resourceTypes.indexOf(asset.type) > -1) {
             assets.push(asset);
         }
     }
@@ -130,7 +130,12 @@ function clearAll() {
 }
 
 function get(resourceName, id) {
-    return _resources[resourceName].get(id);
+    var resource = _resources[resourceName];
+    if (!resource) {
+        console.error('unknown resource type "%s"', resourceName);
+        return null;
+    }
+    return resource.get(id);
 }
 
 function getResource(resourceName) {
