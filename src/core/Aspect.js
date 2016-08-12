@@ -2,10 +2,7 @@ var noop = function(){};
 
 var template = {
     id: '<undefined>',
-    onInitialize: noop,
     onStart: noop,
-    onStageEnter: noop,
-    onStageExit: noop,
     onUpdate: noop,
     onPostUpdate: noop,
     onDraw: noop,
@@ -13,8 +10,7 @@ var template = {
     onResume: noop,
     onEnable: noop,
     onDisable: noop,
-    onStop: noop,
-    onDestroy: noop
+    onStop: noop
 };
 
 function mixin(a, b) {

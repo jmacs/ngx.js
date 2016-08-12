@@ -21,7 +21,7 @@ GameClock.addEventListener('GameClockStarted', function() {
     window.resources = ResourceManager;
     InputManager.enableDevice('keyboard');
     ResourceManager.loadManifest('assets/manifest.json').then(function() {
-        return ResourceManager.downloadTypeOf(['shader', 'scene', 'config']);
+        return ResourceManager.downloadTypeOf(['shader', 'script', 'scene', 'config']);
     }).then(function() {
         SceneManager.activateScene('sandbox');
     });

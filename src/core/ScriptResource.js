@@ -4,15 +4,16 @@ var Scene = require('./Scene');
 class ScriptResource extends Resource {
 
     getMediaType() {
-        return 'application/javascript';
+        return 'text/plain';
     }
 
     getResourceType() {
         return 'script';
     }
 
-    onAssetDownloaded(data) {
-        console.warn('NOT IMPLEMENTED: ScriptResource.onAssetDownloaded()');
+    onAssetDownloaded(text, asset) {
+        var scriptFunction = new Function('scene', 'options', text);
+        this.set(asset.url, scriptFunction);
     }
 
     register(modules) {

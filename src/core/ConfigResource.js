@@ -12,7 +12,7 @@ class ConfigResource extends Resource {
     }
 
     onAssetDownloaded(data, asset) {
-        this.set(asset.name, data);
+        this.set(asset.url, data);
     }
 }
 

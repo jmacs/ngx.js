@@ -1,12 +1,12 @@
 var AgentScript = require('../../world/ai/AgentScript');
 
-var script = AgentScript.create(100);
+var agent = AgentScript.create(100);
 
-script.awake = function() {
+agent.awake = function() {
 
 };
 
-script.update = function(entity, delta) {
+agent.update = function(entity, delta) {
     var agent = entity.agent;
     agent.time = agent.time + delta;
     if (agent.time > 100) {
@@ -22,6 +22,6 @@ script.update = function(entity, delta) {
     }
 };
 
-script.sleep = function() {
+agent.sleep = function() {
 
 };

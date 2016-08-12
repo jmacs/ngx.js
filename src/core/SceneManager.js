@@ -91,10 +91,14 @@ function attachScripts(options) {
         var scriptName = _scene.scripts[i];
         var script = scripts.get(scriptName);
         if (!script) {
-            console.warn('Unknown script "%s" defined in scene "%s', scriptName, _scene.name);
+            console.warn('Unknown script "%s" defined in scene "%s"', scriptName, _scene.name);
             continue;
         }
-        script.attach(SceneManager, options || EMPTY);
+        if (!(script instanceof Function)) {
+            console.warn('Script is not a function "%s"', scriptName);
+            continue;
+        }
+        script(SceneManager, options || EMPTY);
     }
 }
 

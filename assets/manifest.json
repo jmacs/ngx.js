@@ -1,5 +1,9 @@
 [
   {
+    "url": "assets/scripts/test.js",
+    "type": "script"
+  },
+  {
     "url": "assets/config/game.json",
     "type": "config",
     "name": "game"
