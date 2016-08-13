@@ -1,4 +1,4 @@
-var gl = createContext('webgl');
+var gl = null;
 var canvas = null;
 
 function getContext() {
@@ -10,10 +10,11 @@ function getCanvas() {
 }
 
 function createContext(contextType, contextAttributes) {
-    if (gl) return gl;
+    if (canvas) return gl;
     try {
         canvas = document.createElement('canvas');
-        return canvas.getContext(contextType, contextAttributes);
+        gl = canvas.getContext(contextType, contextAttributes);
+        return gl;
     } catch(ex) {
         console.error('unable to create WebGL rendering context: %s', ex.message);
         return null;
@@ -85,6 +86,7 @@ function deleteTexture(texture) {
 
 module.exports = {
     clear: clear,
+    createContext: createContext,
     getContext: getContext,
     getCanvas: getCanvas,
     createProgram: createProgram,

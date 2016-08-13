@@ -1,13 +1,12 @@
 var Graphics = require('./Graphics');
 var ResourceManager = require('../core/ResourceManager');
 
-const gl = Graphics.getContext();
-const GL_FLOAT = gl.FLOAT;
-const GL_ARRAY_BUFFER = gl.ARRAY_BUFFER;
-const GL_STATIC_DRAW = gl.STATIC_DRAW;
-const GL_ELEMENT_ARRAY_BUFFER = gl.ELEMENT_ARRAY_BUFFER;
-const GL_LINES = gl.LINES;
-const GL_UNSIGNED_SHORT = gl.UNSIGNED_SHORT;
+const GL_FLOAT = 0x1406;
+const GL_ARRAY_BUFFER = 0x8892;
+const GL_STATIC_DRAW = 0x88E4;
+const GL_ELEMENT_ARRAY_BUFFER = 0x8893;
+const GL_LINES = 0x0001;
+const GL_UNSIGNED_SHORT = 0x1403;
 
 const VERTEX_PER_LINE = 4;
 const INDICES_PER_LINE = 2;
@@ -21,6 +20,7 @@ var cache = Object.create(null);
 class MeshBuffer {
 
     constructor() {
+        var gl = Graphics.getContext();
         this.program = ResourceManager.get('shader', 'mesh');
 
         this.a_position = gl.getAttribLocation(this.program, 'a_position');
@@ -83,6 +83,8 @@ class MeshBuffer {
     }
 
     enable(modelViewMatrix, projectionMatrix) {
+        var gl = Graphics.getContext();
+
         gl.useProgram(this.program);
 
         gl.bindBuffer(GL_ARRAY_BUFFER, this.vbuffer);
@@ -101,6 +103,8 @@ class MeshBuffer {
     }
 
     flush() {
+        var gl = Graphics.getContext();
+
         // send the vertices to the gpu
         gl.bufferData(GL_ARRAY_BUFFER, this.array, GL_STATIC_DRAW);
 
@@ -114,6 +118,7 @@ class MeshBuffer {
     }
 
     destroy() {
+        var gl = Graphics.getContext();
         gl.deleteBuffer(this.ibuffer);
         gl.deleteBuffer(this.vbuffer);
         this.array.length = 0;

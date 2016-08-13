@@ -1,24 +1,14 @@
 var Graphics = require('./Graphics.js');
 var ResourceManager = require('../core/ResourceManager');
 
-var gl = Graphics.getContext();
-const GL_FLOAT = gl.FLOAT;
-const GL_ARRAY_BUFFER = gl.ARRAY_BUFFER;
-const GL_STATIC_DRAW = gl.STATIC_DRAW;
-const GL_ELEMENT_ARRAY_BUFFER = gl.ELEMENT_ARRAY_BUFFER;
-const GL_TRIANGLES = gl.TRIANGLES;
-const GL_UNSIGNED_SHORT = gl.UNSIGNED_SHORT;
-const GL_TEXTURE0 = gl.TEXTURE0;
-const GL_TEXTURE_2D = gl.TEXTURE_2D;
-/*
-const GL_FLOAT = gl.FLOAT;//0x1406;
-const GL_ARRAY_BUFFER = gl.ARRAY_BUFFER;//0x8892;
-const GL_STATIC_DRAW = gl.STATIC_DRAW;//0x88E4;
-const GL_ELEMENT_ARRAY_BUFFER = gl.ELEMENT_ARRAY_BUFFER; //0x88930;
+const GL_FLOAT = 0x1406;
+const GL_ARRAY_BUFFER = 0x8892;
+const GL_STATIC_DRAW = 0x88E4;
+const GL_ELEMENT_ARRAY_BUFFER = 0x8893;
 const GL_TRIANGLES = 0x0004;
 const GL_UNSIGNED_SHORT = 0x1403;
 const GL_TEXTURE0 = 0x84C0;
-const GL_TEXTURE_2D = 0x0DE1;*/
+const GL_TEXTURE_2D = 0x0DE1;
 
 const RESOURCE_NAME = 'texture';
 const VERTEX_PER_SPRITE = 32;
