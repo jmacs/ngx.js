@@ -41,24 +41,17 @@ class Map {
         return this.__cells[x][y];
     }
 
-    setCell(x, y, tile0, tile1) {
-        var cell = this.__cells[x][y];
-        cell.tile0 = tile0 || null;
-        cell.tile1 = tile1 || null;
-        cell.nil = false;
-    }
-
     selectCells(min, max, callback) {
         var minX = min[0] >> CELL_SHIFT;
         var minY = min[1] >> CELL_SHIFT;
-        var maxX = Math.min(this.__boundsX, max[0] >> CELL_SHIFT);
-        var maxY = Math.min(this.__boundsY, max[1] >> CELL_SHIFT);
+        var maxX = Math.min(this.__width-1, max[0] >> CELL_SHIFT);
+        var maxY = Math.min(this.__height-1, max[1] >> CELL_SHIFT);
         var cells = this.__cells;
 
         for (var x = minX; x < maxX; x++) {
             for (var y = minY; y < maxY; y++) {
                 var cell = cells[x][y];
-                if (cell.nil === false) {
+                if (cell.occupied) {
                     callback(cells[x][y]);
                 }
             }
@@ -77,9 +70,15 @@ function create(id, data) {
     var cellData = data.cells;
     for (var i = 0, l = cellData.length; i < l; i++) {
         var c = cellData[i];
-        var tile0 = tiles.get(c[2]);
-        var tile1 = tiles.get(c[3]);
-        map.setCell(c[0], c[1], tile0, tile1);
+        var cell = map.getCell(c[0], c[1]);
+        if (cell && c[2]) {
+            cell.tile0 = tiles.get(c[2]);
+            cell.occupied = true;
+        }
+        if (cell && c[3]) {
+            cell.tile1 = tiles.get(c[3]);
+            cell.occupied = true;
+        }
     }
     return map;
 }

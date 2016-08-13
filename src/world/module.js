@@ -22,7 +22,8 @@ GameClock.addEventListener('GameClockLoaded', function() {
         require('./physics/PhysicsAspect'),
         require('./ai/AgentAspect'),
         require('./input/InputAspect'),
-        require('./camera/CameraAspect')
+        require('./camera/CameraAspect'),
+        require('./maps/MapAspect')
     ]);
 
 });

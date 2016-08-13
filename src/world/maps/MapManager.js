@@ -18,7 +18,7 @@ function loadMap(mapUrl) {
 
 function startStage(map) {
     EntityFactory.createEntities(map.entities);
-    SceneManager.triggerEvent('StageLoad', {foo: 123});
+    SceneManager.triggerEvent('MapLoaded', map);
 }
 
 module.exports = {

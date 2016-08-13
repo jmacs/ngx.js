@@ -4,7 +4,7 @@ class Cell {
     constructor() {
         this.x = 0;
         this.y = 0;
-        this.nil = true;
+        this.occupied = false;
         this.position = [0,0];
         this.tile0 = null;
         this.tile1 = null;
