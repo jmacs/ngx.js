@@ -1,8 +1,5 @@
 {
   "name": "sandbox",
-  "scripts": [
-    "./foobar/DoorTrigger.js"
-  ],
   "aspects": [
     "world.physics",
     "world.collision",
@@ -12,5 +9,29 @@
     "world.camera",
     "graphics.debugger",
     "graphics.sprites"
-  ]
+  ],
+  "scripts": [
+    "./MapController.js"
+  ],
+  "assets": {
+    "shader": [
+      "assets/shaders/sprite.xml",
+      "assets/shaders/mesh.xml"
+    ],
+    "texture": [
+      "assets/textures/bisasam_font.png",
+      "assets/textures/smb3.png"
+    ],
+    "tile": [
+      "assets/tiles/smb3.json"
+    ],
+    "animation": [
+      "assets/animations/smb_entity.json"
+    ],
+    "prefab": [
+      "assets/prefabs/decor.json",
+      "assets/prefabs/items.json",
+      "assets/prefabs/mobs.json"
+    ]
+  }
 }

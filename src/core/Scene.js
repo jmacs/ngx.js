@@ -2,17 +2,18 @@ var ResourceManager = require('./ResourceManager');
 
 class Scene {
 
-    constructor(name) {
-        this.name = name;
+    constructor(options) {
+        this.name = options.name;
         this.aspects = [];
-        this.scripts = [];
+        this.assets = options.assets || {};
+        this.scripts = options.scripts || [];
     }
 
 }
 
 function create(sceneData) {
     var aspects = ResourceManager.getResource('aspect');
-    var scene = new Scene(sceneData.name);
+    var scene = new Scene(sceneData);
 
     for (var i = 0, l = sceneData.aspects.length; i < l; i++) {
 

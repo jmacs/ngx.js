@@ -68,9 +68,15 @@ function activateScene(id, options) {
     detachScripts();
     setScene(scene);
     attachScripts(options);
+
+    return ResourceManager
+        .download(scene.assets)
+        .then(onSceneLoaded);
+}
+
+function onSceneLoaded() {
     triggerEvent('SceneLoad');
     start();
-
     GameClock.onTick(update);
 }
 

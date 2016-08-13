@@ -2,7 +2,7 @@ var ResourceManager = require('../../core/ResourceManager');
 var SceneManager = require('../../core/SceneManager');
 var EntityFactory = require('./EntityFactory');
 
-function getStage(mapUrl, callback) {
+function getMap(mapUrl, callback) {
     var map = ResourceManager.get('map', mapUrl);
     if (map) return callback(map);
     ResourceManager.download({
@@ -12,8 +12,8 @@ function getStage(mapUrl, callback) {
     });
 }
 
-function loadStage(mapUrl) {
-    getStage(mapUrl, startStage);
+function loadMap(mapUrl) {
+    getMap(mapUrl, startStage);
 }
 
 function startStage(map) {
@@ -22,5 +22,5 @@ function startStage(map) {
 }
 
 module.exports = {
-    loadStage: loadStage
+    loadMap: loadMap
 };

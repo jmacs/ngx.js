@@ -4,6 +4,16 @@ var SceneManager = require('../core/SceneManager');
 var MapManager = require('../world/maps/MapManager');
 var InputManager = require('../input/InputManager');
 
+var GlobalAssets = {
+    config: [
+        'assets/config/settings.json',
+        'assets/config/textures.json'
+    ],
+    scene: [
+        'assets/scenes/sandbox.json'
+    ]
+};
+
 var bootstrap = Object.create(null);
 
 bootstrap.globals = function() {
@@ -47,7 +57,7 @@ bootstrap.agents = function() {
     });
 };
 
-bootstrap.scene = function() {
+bootstrap.scripts = function() {
     var scripts = ResourceManager.getResource('script');
     var req = require.context('./scripts/', true, /^(.*\.(js$))[^.]*$/igm);
     req.keys().forEach(function(key){
@@ -55,9 +65,19 @@ bootstrap.scene = function() {
     });
 };
 
-
 GameClock.addEventListener('GameClockLoaded', function() {
     Object.keys(bootstrap).forEach(function(key) {
         bootstrap[key]();
+    });
+});
+
+GameClock.addEventListener('GameClockStarted', function() {
+    console.info('GameClockStarted');
+    ResourceManager.download(GlobalAssets).then(function() {
+        return SceneManager.activateScene('sandbox');
+    }).then(function() {
+        SceneManager.triggerEvent('LoadMap', {
+            map: 'assets/maps/sandbox.json'
+        });
     });
 });
