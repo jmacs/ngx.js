@@ -7,7 +7,7 @@ function parseText(response) {
 }
 
 function downloadAsset(asset, resource, promise) {
-    return fetch(asset.url)
+    return fetch(asset)
         .then(parseText)
         .then(function(data) {
             resource.onAssetDownloaded(data, asset);

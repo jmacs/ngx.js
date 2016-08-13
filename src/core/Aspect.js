@@ -3,6 +3,7 @@ var noop = function(){};
 var template = {
     id: '<undefined>',
     onStart: noop,
+    onStageStart: noop,
     onUpdate: noop,
     onPostUpdate: noop,
     onDraw: noop,

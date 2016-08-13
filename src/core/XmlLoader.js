@@ -6,7 +6,7 @@ function parseText(response) {
 }
 
 function downloadAsset(asset, resource, promise) {
-    return fetch(asset.url)
+    return fetch(asset)
         .then(parseText)
         .then(function(data) {
             var xmlDocument = _parser.parseFromString(data, MIME_TYPE);

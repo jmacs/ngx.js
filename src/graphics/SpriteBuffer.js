@@ -1,7 +1,7 @@
 var Graphics = require('./Graphics.js');
 var ResourceManager = require('../core/ResourceManager');
 
-const gl = Graphics.getContext();
+var gl = Graphics.getContext();
 const GL_FLOAT = gl.FLOAT;
 const GL_ARRAY_BUFFER = gl.ARRAY_BUFFER;
 const GL_STATIC_DRAW = gl.STATIC_DRAW;
@@ -10,6 +10,15 @@ const GL_TRIANGLES = gl.TRIANGLES;
 const GL_UNSIGNED_SHORT = gl.UNSIGNED_SHORT;
 const GL_TEXTURE0 = gl.TEXTURE0;
 const GL_TEXTURE_2D = gl.TEXTURE_2D;
+/*
+const GL_FLOAT = gl.FLOAT;//0x1406;
+const GL_ARRAY_BUFFER = gl.ARRAY_BUFFER;//0x8892;
+const GL_STATIC_DRAW = gl.STATIC_DRAW;//0x88E4;
+const GL_ELEMENT_ARRAY_BUFFER = gl.ELEMENT_ARRAY_BUFFER; //0x88930;
+const GL_TRIANGLES = 0x0004;
+const GL_UNSIGNED_SHORT = 0x1403;
+const GL_TEXTURE0 = 0x84C0;
+const GL_TEXTURE_2D = 0x0DE1;*/
 
 const RESOURCE_NAME = 'texture';
 const VERTEX_PER_SPRITE = 32;
@@ -24,6 +33,7 @@ var cache = Object.create(null);
 class SpriteBuffer {
 
     constructor() {
+        var gl = Graphics.getContext();
         this.program = ResourceManager.get('shader', 'sprite');
 
         this.a_position = gl.getAttribLocation(this.program, 'a_position');
@@ -65,6 +75,10 @@ class SpriteBuffer {
     }
 
     draw(position, width, height, tile, color) {
+        if (!tile) return;
+
+        var gl = Graphics.getContext();
+
         if (this.index * VERTEX_PER_SPRITE >= VERTEX_BUFFER_LENGTH) {
             this.flush();
         }
@@ -147,6 +161,8 @@ class SpriteBuffer {
     }
 
     enable(modelViewMatrix, projectionMatrix) {
+        var gl = Graphics.getContext();
+
         gl.useProgram(this.program);
 
         gl.bindBuffer(GL_ARRAY_BUFFER, this.vbuffer);
@@ -169,6 +185,8 @@ class SpriteBuffer {
     }
 
     flush() {
+        var gl = Graphics.getContext();
+
         if (this.activeTexture != null) {
             // send the vertices to the gpu
             gl.bufferData(GL_ARRAY_BUFFER, this.array, GL_STATIC_DRAW);
@@ -183,6 +201,7 @@ class SpriteBuffer {
     }
 
     destroy() {
+        var gl = Graphics.getContext();
         gl.deleteBuffer(this.ibuffer);
         gl.deleteBuffer(this.vbuffer);
         this.array.length = 0;

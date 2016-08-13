@@ -4,16 +4,18 @@ class Cell {
     constructor() {
         this.x = 0;
         this.y = 0;
-        this.void = true;
-        this.layers = [];
-        this.material = 0;
+        this.nil = true;
         this.position = [0,0];
+        this.tile0 = null;
+        this.tile1 = null;
+        this.material = 0;
     }
 
     empty() {
-        this.void = true;
-        this.layers.length = 0;
+        this.nil = true;
         this.material = 0;
+        this.tile0 = null;
+        this.tile1 = null;
     }
 }
 

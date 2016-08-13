@@ -1,6 +1,8 @@
 var Resource = require('./Resource');
 var Scene = require('./Scene');
 
+const FILE_NAME_REGEX = /[^\\/]+$/;
+
 class ConfigResource extends Resource {
 
     getMediaType() {
@@ -12,7 +14,8 @@ class ConfigResource extends Resource {
     }
 
     onAssetDownloaded(data, asset) {
-        this.set(asset.url, data);
+        var name = asset.match(FILE_NAME_REGEX)[0];
+        this.set(name, data);
     }
 }
 

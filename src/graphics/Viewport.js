@@ -8,7 +8,6 @@ const MIN_ZOOM = 0;
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 
-var gl = Graphics.getContext();
 var pMatrix = mat4.create();
 var vMatrix = mat4.create();
 var posX = 0.0;
@@ -23,6 +22,7 @@ var canvas = null;
 var clearbit = 0;
 
 function initialize(options) {
+    var gl = Graphics.getContext();
     var color = Color.fromHex(0x75ffff);
     clearbit = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
 
@@ -100,7 +100,7 @@ function transform() {
 }
 
 function clear() {
-    gl.clear(clearbit);
+    Graphics.clear(clearbit);
 }
 
 module.exports = {
@@ -115,4 +115,4 @@ module.exports = {
     clear: clear,
     getProjectionMatrix: getProjectionMatrix,
     getModelViewMatrix: getModelViewMatrix
-}
+};

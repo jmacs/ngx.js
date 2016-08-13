@@ -1,7 +1,6 @@
 var Profiler = require('./Profiler');
 
 var _mediaLoaders = Object.create(null);
-var _manifest = Object.create(null);
 var _resources = Object.create(null);
 
 function registerResources(modules) {
@@ -23,63 +22,35 @@ function registerMediaLoaders(modules) {
     }
 }
 
-function loadManifest(url) {
-    return fetch(url).then(function(response) {
-        return response.json();
-    }).then(function(data) {
-        readManifestData(data);
-    });
-}
-
-function readManifestData(data) {
-    for (var i = 0, ii = data.length; i < ii; i++) {
-        var item = data[i];
-        var hasError = false;
-
-        if (!item.url) {
-            console.warn('Manifest asset has undefined url, skipping');
-            hasError = true;
-        }
-
-        if (!item.type) {
-            console.warn('Manifest asset "%s" has undefined type, skipping', item.url);
-            hasError = true;
-        }
-
-        if (!hasError) {
-            _manifest[item.url] = item;
-        }
-    }
-}
-
-function download(assets) {
+function download(bundle) {
     var promises = [];
-    for (var i = 0, ii = assets.length; i < ii; i++) {
-        var asset = assets[i];
+    var resourceTypes = Object.keys(bundle);
 
-        if (!asset) {
-            console.warn('Missing manifest asset "%s"', asset.url);
-            continue;
-        }
+    for (var i = 0, l = resourceTypes.length; i < l; i++) {
+        var resourceType = resourceTypes[i];
+        var assetUrls = bundle[resourceType];
 
-        var resource = _resources[asset.type];
+        var resource = _resources[resourceType];
         if (!resource) {
-            console.warn('Unregistered resource type "%s" for asset "%s"', asset.type, asset.url);
+            console.warn('Bundle contains an unregistered resource type "%s"', resourceType);
             continue;
         }
 
         var mediaType = resource.getMediaType();
         var mediaLoader = _mediaLoaders[mediaType];
         if (!mediaLoader) {
-            console.warn('No registered loader for "%s" required by asset "%s"', mediaType, asset.url);
+            console.warn('No registered loader for "%s" required by resource "%s"', mediaType, resourceType);
             continue;
         }
 
-        var deferred = createDeferred();
-        mediaLoader.downloadAsset(asset, resource, deferred);
-
-        promises.push(deferred.promise);
+        for (var j = 0, m = assetUrls.length; j < m; j++) {
+            var asset = assetUrls[j];
+            var deferred = createDeferred();
+            mediaLoader.downloadAsset(asset, resource, deferred);
+            promises.push(deferred.promise);
+        }
     }
+
     return Promise.all(promises);
 }
 
@@ -90,26 +61,6 @@ function createDeferred() {
         result.reject = reject;
     });
     return result;
-}
-
-function downloadAll() {
-    var assets = [];
-    for(var key in _manifest) {
-        assets.push(_manifest[key]);
-    }
-    return download(assets);
-}
-
-function downloadTypeOf(resourceTypes) {
-    var assets = [];
-    var keys = Object.keys(_manifest);
-    for (var i = 0, l = keys.length; i < l; i++) {
-        var asset = _manifest[keys[i]];
-        if (resourceTypes.indexOf(asset.type) > -1) {
-            assets.push(asset);
-        }
-    }
-    return download(assets);
 }
 
 function clearTypeOf(resourceType) {
@@ -154,10 +105,7 @@ module.exports = {
     registerMediaLoaders: registerMediaLoaders,
     registerResources: registerResources,
     getResource: getResource,
-    loadManifest: loadManifest,
     download: download,
-    downloadAll: downloadAll,
-    downloadTypeOf: downloadTypeOf,
     clearAll: clearAll,
     clearTypeOf: clearTypeOf,
     getObjectSize: getObjectSize,

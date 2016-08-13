@@ -64,11 +64,11 @@ function activateScene(id, options) {
     }
 
     stop();
-    triggerEvent('SceneUnload', ResourceManager);
+    triggerEvent('SceneUnload');
     detachScripts();
     setScene(scene);
     attachScripts(options);
-    triggerEvent('SceneLoad', ResourceManager);
+    triggerEvent('SceneLoad');
     start();
 
     GameClock.onTick(update);

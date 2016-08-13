@@ -12,7 +12,7 @@ function downloadAsset(asset, resource, promise) {
         image.onerror = null;
         promise.reject(asset);
     };
-    image.src = asset.url;
+    image.src = asset;
 }
 
 function getSupportedMediaTypes() {

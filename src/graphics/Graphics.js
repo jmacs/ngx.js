@@ -20,6 +20,10 @@ function createContext(contextType, contextAttributes) {
     }
 }
 
+function clear(clearBit) {
+    gl.clear(clearBit);
+}
+
 function addLineNumbers(src) {
     return src.split("\n").map(function(line, ndx) {
         return (ndx + 1) + ": " + line;
@@ -80,6 +84,7 @@ function deleteTexture(texture) {
 }
 
 module.exports = {
+    clear: clear,
     getContext: getContext,
     getCanvas: getCanvas,
     createProgram: createProgram,

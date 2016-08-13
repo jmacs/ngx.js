@@ -1,5 +1,5 @@
 var Aspect = require('../../core/Aspect');
-var Stage = require('./Stage');
+var Stage = require('./Map');
 var SpriteBuffer = require('../../graphics/SpriteBuffer');
 var Viewport = require('../../graphics/Viewport');
 

@@ -1,12 +1,7 @@
 {
   "name": "sandbox",
-  "config": [
-    "assets/config/game.json"
-  ],
   "scripts": [
-    "./Sandbox.js",
-    "./foobar/DoorTrigger.js",
-    "assets/scripts/test.js"
+    "./foobar/DoorTrigger.js"
   ],
   "aspects": [
     "world.physics",

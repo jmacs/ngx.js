@@ -7,7 +7,7 @@ function parseJSON(response) {
 }
 
 function downloadAsset(asset, resource, promise) {
-    return fetch(asset.url).then(parseJSON).then(function(data) {
+    return fetch(asset).then(parseJSON).then(function(data) {
         resource.onAssetDownloaded(data, asset);
         promise.resolve(asset);
     });

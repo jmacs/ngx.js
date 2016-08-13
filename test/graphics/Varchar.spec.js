@@ -1,10 +1,10 @@
-var Varchar = GameModules('graphics.Varchar');
+var Varchar = rootRequire('src/graphics/Varchar');
 
 var CHAR_NULL = 0;
 var CHAR_H = 104;
 var CHAR_I = 105;
 
-describe('text/Varchar', function() {
+describe('src/graphics/Varchar', function() {
 
     it('should create a zero length varchar', function() {
         var varchar = new Varchar();

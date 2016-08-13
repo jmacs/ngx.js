@@ -28,12 +28,13 @@ function create(ref, prefabId) {
     var prefab = ResourceManager.get('prefab', prefabId);
 
     if (!prefab) {
-        throw new Error('unknown prefab: ' + prefabId);
+       console.error('unknown prefab: %s', prefabId);
+        return;
     }
 
     // todo: pool entities
     var entity = new Entity(++identity, ref, prefab);
-    for (var i = 0, ii = prefab.size; i < ii; i++) {
+    for (var i = 0, l = prefab.size; i < l; i++) {
         var component = prefab.componentAt(i);
         attachComponent(component.type, entity, component.state);
     }

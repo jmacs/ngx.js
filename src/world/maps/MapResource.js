@@ -1,5 +1,5 @@
-var Map = require('./Map');
 var Resource = require('../../core/Resource');
+var Map = require('./Map');
 
 class MapResource extends Resource {
 
@@ -12,7 +12,7 @@ class MapResource extends Resource {
     }
 
     onAssetDownloaded(payload, asset) {
-        var map = new Map(payload);
+        var map = Map.create(asset, payload);
         this.set(map.id, map);
     }
 

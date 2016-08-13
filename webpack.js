@@ -1,4 +1,4 @@
-var config = {
+module.exports = {
     entry: {
         game: './src/main'
     },
@@ -7,19 +7,5 @@ var config = {
         path: './dist',
         filename: '[name].bundle.js',
         chunkFileName: '[id].bundle.js'
-    },
-    module: {
-        loaders: [
-            {
-                test: [/\.json$/],
-                loader: "json-loader"
-            },
-            {
-                test: [/\.txt$/,/\.glsl$/],
-                loader: "raw"
-            }
-        ]
     }
 };
-
-module.exports = config;

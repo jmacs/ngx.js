@@ -1,4 +1,3 @@
-var Scene = require('../core/Scene');
 var GameClock = require('../core/GameClock');
 var Entity = require('../core/Entity');
 var ResourceManager = require('../core/ResourceManager');
