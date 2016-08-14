@@ -35,12 +35,21 @@ function onSceneUnload() {
 }
 
 function onMapLoaded(map) {
-    var gridWidth = ~~(map.boundsX / GRID_SHIFT) + 1;
-    var gridHeight = ~~(map.boundsY / GRID_SHIFT) + 1;
     spatialGrid = LineBuilder.buildGrid(0, 0, 8, 8, Math.pow(2, GRID_SHIFT));
 }
 
 function onSceneDraw() {
+
+    if (spatialGrid) {
+        lineBuffer.enable(
+            Viewport.getModelViewMatrix(),
+            Viewport.getProjectionMatrix()
+        );
+
+        lineBuffer.drawLines(spatialGrid);
+        lineBuffer.flush();
+    }
+
 
     spriteBuffer.enable(
         Viewport.getModelViewMatrix(),
