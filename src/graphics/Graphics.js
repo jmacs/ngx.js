@@ -11,6 +11,7 @@ function getCanvas() {
 
 function createContext(contextType, contextAttributes) {
     if (canvas) return gl;
+    console.info('Creating WebGL Context');
     try {
         canvas = document.createElement('canvas');
         gl = canvas.getContext(contextType, contextAttributes);

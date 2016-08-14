@@ -10,7 +10,7 @@ var GlobalAssets = {
         'assets/config/textures.json'
     ],
     scene: [
-        'assets/scenes/sandbox.json'
+        'assets/scenes/world.json'
     ]
 };
 
@@ -72,9 +72,8 @@ GameClock.addEventListener('GameClockLoaded', function() {
 });
 
 GameClock.addEventListener('GameClockStarted', function() {
-    console.info('GameClockStarted');
     ResourceManager.download(GlobalAssets).then(function() {
-        return SceneManager.activateScene('sandbox');
+        return SceneManager.activateScene('world');
     }).then(function() {
         SceneManager.triggerEvent('LoadMap', {
             map: 'assets/maps/sandbox.json'

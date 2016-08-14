@@ -12,7 +12,6 @@ var TileResource = require('./TileResource');
 var GlyphResource = require('./GlyphResource');
 
 GameClock.addEventListener('GameClockLoaded', function() {
-    console.info('Creating WebGL Context');
     Graphics.createContext('webgl');
 
     Viewport.initialize({width: 1280, height: 720});

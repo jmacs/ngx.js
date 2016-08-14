@@ -63,6 +63,8 @@ function activateScene(id, options) {
         return;
     }
 
+    console.info('Loading scene "%s"', id);
+
     stop();
     triggerEvent('SceneUnload');
     detachScripts();

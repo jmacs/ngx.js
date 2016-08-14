@@ -36,10 +36,12 @@ function start() {
         _interval = 1000 / _targetFps;
         _state = STATE_RUN;
 
+        console.info('GameClockLoaded');
         trigger('GameClockLoaded');
 
         tick(0);
 
+        console.info('GameClockStarted');
         trigger('GameClockStarted');
 
     }
