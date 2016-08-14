@@ -17,6 +17,10 @@ class Resource {
         // not implemented
     }
 
+    register() {
+        // not implemented
+    }
+
     keys() {
         return Object.keys(this.__cache);
     }

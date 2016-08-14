@@ -9,7 +9,6 @@ var _scene = null;
 var _clearScreen = NOOP;
 var _listeners = null;
 var _countSceneLoad = 0;
-var _countSceneStart = 0;
 var _countSceneProcessInput = 0;
 var _countSceneBeforeUpdate = 0;
 var _countSceneUpdate = 0;
@@ -114,6 +113,11 @@ function tick(delta) {
 // Public Functions
 //
 
+function log() {
+    console.debug('scene: %o', _scene);
+    console.debug('listeners: %o', _listeners);
+}
+
 function onClearScreen(callback) {
     _clearScreen = callback;
 }
@@ -167,6 +171,7 @@ function triggerEvent(event, arg1, arg2, arg3) {
 }
 
 var SceneManager = {
+    log: log,
     onClearScreen: onClearScreen,
     activateScene: activateScene,
     triggerEvent: triggerEvent,

@@ -13,8 +13,6 @@ class Map {
         this.__id = id;
         this.__width = width;
         this.__height = height;
-        this.__boundsX = width * CELL_SIZE;
-        this.__boundsY = height * CELL_SIZE;
         var cells = [];
 
         for (var x = 0; x < width; x++) {
@@ -35,6 +33,14 @@ class Map {
 
     get id() {
         return this.__id;
+    }
+
+    get boundsX() {
+        return this.__width * CELL_SIZE;
+    }
+
+    get boundsY() {
+        return this.__height * CELL_SIZE;
     }
 
     getCell(x, y) {

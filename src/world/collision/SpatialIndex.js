@@ -1,6 +1,7 @@
+var ResourceManager = require('../../core/ResourceManager');
 var BoxFunctions = require('./BoxFunctions');
-var ColliderScript = require('./ColliderScript');
 
+var _behaviors = null;
 var _counter = 0;
 var _unitWidth = 0;
 var _unitHeight = 0;
@@ -14,8 +15,15 @@ var _keysLength = 0;
 
 const aabbIntersection = BoxFunctions.aabbIntersection;
 
+const DEFAULT_BEHAVIOR = {
+    onCollisionEnter: function(){},
+    onCollisionStay: function(){},
+    onCollisionExit: function(){}
+};
+
 function build(cellUnits, widthUnits, heightUnits) {
     clearObjects();
+    _behaviors = ResourceManager.getResource('behavior');
     _shift = cellUnits;
     _cellSize = Math.pow(2, cellUnits);
     _unitWidth = widthUnits;
@@ -98,26 +106,26 @@ function broadphase() {
                 var wasColliding = c1.collidingWith[c2.ref];
 
                 if (aabbIntersection(c1, c2) === true) {
-                    script1 = ColliderScript.get(c1.collider);
-                    script2 = ColliderScript.get(c2.collider);
+                    script1 = c1.behavior || DEFAULT_BEHAVIOR;
+                    script2 = c2.behavior || DEFAULT_BEHAVIOR;
 
                     if (wasColliding) {
-                        script1.onCollision(c1.entity, c2.entity);
-                        script2.onCollision(c2.entity, c1.entity);
+                        script1.onCollisionStay(c1.entity, c2.entity);
+                        script2.onCollisionStay(c2.entity, c1.entity);
                     } else {
                         c1.collidingWith[c2.ref] = true;
                         c2.collidingWith[c1.ref] = true;
-                        script1.onEnter(c1.entity, c2.object);
-                        script2.onEnter(c2.entity, c1.object);
+                        script1.onCollisionEnter(c1.entity, c2.object);
+                        script2.onCollisionEnter(c2.entity, c1.object);
                     }
                 }
                 else if (wasColliding) {
-                    script1 = ColliderScript.get(c1.collider);
-                    script2 = ColliderScript.get(c2.collider);
+                    script1 = _behaviors.get(c1.collider) || DEFAULT_BEHAVIOR;
+                    script2 = _behaviors.get(c2.collider) || DEFAULT_BEHAVIOR;
                     delete c1.collidingWith[c2.ref];
                     delete c2.collidingWith[c1.ref];
-                    script1.onExit(c1.entity, c2.entity);
-                    script2.onExit(c2.entity, c1.entity);
+                    script1.onCollisionExit(c1.entity, c2.entity);
+                    script2.onCollisionExit(c2.entity, c1.entity);
                 }
             }
         }

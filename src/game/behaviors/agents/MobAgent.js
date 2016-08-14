@@ -1,12 +1,9 @@
-var AgentScript = require('../../world/ai/AgentScript');
 
-var agent = AgentScript.create(100);
+function awake() {
 
-agent.awake = function() {
+}
 
-};
-
-agent.update = function(entity, delta) {
+function update(entity, delta) {
     var agent = entity.agent;
     agent.time = agent.time + delta;
     if (agent.time > 100) {
@@ -20,8 +17,20 @@ agent.update = function(entity, delta) {
         entity.input.right = 0;
         entity.input.left = 1;
     }
-};
+}
 
-agent.sleep = function() {
+function sleep() {
 
+}
+
+function kill() {
+
+}
+
+module.exports = {
+    name: 'MobAgent',
+    awake: awake,
+    update: update,
+    sleep: sleep,
+    kill: kill
 };

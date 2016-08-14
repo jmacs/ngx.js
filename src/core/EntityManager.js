@@ -79,7 +79,14 @@ function clear() {
     clearCache();
 }
 
+function log() {
+    console.debug('count: %s', _count);
+    console.debug('cache: %o', _cache);
+    console.debug('entities: %o', _entities);
+}
+
 module.exports = {
+    log: log,
     clear: clear,
     rebuildCache: rebuildCache,
     addFilter: addFilter,

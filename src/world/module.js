@@ -20,7 +20,7 @@ GameClock.addEventListener('GameClockLoaded', function() {
     ResourceManager.getResource('script').register([
         require('./collision/CollisionScript'),
         require('./physics/PhysicsAspect'),
-        require('./ai/AAgentScript'),
+        require('./ai/AgentScript'),
         require('./input/InputScript'),
         require('./camera/CameraScript'),
         require('./maps/MapScript')

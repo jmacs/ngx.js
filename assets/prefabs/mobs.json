@@ -15,7 +15,7 @@
       "box": {
         "width": 16,
         "height": 28,
-        "collider": 100
+        "behavior": "MobCollision"
       },
       "input": {
         "human": true
@@ -43,7 +43,7 @@
         "collider": 100
       },
       "agent": {
-        "script": 100
+        "behavior": "MobAgent"
       }
     }
   },
@@ -63,7 +63,7 @@
         "width": 16,
         "height": 16,
         "offset": [-0.125, 0, -0.125, -0.125],
-        "collider": 200
+        "behavior": "PlayerCollision"
       },
       "input": {
         "human": true

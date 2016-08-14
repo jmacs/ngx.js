@@ -11,8 +11,8 @@ class ScriptResource extends Resource {
         return 'script';
     }
 
-    onAssetDownloaded(text, asset) {
-        var scriptFunction = new Function('scene', 'options', text);
+    onAssetDownloaded(payload, asset) {
+        var scriptFunction = new Function('scene', 'options', payload);
         this.set(asset.url, scriptFunction);
     }
 

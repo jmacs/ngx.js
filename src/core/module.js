@@ -8,6 +8,7 @@ var SceneResource = require('./SceneResource');
 var ComponentResource = require('./ComponentResource');
 var ScriptResource = require('./ScriptResource');
 var ConfigResource = require('./ConfigResource');
+var BehaviorResource = require('./BehaviorResource');
 
 GameClock.addEventListener('GameClockLoaded', function() {
 
@@ -23,7 +24,8 @@ GameClock.addEventListener('GameClockLoaded', function() {
         new SceneResource(),
         new ComponentResource(),
         new ScriptResource(),
-        new ConfigResource()
+        new ConfigResource(),
+        new BehaviorResource()
     ]);
 
 });

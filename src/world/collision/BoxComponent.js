@@ -1,4 +1,5 @@
 var Component = require('../../core/Component');
+var ResourceManager = require('../../core/ResourceManager');
 
 class BoxComponent extends Component {
 
@@ -18,13 +19,14 @@ class BoxComponent extends Component {
         this.height = 0;
         this.halfWidth = 0;
         this.halfHeight = 0;
-        this.collider = 0;
+        this.behavior = null;
         this.collidingWith = Object.create(null);
     }
 
     destroy() {
         super.destroy();
         this.collidingWith = Object.create(null);
+        this.behavior = null;
     }
 
     sync() {
@@ -71,8 +73,8 @@ class BoxComponent extends Component {
         if (state.mask) {
             this.mask = state.mask;
         }
-        if (state.collider) {
-            this.collider = state.collider;
+        if (state.behavior) {
+            this.behavior = ResourceManager.get('behavior', state.behavior);
         }
     }
 }

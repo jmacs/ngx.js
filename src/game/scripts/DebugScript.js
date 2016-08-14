@@ -1,11 +1,11 @@
-const GameClock = require('../core/GameClock');
-const Viewport = require('./Viewport.js');
-const LineBuilder = require('./LineBuilder.js');
-const LineBuffer = require('./LineBuffer.js');
-const SpriteBuffer = require('./SpriteBuffer');
-const Varchar = require('./Varchar');
-const GlyphRenderer = require('./GlyphRenderer');
-const Color = require('./Color');
+const GameClock = require('../../core/GameClock');
+const Viewport = require('../../graphics/Viewport.js');
+const LineBuilder = require('../../graphics/LineBuilder.js');
+const LineBuffer = require('../../graphics/LineBuffer.js');
+const SpriteBuffer = require('../../graphics/SpriteBuffer');
+const Varchar = require('../../graphics/Varchar');
+const GlyphRenderer = require('./../../graphics/GlyphRenderer');
+const Color = require('../../graphics/Color');
 const GRID_SHIFT = 6;
 
 var spatialGrid;
@@ -34,9 +34,9 @@ function onSceneUnload() {
     red = null;
 }
 
-function onStageEnter(stage) {
-    var gridWidth = ~~(stage.pixelWidth / GRID_SHIFT) + 1;
-    var gridHeight = ~~(stage.pixelHeight / GRID_SHIFT) + 1;
+function onMapLoaded(map) {
+    var gridWidth = ~~(map.boundsX / GRID_SHIFT) + 1;
+    var gridHeight = ~~(map.boundsY / GRID_SHIFT) + 1;
     spatialGrid = LineBuilder.buildGrid(0, 0, 8, 8, Math.pow(2, GRID_SHIFT));
 }
 
@@ -65,4 +65,5 @@ module.exports = function Debuggers(scene) {
     scene.addEventListener('SceneLoad', onSceneLoad);
     scene.addEventListener('SceneStop', onSceneUnload);
     scene.addEventListener('SceneDraw', onSceneDraw);
+    scene.addEventListener('MapLoaded', onMapLoaded);
 };

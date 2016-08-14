@@ -10,7 +10,7 @@
     "Maps",
     "Debuggers",
     "Sprites",
-    "MapController"
+    "TestScript"
   ],
   "assets": {
     "shader": [
@@ -20,6 +20,9 @@
     "texture": [
       "assets/textures/bisasam_font.png",
       "assets/textures/smb3.png"
+    ],
+    "glyph": [
+      "assets/glyphs/bisasam.json"
     ],
     "tile": [
       "assets/tiles/smb3.json"

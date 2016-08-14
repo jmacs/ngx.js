@@ -38,7 +38,7 @@ GameClock.addEventListener('GameClockLoaded', function() {
     ResourceManager.getResource('script').register([
         require('./AnimationScript'),
         require('./SpriteScript'),
-        require('./DebugScript')
+        require('./../game/scripts/DebugScript')
     ]);
 
 });

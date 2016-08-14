@@ -93,12 +93,9 @@ function getResource(resourceName) {
     return _resources[resourceName];
 }
 
-function getObjectSize() {
-    return Profiler.sizeOf(_resources);
-}
-
-function logResources() {
-    console.log(_resources);
+function log() {
+    console.log('bytes: %s', Profiler.sizeOf(_resources));
+    console.log('resources: %o', _resources);
 }
 
 module.exports = {
@@ -108,7 +105,6 @@ module.exports = {
     download: download,
     clearAll: clearAll,
     clearTypeOf: clearTypeOf,
-    getObjectSize: getObjectSize,
-    logResources: logResources,
+    log: log,
     get: get
 };

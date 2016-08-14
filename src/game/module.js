@@ -1,7 +1,7 @@
 var GameClock = require('../core/GameClock');
 var ResourceManager = require('../core/ResourceManager');
+var EntityManager = require('../core/EntityManager');
 var SceneManager = require('../core/SceneManager');
-var MapManager = require('../world/maps/MapManager');
 var InputManager = require('../input/InputManager');
 
 var GlobalAssets = {
@@ -18,9 +18,10 @@ var bootstrap = Object.create(null);
 
 bootstrap.globals = function() {
     window.clock = GameClock;
+    window.scene = SceneManager;
     window.resources = ResourceManager;
-    window.map = MapManager;
     window.input = InputManager;
+    window.entity = EntityManager;
 };
 
 bootstrap.input = function() {
@@ -36,25 +37,13 @@ bootstrap.components = function() {
     ResourceManager.getResource('component').register(modules);
 };
 
-bootstrap.colliders = function() {
-    var req = require.context('./colliders', true, /^(.*\.(js$))[^.]*$/igm);
+bootstrap.behaviors = function() {
+    var modules = [];
+    var req = require.context('./behaviors', true, /^(.*\.(js$))[^.]*$/igm);
     req.keys().forEach(function(key){
-        req(key);
+        modules.push(req(key));
     });
-};
-
-bootstrap.coroutines = function() {
-    var req = require.context('./coroutines/', true, /^(.*\.(js$))[^.]*$/igm);
-    req.keys().forEach(function(key){
-        req(key);
-    });
-};
-
-bootstrap.agents = function() {
-    var req = require.context('./agents/', true, /^(.*\.(js$))[^.]*$/igm);
-    req.keys().forEach(function(key){
-        req(key);
-    });
+    ResourceManager.getResource('behavior').register(modules);
 };
 
 bootstrap.scripts = function() {
@@ -64,6 +53,13 @@ bootstrap.scripts = function() {
         modules.push(req(key));
     });
     ResourceManager.getResource('script').register(modules);
+};
+
+bootstrap.coroutines = function() {
+    var req = require.context('./coroutines/', true, /^(.*\.(js$))[^.]*$/igm);
+    req.keys().forEach(function(key){
+        req(key);
+    });
 };
 
 GameClock.addEventListener('GameClockLoaded', function() {
