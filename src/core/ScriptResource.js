@@ -19,7 +19,10 @@ class ScriptResource extends Resource {
     register(modules) {
         for (var i = 0, l = modules.length; i < l; i++) {
             var module = modules[i];
-            this.set(module.id, module);
+            if (!module.name || !module.name.length) {
+                throw new Error('Unidentifiable script module! Script function must have a name \n' + module.toString());
+            }
+            this.set(module.name, module);
         }
     }
 }

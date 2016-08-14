@@ -1,19 +1,19 @@
 var Viewport = require('../../graphics/Viewport.js');
-var Aspect = require('../../core/Aspect');
 var InputManager = require('../../input/InputManager.js');
 
 // todo: remove dep on input manager (with scripted camera man)
-const ASPECT_ID = 'world.camera';
 
 var keyboard = null;
 
-function onStart() {
+function onSceneLoad() {
     keyboard = InputManager.getDevice('keyboard');
 }
 
-function onUpdate() {
+function onSceneUnload() {
+    keyboard = null;
+}
 
-
+function onSceneUpdate() {
     var state = keyboard.getState();
 
     if (state.keys[87]) { // w
@@ -51,9 +51,8 @@ function onUpdate() {
     Viewport.transform();
 }
 
-module.exports = Aspect.create({
-    id: ASPECT_ID,
-    onUpdate: onUpdate,
-    onStart: onStart
-});
-
+module.exports = function Cameras(scene) {
+    scene.addEventListener('SceneLoad', onSceneLoad);
+    scene.addEventListener('SceneStop', onSceneUnload);
+    scene.addEventListener('SceneUpdate', onSceneUpdate);
+};

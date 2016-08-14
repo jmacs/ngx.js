@@ -1,16 +1,14 @@
 var EntityManager = require('../../core/EntityManager');
-var Aspect = require('../../core/Aspect');
-var Arrays = require('../../core/Arrays');
 
 const MOVEMENT_SPEED = 1.0;
-const ASPECT_ID = 'world.physics';
+const FILTER = 'world.physics';
 
-function onStart() {
-    EntityManager.addFilter(ASPECT_ID, filterEntity);
+function onSceneLoad() {
+    EntityManager.addFilter(FILTER, filterEntity);
 }
 
-function onStop() {
-    EntityManager.removeFilter(ASPECT_ID);
+function onSceneUnload() {
+    EntityManager.removeFilter(FILTER);
 }
 
 function filterEntity(entity) {
@@ -18,8 +16,8 @@ function filterEntity(entity) {
 }
 
 // todo: implement realish physics
-function onUpdate() {
-    var entities = EntityManager.getCache(ASPECT_ID);
+function onSceneUpdate() {
+    var entities = EntityManager.getCache(FILTER);
     for (var i = 0, len = entities.length; i < len; i++) {
         tick(entities[i]);
     }
@@ -46,9 +44,8 @@ function tick(entity) {
     }
 }
 
-module.exports =  Aspect.create({
-    id: ASPECT_ID,
-    onUpdate: onUpdate,
-    onStart: onStart,
-    onStop: onStop
-});
+module.exports = function Physics(scene) {
+    scene.addEventListener('SceneLoad', onSceneLoad);
+    scene.addEventListener('SceneStop', onSceneUnload);
+    scene.addEventListener('SceneUpdate', onSceneUpdate);
+};

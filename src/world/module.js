@@ -17,13 +17,13 @@ GameClock.addEventListener('GameClockLoaded', function() {
         require('./collision/BoxComponent')
     ]);
 
-    ResourceManager.getResource('aspect').register([
-        require('./collision/CollisionAspect'),
+    ResourceManager.getResource('script').register([
+        require('./collision/CollisionScript'),
         require('./physics/PhysicsAspect'),
-        require('./ai/AgentAspect'),
-        require('./input/InputAspect'),
-        require('./camera/CameraAspect'),
-        require('./maps/MapAspect')
+        require('./ai/AAgentScript'),
+        require('./input/InputScript'),
+        require('./camera/CameraScript'),
+        require('./maps/MapScript')
     ]);
 
 });

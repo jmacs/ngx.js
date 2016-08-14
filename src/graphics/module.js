@@ -14,6 +14,8 @@ var GlyphResource = require('./GlyphResource');
 GameClock.addEventListener('GameClockLoaded', function() {
     Graphics.createContext('webgl');
 
+    SceneManager.onClearScreen(Graphics.clear);
+
     Viewport.initialize({width: 1280, height: 720});
 
     ResourceManager.registerMediaLoaders([
@@ -33,11 +35,10 @@ GameClock.addEventListener('GameClockLoaded', function() {
         require('./AnimationComponent')
     ]);
 
-    ResourceManager.getResource('aspect').register([
-        require('./AnimationAspect'),
-        require('./SpriteAspect'),
-        require('./DebugAspect')
+    ResourceManager.getResource('script').register([
+        require('./AnimationScript'),
+        require('./SpriteScript'),
+        require('./DebugScript')
     ]);
 
-    SceneManager.setViewport(Viewport);
 });

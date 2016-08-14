@@ -1,10 +1,8 @@
-var Aspect = require('../../core/Aspect');
 var SceneManager = require('../../core/SceneManager');
 var SpriteBuffer = require('../../graphics/SpriteBuffer');
 var Viewport = require('../../graphics/Viewport');
 var Color = require('../../graphics/Color');
 
-const ASPECT_ID = 'world.map';
 const CELL_SIZE = 16;
 
 var _color = new Color();
@@ -13,19 +11,19 @@ var _spriteBuffer = null;
 var _cameraMin = [0,0];
 var _cameraMax = [1000, 1000];
 
-function onStart() {
+function onSceneLoad() {
     _spriteBuffer = SpriteBuffer.createBuffer(0);
     SceneManager.addEventListener('MapLoaded', function(map) {
         _map = map;
     });
 }
 
-function onStop() {
+function onSceneUnload() {
     _map = null;
     _spriteBuffer = null;
 }
 
-function onDraw() {
+function onSceneDraw() {
     if (!_map) return;
 
     _spriteBuffer.enable(
@@ -48,9 +46,8 @@ function drawCell(cell) {
     );
 }
 
-module.exports = Aspect.create({
-    id: ASPECT_ID,
-    onStart: onStart,
-    onStop: onStop,
-    onDraw: onDraw
-});
+module.exports = function Maps(scene) {
+    scene.addEventListener('SceneLoad', onSceneLoad);
+    scene.addEventListener('SceneStop', onSceneUnload);
+    scene.addEventListener('SceneDraw', onSceneDraw);
+};
