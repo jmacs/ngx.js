@@ -113,17 +113,16 @@ function activateScene(id) {
 
     _scene = scene;
 
-    clearScripts();
-    for (var i = 0, l = _scene.scripts.length; i < l; i++) {
-        attachScript(_scene.scripts[i]);
-    }
-
     return ResourceManager
         .download(scene.assets)
         .then(onSceneLoaded);
 }
 
 function onSceneLoaded() {
+    clearScripts();
+    for (var i = 0, l = _scene.scripts.length; i < l; i++) {
+        attachScript(_scene.scripts[i]);
+    }
     triggerEvent('SceneLoad');
     GameClock.onTick(tick);
 }

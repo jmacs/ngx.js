@@ -1,5 +1,11 @@
 var Resource = require('./Resource');
-var Scene = require('./Scene');
+
+const GLOBALS = {
+    GameClock: require('./GameClock'),
+    SceneManager: require('./SceneManager'),
+    ResourceManager: require('./ResourceManager'),
+    EntityManager: require('./EntityManager')
+};
 
 class ScriptResource extends Resource {
 
@@ -12,15 +18,19 @@ class ScriptResource extends Resource {
     }
 
     onAssetDownloaded(payload, asset) {
-        var scriptFunction = new Function('scene', 'options', payload);
-        this.set(asset.url, scriptFunction);
+        var self = this;
+        var scriptFunction = new Function('global', 'exports', payload);
+        scriptFunction(GLOBALS, function(object) {
+            self.set(asset, object);
+        });
     }
 
     register(modules) {
         for (var i = 0, l = modules.length; i < l; i++) {
             var module = modules[i];
             if (!module.name || !module.name.length) {
-                throw new Error('Unidentifiable script module. Script function must have a name \n' + JSON.stringify(module));
+                console.error('Unidentifiable script module. Module must have a "name" property');
+                return;
             }
             this.set(module.name, module);
         }

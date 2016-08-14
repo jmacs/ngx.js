@@ -92,6 +92,6 @@
     }
   ],
   "scripts": [
-    "onCastleDoorUnlock"
+    "SandboxCastleDoor"
   ]
 }

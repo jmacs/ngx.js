@@ -10,9 +10,13 @@
     "Maps",
     "Debuggers",
     "Sprites",
-    "TestScript"
+    "TestScript",
+    "assets/temp/script.js"
   ],
   "assets": {
+    "script": [
+      "assets/temp/script.js"
+    ],
     "shader": [
       "assets/shaders/sprite.xml",
       "assets/shaders/mesh.xml"
