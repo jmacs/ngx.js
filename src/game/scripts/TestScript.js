@@ -1,8 +1,14 @@
 
-module.exports = function TestScript(scene) {
+function onSceneLoad() {
+    console.debug('TestScript SceneLoad');
+}
 
-    scene.addEventListener('SceneLoad', function() {
-        console.debug('TestScript SceneLoad');
-    });
+function onSomethingInteresting() {
+    console.debug('something interesting happened');
+}
 
+module.exports = {
+    name: 'TestScript',
+    SceneLoad: onSceneLoad,
+    SomethingInteresting: onSomethingInteresting
 };

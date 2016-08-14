@@ -46,9 +46,9 @@ function tick(state, sprite, delta) {
     state.time = time;
 }
 
-module.exports = function Animations(scene) {
-    scene.addEventListener('SceneLoad', onSceneLoad);
-    scene.addEventListener('SceneLoad', onSceneLoad);
-    scene.addEventListener('SceneStop', onSceneUnload);
-    scene.addEventListener('SceneBeforeDraw', onSceneBeforeDraw);
+module.exports = {
+    name: 'Animations',
+    SceneLoad: onSceneLoad,
+    SceneStop: onSceneUnload,
+    SceneBeforeDraw: onSceneBeforeDraw
 };

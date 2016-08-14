@@ -1,7 +1,6 @@
 var ResourceManager = require('../../core/ResourceManager');
 var BoxFunctions = require('./BoxFunctions');
 
-var _behaviors = null;
 var _counter = 0;
 var _unitWidth = 0;
 var _unitHeight = 0;
@@ -23,7 +22,6 @@ const DEFAULT_BEHAVIOR = {
 
 function build(cellUnits, widthUnits, heightUnits) {
     clearObjects();
-    _behaviors = ResourceManager.getResource('behavior');
     _shift = cellUnits;
     _cellSize = Math.pow(2, cellUnits);
     _unitWidth = widthUnits;
@@ -120,8 +118,8 @@ function broadphase() {
                     }
                 }
                 else if (wasColliding) {
-                    script1 = _behaviors.get(c1.collider) || DEFAULT_BEHAVIOR;
-                    script2 = _behaviors.get(c2.collider) || DEFAULT_BEHAVIOR;
+                    script1 = c1.behavior || DEFAULT_BEHAVIOR;
+                    script2 = c2.behavior || DEFAULT_BEHAVIOR;
                     delete c1.collidingWith[c2.ref];
                     delete c2.collidingWith[c1.ref];
                     script1.onCollisionExit(c1.entity, c2.entity);

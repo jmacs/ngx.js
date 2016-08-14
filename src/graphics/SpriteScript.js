@@ -49,8 +49,9 @@ function onSceneDraw() {
     spriteBuffer.flush();
 }
 
-module.exports = function Sprites(scene) {
-    scene.addEventListener('SceneLoad', onSceneLoad);
-    scene.addEventListener('SceneStop', onSceneUnload);
-    scene.addEventListener('SceneDraw', onSceneDraw);
+module.exports = {
+    name: 'Sprites',
+    SceneLoad: onSceneLoad,
+    SceneStop: onSceneUnload,
+    SceneDraw: onSceneDraw
 };

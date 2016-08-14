@@ -65,8 +65,9 @@ function tick(delta, component) {
     }
 }
 
-module.exports = function Inputs(scene) {
-    scene.addEventListener('SceneLoad', onSceneLoad);
-    scene.addEventListener('SceneStop', onSceneUnload);
-    scene.addEventListener('SceneProcessInput', onSceneProcessInput);
+module.exports = {
+    name: 'Inputs',
+    SceneLoad: onSceneLoad,
+    SceneStop: onSceneUnload,
+    SceneProcessInput: onSceneProcessInput
 };

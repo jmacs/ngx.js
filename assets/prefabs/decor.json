@@ -1,8 +1,7 @@
 [
   {
-    "id": 30100,
-    "type": 3,
     "name": "big_door",
+    "type": 3,
     "components": {
       "door": null,
       "sprite": {
@@ -17,9 +16,8 @@
     }
   },
   {
-    "id": 30101,
-    "type": 4,
     "name": "loot_chest",
+    "type": 4,
     "components": {
       "itembox": null,
       "sprite": {

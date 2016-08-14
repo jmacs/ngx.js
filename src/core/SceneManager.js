@@ -7,7 +7,7 @@ const NOOP = function(){};
 var i = 0;
 var _scene = null;
 var _clearScreen = NOOP;
-var _listeners = null;
+var _listeners = createEventListenersHash();
 var _countSceneLoad = 0;
 var _countSceneProcessInput = 0;
 var _countSceneBeforeUpdate = 0;
@@ -18,47 +18,20 @@ var _countSceneDraw = 0;
 var _countSceneAfterDraw = 0;
 var _countSceneUnload = 0;
 
-//
-// Initialization
-//
-
-function initializeScripts() {
-    var scripts = ResourceManager.getResource('script');
-
-    for (var i = 0, l = _scene.scripts.length; i < l; i++) {
-        var scriptName = _scene.scripts[i];
-        var scriptFunction = scripts.get(scriptName);
-
-        if (!scriptFunction) {
-            console.warn('Unknown script "%s" defined in scene "%s"', scriptName, _scene.name);
-            continue;
-        }
-
-        if (!(scriptFunction instanceof Function)) {
-            console.warn('Script is not a function "%s"', scriptName);
-            continue;
-        }
-
-        scriptFunction(SceneManager);
-    }
-
-}
-
-function initializeEventListeners() {
-    _listeners = Object.create(null);
-
+function createEventListenersHash() {
+    var listeners = Object.create(null);
     // fixed functions
-    _listeners.SceneLoad = [];
-    _listeners.SceneProcessInput = [];
-    _listeners.SceneBeforeUpdate = [];
-    _listeners.SceneUpdate = [];
-    _listeners.SceneAfterUpdate = [];
-    _listeners.SceneBeforeDraw = [];
-    _listeners.SceneDraw = [];
-    _listeners.SceneAfterDraw = [];
-    _listeners.SceneUnload = [];
+    listeners.SceneLoad = [];
+    listeners.SceneProcessInput = [];
+    listeners.SceneBeforeUpdate = [];
+    listeners.SceneUpdate = [];
+    listeners.SceneAfterUpdate = [];
+    listeners.SceneBeforeDraw = [];
+    listeners.SceneDraw = [];
+    listeners.SceneAfterDraw = [];
+    listeners.SceneUnload = [];
+    return listeners;
 }
-initializeEventListeners();
 
 function cacheFixedFunctionLength() {
     _countSceneLoad = _listeners.SceneLoad.length;
@@ -109,6 +82,10 @@ function tick(delta) {
     }
 }
 
+function clearScripts() {
+    _listeners = createEventListenersHash();
+}
+
 //
 // Public Functions
 //
@@ -136,8 +113,10 @@ function activateScene(id) {
 
     _scene = scene;
 
-    initializeEventListeners();
-    initializeScripts();
+    clearScripts();
+    for (var i = 0, l = _scene.scripts.length; i < l; i++) {
+        attachScript(_scene.scripts[i]);
+    }
 
     return ResourceManager
         .download(scene.assets)
@@ -147,6 +126,16 @@ function activateScene(id) {
 function onSceneLoaded() {
     triggerEvent('SceneLoad');
     GameClock.onTick(tick);
+}
+
+function attachScript(scriptName) {
+    ResourceManager.getResource('script')
+        .foreachFunction(scriptName, addEventListener);
+}
+
+function detachScript(scriptName) {
+    ResourceManager.getResource('script')
+        .foreachFunction(scriptName, removeEventListener);
 }
 
 function addEventListener(event, callback) {
@@ -174,6 +163,8 @@ var SceneManager = {
     log: log,
     onClearScreen: onClearScreen,
     activateScene: activateScene,
+    attachScript: attachScript,
+    detachScript: detachScript,
     triggerEvent: triggerEvent,
     addEventListener: addEventListener,
     removeEventListener: removeEventListener

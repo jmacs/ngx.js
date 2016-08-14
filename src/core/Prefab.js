@@ -2,9 +2,8 @@
 class Prefab {
 
     constructor(options) {
-        this.__id = options.id;
         this.__type = options.type || 0;
-        this.__name = options.name || 'undefined';
+        this.__name = options.name;
         this.__components = [];
         var keys = Object.keys(options.components);
         for (var i = 0, l = keys.length; i < l; i++) {

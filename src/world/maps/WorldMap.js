@@ -4,7 +4,7 @@ var Cell = require('./Cell');
 const CELL_SIZE = 16;
 const CELL_SHIFT = 4; // Math.pow(2, 4)
 
-class Map {
+class WorldMap {
 
     constructor(id, width, height) {
         this.entities = null;
@@ -71,7 +71,7 @@ Map.CELL_SHIFT = CELL_SHIFT;
 
 function create(id, data) {
     var tiles = ResourceManager.getResource('tile');
-    var map = new Map(id, data.width, data.height);
+    var map = new WorldMap(id, data.width, data.height);
     map.entities = data.entities;
     var cellData = data.cells;
     for (var i = 0, l = cellData.length; i < l; i++) {

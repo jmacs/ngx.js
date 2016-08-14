@@ -1,8 +1,7 @@
 [
   {
-    "id": 10100,
-    "type": 1,
     "name": "turtle",
+    "type": 1,
     "components": {
       "position": null,
       "sprite": {
@@ -23,9 +22,8 @@
     }
   },
   {
-    "id": 10101,
-    "type": 1,
     "name": "gomba",
+    "type": 1,
     "components": {
       "input": {
         "human": false
@@ -48,9 +46,8 @@
     }
   },
   {
-    "id": 10200,
-    "type": 1,
     "name": "hero",
+    "type": 1,
     "components": {
       "sprite": {
         "width": 16,

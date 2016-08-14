@@ -74,7 +74,7 @@ class BoxComponent extends Component {
             this.mask = state.mask;
         }
         if (state.behavior) {
-            this.behavior = ResourceManager.get('behavior', state.behavior);
+            this.behavior = ResourceManager.get('script', state.behavior);
         }
     }
 }

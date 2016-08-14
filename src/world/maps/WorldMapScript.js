@@ -47,26 +47,35 @@ function drawCell(cell) {
 
 function onLoadMap(e) {
     console.info('Loading map "%s"', e.map);
-    downloadMap(e.map, function(map) {
-        _map = map;
-        EntityFactory.createEntities(map.entities);
-        SceneManager.triggerEvent('MapLoaded', map);
-    });
-}
 
-function downloadMap(mapUrl, callback) {
-    var map = ResourceManager.get('map', mapUrl);
-    if (map) return callback(map);
+    var map = ResourceManager.get('map', e.map);
+    if (map) return populateScene(map);
+
     ResourceManager.download({
-        map: [mapUrl]
+        map: [e.map]
     }).then(function() {
-        callback(ResourceManager.get('map', mapUrl));
+        populateScene(ResourceManager.get('map', e.map));
     });
 }
 
-module.exports = function Maps(scene) {
-    scene.addEventListener('SceneLoad', onSceneLoad);
-    scene.addEventListener('SceneStop', onSceneUnload);
-    scene.addEventListener('SceneDraw', onSceneDraw);
-    scene.addEventListener('LoadMap', onLoadMap);
+function populateScene(map) {
+    _map = map;
+    attachScripts();
+    EntityFactory.createEntities(map.entities);
+    SceneManager.triggerEvent('MapLoaded', map);
+}
+
+function attachScripts() {
+    if (!_map.scripts) return;
+    for (var i = 0, l = _map.scripts.length; i < l; i++) {
+        SceneManager.attachScript(_map.scripts[i])
+    }
+}
+
+module.exports = {
+    name: 'Maps',
+    SceneLoad: onSceneLoad,
+    SceneStop: onSceneUnload,
+    SceneDraw: onSceneDraw,
+    LoadMap: onLoadMap
 };

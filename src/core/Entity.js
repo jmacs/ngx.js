@@ -24,16 +24,16 @@ class Entity {
     }
 }
 
-function create(ref, prefabId) {
-    var prefab = ResourceManager.get('prefab', prefabId);
+function create(ref, prefabName) {
+    var prefab = ResourceManager.get('prefab', prefabName);
 
     if (!prefab) {
-       console.error('unknown prefab: %s', prefabId);
+       console.error('unknown prefab: %s', prefabName);
         return;
     }
 
     // todo: pool entities
-    var entity = new Entity(++identity, ref, prefab);
+    var entity = new Entity(++identity, ref, prefab.name);
     for (var i = 0, l = prefab.size; i < l; i++) {
         var component = prefab.componentAt(i);
         attachComponent(component.type, entity, component.state);

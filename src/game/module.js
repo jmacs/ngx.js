@@ -37,13 +37,22 @@ bootstrap.components = function() {
     ResourceManager.getResource('component').register(modules);
 };
 
-bootstrap.behaviors = function() {
+bootstrap.collision = function() {
     var modules = [];
-    var req = require.context('./behaviors', true, /^(.*\.(js$))[^.]*$/igm);
+    var req = require.context('./scripts/collision', true, /^(.*\.(js$))[^.]*$/igm);
     req.keys().forEach(function(key){
         modules.push(req(key));
     });
-    ResourceManager.getResource('behavior').register(modules);
+    ResourceManager.getResource('script').register(modules);
+};
+
+bootstrap.agents = function() {
+    var modules = [];
+    var req = require.context('./scripts/agents', true, /^(.*\.(js$))[^.]*$/igm);
+    req.keys().forEach(function(key){
+        modules.push(req(key));
+    });
+    ResourceManager.getResource('script').register(modules);
 };
 
 bootstrap.scripts = function() {

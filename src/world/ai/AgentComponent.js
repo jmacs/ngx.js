@@ -19,7 +19,7 @@ class AgentComponent extends Component {
     }
     hydrate(state) {
         if (state.behavior) {
-            this.__behavior = ResourceManager.get('behavior', state.behavior);
+            this.__behavior = ResourceManager.get('script', state.behavior);
         }
     }
 

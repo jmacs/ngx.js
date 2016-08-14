@@ -3,7 +3,7 @@ var Entity = require('../core/Entity');
 var ResourceManager = require('../core/ResourceManager');
 
 // resources
-var MapResource = require('./maps/MapResource');
+var MapResource = require('./maps/WorldMapResource');
 
 GameClock.addEventListener('GameClockLoaded', function() {
 
@@ -19,11 +19,11 @@ GameClock.addEventListener('GameClockLoaded', function() {
 
     ResourceManager.getResource('script').register([
         require('./collision/CollisionScript'),
-        require('./physics/PhysicsAspect'),
+        require('./physics/PhysicsScript'),
         require('./ai/AgentScript'),
         require('./input/InputScript'),
         require('./camera/CameraScript'),
-        require('./maps/MapScript')
+        require('./maps/WorldMapScript')
     ]);
 
 });

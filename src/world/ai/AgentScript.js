@@ -65,8 +65,9 @@ function isInActivationRange(entity) {
     return true;
 }
 
-module.exports = function Agents(scene) {
-    scene.addEventListener('SceneLoad', onSceneLoad);
-    scene.addEventListener('SceneStop', onSceneUnload);
-    scene.addEventListener('SceneUpdate', onSceneUpdate);
+module.exports = {
+    name: 'Agents',
+    SceneLoad: onSceneLoad,
+    SceneStop: onSceneUnload,
+    SceneUpdate: onSceneUpdate
 };

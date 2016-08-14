@@ -51,8 +51,9 @@ function onSceneUpdate() {
     Viewport.transform();
 }
 
-module.exports = function Cameras(scene) {
-    scene.addEventListener('SceneLoad', onSceneLoad);
-    scene.addEventListener('SceneStop', onSceneUnload);
-    scene.addEventListener('SceneUpdate', onSceneUpdate);
+module.exports = {
+    name: 'Cameras',
+    SceneLoad: onSceneLoad,
+    SceneStop: onSceneUnload,
+    SceneUpdate: onSceneUpdate
 };

@@ -61,9 +61,10 @@ function onSceneDraw() {
     spriteBuffer.flush();
 }
 
-module.exports = function Debuggers(scene) {
-    scene.addEventListener('SceneLoad', onSceneLoad);
-    scene.addEventListener('SceneStop', onSceneUnload);
-    scene.addEventListener('SceneDraw', onSceneDraw);
-    scene.addEventListener('MapLoaded', onMapLoaded);
+module.exports = {
+    name: 'Debuggers',
+    SceneLoad: onSceneLoad,
+    SceneStop: onSceneUnload,
+    SceneDraw: onSceneDraw,
+    MapLoaded: onMapLoaded
 };

@@ -44,8 +44,9 @@ function tick(entity) {
     }
 }
 
-module.exports = function Physics(scene) {
-    scene.addEventListener('SceneLoad', onSceneLoad);
-    scene.addEventListener('SceneStop', onSceneUnload);
-    scene.addEventListener('SceneUpdate', onSceneUpdate);
+module.exports = {
+    name: 'Physics',
+    SceneLoad: onSceneLoad,
+    SceneStop: onSceneUnload,
+    SceneUpdate: onSceneUpdate
 };

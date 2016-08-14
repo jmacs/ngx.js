@@ -33,4 +33,4 @@ function buildGrid(x, y, gridx, gridy, size) {
 
 module.exports = {
     buildGrid: buildGrid
-}
+};

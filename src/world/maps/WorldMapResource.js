@@ -1,7 +1,7 @@
 var Resource = require('../../core/Resource');
-var Map = require('./Map');
+var Map = require('./WorldMap');
 
-class MapResource extends Resource {
+class WorldMapResource extends Resource {
 
     getMediaType() {
         return 'application/json';
@@ -18,4 +18,4 @@ class MapResource extends Resource {
 
 }
 
-module.exports = MapResource;
+module.exports = WorldMapResource;

@@ -59,17 +59,17 @@
     {
       "ref": 1234,
       "pos": [200,208],
-      "prefab": 10101
+      "prefab": "gomba"
     },
     {
       "ref": 8903,
       "pos": [75,46],
-      "prefab": 20100
+      "prefab": "hammer"
     },
     {
       "ref": 8904,
       "pos": [200,40],
-      "prefab": 30100,
+      "prefab": "big_door",
       "props": [
         {
           "component": "door",
@@ -83,12 +83,12 @@
     {
       "ref": 1,
       "pos": [150,16],
-      "prefab": 10200
+      "prefab": "hero"
     },
     {
       "ref": 8905,
       "pos": [300,30],
-      "prefab": 30101
+      "prefab": "loot_chest"
     }
   ],
   "scripts": [

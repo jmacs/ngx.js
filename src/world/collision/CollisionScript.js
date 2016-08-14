@@ -61,9 +61,10 @@ function onSceneDraw() {
     }
 }
 
-module.exports = function Collisions(scene) {
-    scene.addEventListener('SceneLoad', onSceneLoad);
-    scene.addEventListener('SceneStop', onSceneUnload);
-    scene.addEventListener('SceneDraw', onSceneDraw);
-    scene.addEventListener('SceneUpdate', onSceneUpdate);
+module.exports = {
+    name: 'Collisions',
+    SceneLoad: onSceneLoad,
+    SceneStop: onSceneUnload,
+    SceneDraw: onSceneDraw,
+    SceneUpdate: onSceneUpdate
 };

@@ -14,15 +14,15 @@ class PrefabResource extends Resource {
     onAssetDownloaded(payload) {
         for (var i = 0, l = payload.length; i < l; i++) {
             var data = payload[i];
+            if (!data.name) {
+                console.warn('Prefab must have a name \n%s', JSON.stringify(data));
+                continue;
+            }
             var prefab = new Prefab(data);
-            this.set(prefab.id, prefab);
+            this.set(prefab.name, prefab);
         }
     }
 
-    getPrefabType(prefabId) {
-        var prefab = this.__cache[prefabId];
-        return prefab ? prefab.type : 0;
-    }
 }
 
 module.exports = PrefabResource;
