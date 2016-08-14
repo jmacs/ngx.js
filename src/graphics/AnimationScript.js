@@ -1,22 +1,21 @@
 var EntityManager = require('../core/EntityManager');
-var Aspect = require('../core/Aspect');
 
-const ASPECT_ID = 'graphics.animation';
+const FILTER = 'graphics.animation';
 
 function filterEntity(entity) {
     return entity.sprite && entity.animation;
 }
 
-function onStart() {
-    EntityManager.addFilter(ASPECT_ID, filterEntity);
+function onSceneLoad() {
+    EntityManager.addFilter(FILTER, filterEntity);
 }
 
-function onStop() {
-    EntityManager.removeFilter(ASPECT_ID);
+function onSceneUnload() {
+    EntityManager.removeFilter(FILTER);
 }
 
-function onDraw(delta) {
-    var entities = EntityManager.getCache(ASPECT_ID);
+function onSceneBeforeDraw(delta) {
+    var entities = EntityManager.getCache(FILTER);
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
         var sprite = entity.sprite;
@@ -47,9 +46,9 @@ function tick(state, sprite, delta) {
     state.time = time;
 }
 
-module.exports = Aspect.create({
-    id: ASPECT_ID,
-    onStart: onStart,
-    onStop: onStop,
-    onDraw: onDraw
-});
+module.exports = function Animations(scene) {
+    scene.addEventListener('SceneLoad', onSceneLoad);
+    scene.addEventListener('SceneLoad', onSceneLoad);
+    scene.addEventListener('SceneStop', onSceneUnload);
+    scene.addEventListener('SceneBeforeDraw', onSceneBeforeDraw);
+};

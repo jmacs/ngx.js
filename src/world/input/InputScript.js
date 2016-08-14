@@ -1,34 +1,34 @@
 var InputManager = require('../../input/InputManager');
 var EntityManager = require('../../core/EntityManager');
-var Aspect = require('../../core/Aspect');
 
-var keyboard;
-var mouse;
-
-const ASPECT_ID = 'world.input';
+const FILTER = 'world.input';
 const KEY_LEFT = 37;
 const KEY_UP = 38;
 const KEY_RIGHT = 39;
 const KEY_DOWN = 40;
-
 const ZERO = 0.0;
 
-function onStart() {
+var keyboard;
+var mouse;
+
+function onSceneLoad() {
     keyboard = InputManager.getDevice('keyboard');
     mouse = InputManager.getDevice('mouse');
-    EntityManager.addFilter(ASPECT_ID, filterEntity);
+    EntityManager.addFilter(FILTER, filterEntity);
 }
 
-function onStop() {
-    EntityManager.removeFilter(ASPECT_ID);
+function onSceneUnload() {
+    keyboard = null;
+    mouse = null;
+    EntityManager.removeFilter(FILTER);
 }
 
 function filterEntity(entity) {
     return entity.input && entity.input.human;
 }
 
-function onUpdate(delta) {
-    var entities = EntityManager.getCache(ASPECT_ID);
+function onSceneProcessInput(delta) {
+    var entities = EntityManager.getCache(FILTER);
 
     for (var i = 0, l = entities.length; i < l; i++) {
         var entity = entities[i];
@@ -65,9 +65,8 @@ function tick(delta, component) {
     }
 }
 
-module.exports =  Aspect.create({
-    id: ASPECT_ID,
-    onStart: onStart,
-    onStop: onStop,
-    onUpdate: onUpdate
-});
+module.exports = function Inputs(scene) {
+    scene.addEventListener('SceneLoad', onSceneLoad);
+    scene.addEventListener('SceneStop', onSceneUnload);
+    scene.addEventListener('SceneProcessInput', onSceneProcessInput);
+};

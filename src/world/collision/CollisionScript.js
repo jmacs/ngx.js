@@ -1,11 +1,10 @@
 var EntityManager = require('../../core/EntityManager');
-var Aspect = require('../../core/Aspect');
 var SpatialIndex = require('./SpatialIndex');
 var Viewport = require('../../graphics/Viewport.js');
 var LineBuilder = require('../../graphics/LineBuilder.js');
 var LineBuffer = require('../../graphics/LineBuffer.js');
 
-const ASPECT_ID = 'world.collision';
+const FILTER = 'world.collision';
 
 const GRID_SHIFT = 6;   // 64x64
 const GRID_WIDTH = 8;   // 512
@@ -14,23 +13,25 @@ const GRID_HEIGHT = 8;  // 512
 var lineBuffer;
 var debugGrid;
 
-function onStart() {
+function onSceneLoad() {
     SpatialIndex.build(GRID_SHIFT, GRID_WIDTH, GRID_HEIGHT);
     lineBuffer = LineBuffer.createBuffer(0);
-    EntityManager.addFilter(ASPECT_ID, filterEntity);
+    EntityManager.addFilter(FILTER, filterEntity);
 }
 
-function onStop() {
-    EntityManager.removeFilter(ASPECT_ID);
+function onSceneUnload() {
+    lineBuffer = null;
+    debugGrid = null;
+    EntityManager.removeFilter(FILTER);
 }
 
 function filterEntity(entity) {
     return entity.box;
 }
 
-function onUpdate() {
+function onSceneUpdate() {
     SpatialIndex.clearObjects();
-    var entities = EntityManager.getCache(ASPECT_ID);
+    var entities = EntityManager.getCache(FILTER);
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
         SpatialIndex.insertObject(entity.box.sync());
@@ -46,7 +47,7 @@ function onStageEnter() {
     );
 }
 
-function onDraw() {
+function onSceneDraw() {
     if (debugGrid) {
 
         lineBuffer.enable(
@@ -60,11 +61,9 @@ function onDraw() {
     }
 }
 
-module.exports = Aspect.create({
-    id: ASPECT_ID,
-    onStageEnter: onStageEnter,
-    onUpdate: onUpdate,
-    onStart: onStart,
-    onStop: onStop,
-    onDraw: onDraw
-});
+module.exports = function Collisions(scene) {
+    scene.addEventListener('SceneLoad', onSceneLoad);
+    scene.addEventListener('SceneStop', onSceneUnload);
+    scene.addEventListener('SceneDraw', onSceneDraw);
+    scene.addEventListener('SceneUpdate', onSceneUpdate);
+};

@@ -1,30 +1,29 @@
 var EntityManager = require('../../core/EntityManager');
-var Aspect = require('../../core/Aspect');
 var AgentScript = require('./AgentScript');
 
-const ASPECT_ID = 'world.agents';
+const FILTER = 'world.agents';
 
 var limit = 500; // ~2 thoughts per second
 var time = 0;
 var timeToThink = false;
 
-function onStart() {
-    EntityManager.addFilter(ASPECT_ID, filterEntity);
+function onSceneLoad() {
+    EntityManager.addFilter(FILTER, filterEntity);
 }
 
-function onStop() {
-    EntityManager.removeFilter(ASPECT_ID);
+function onSceneUnload() {
+    EntityManager.removeFilter(FILTER);
 }
 
 function filterEntity(entity) {
     return entity.agent;
 }
 
-function onUpdate(delta) {
+function onSceneUpdate(delta) {
     time -= delta;
     timeToThink = time < 0;
 
-    var entities = EntityManager.getCache(ASPECT_ID);
+    var entities = EntityManager.getCache(FILTER);
 
     for (var i = 0, l = entities.length; i < l; i++) {
         var entity = entities[i];
@@ -56,11 +55,9 @@ function isInActivationRange(entity) {
     return true;
 }
 
-module.exports = Aspect.create({
-    id: ASPECT_ID,
-    onUpdate: onUpdate,
-    isInActivationRange: isInActivationRange,
-    onStart: onStart,
-    onStop: onStop
-});
+module.exports = function Agents(scene) {
+    scene.addEventListener('SceneLoad', onSceneLoad);
+    scene.addEventListener('SceneStop', onSceneUnload);
+    scene.addEventListener('SceneUpdate', onSceneUpdate);
+};
 

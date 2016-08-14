@@ -1,18 +1,16 @@
 {
   "name": "world",
-  "aspects": [
-    "world.physics",
-    "world.collision",
-    "world.input",
-    "world.agents",
-    "graphics.animation",
-    "world.camera",
-    "world.map",
-    "graphics.debugger",
-    "graphics.sprites"
-  ],
   "scripts": [
-    "./MapController.js"
+    "Inputs",
+    "Physics",
+    "Collisions",
+    "Agents",
+    "Animations",
+    "Cameras",
+    "Maps",
+    "Debuggers",
+    "Sprites",
+    "MapController"
   ],
   "assets": {
     "shader": [

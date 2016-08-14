@@ -1,6 +1,6 @@
 var MapManager = require('../../world/maps/MapManager');
 
-module.exports = function(scene) {
+module.exports = function MapController(scene) {
 
     scene.addEventListener('SceneStart', function() {
         console.debug('MapController SceneStart');

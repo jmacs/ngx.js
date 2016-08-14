@@ -19,12 +19,14 @@ var rotationAngle = 0.0;
 var zoomFactor = DEFAULT_ZOOM;
 var isDirty = true;
 var canvas = null;
-var clearbit = 0;
 
 function initialize(options) {
     var gl = Graphics.getContext();
     var color = Color.fromHex(0x75ffff);
-    clearbit = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
+
+    Graphics.setOptions({
+        glClear: gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
+    });
 
     gl.enable(gl.BLEND);
     gl.clearColor(color.r, color.b, color.g, 1.0);

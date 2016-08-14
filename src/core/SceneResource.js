@@ -12,7 +12,7 @@ class SceneResource extends Resource {
     }
 
     onAssetDownloaded(data) {
-        var scene = Scene.create(data);
+        var scene = new Scene(data);
         this.set(scene.name, scene);
     }
 }

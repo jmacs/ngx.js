@@ -2,37 +2,36 @@ var EntityManager = require('../core/EntityManager');
 var SpriteBuffer = require('./SpriteBuffer');
 var Viewport = require('./Viewport');
 var ResourceManager = require('../core/ResourceManager');
-var Aspect = require('../core/Aspect');
 
-const ASPECT_ID = 'graphics.sprites';
+const FILTER = 'graphics.sprites';
 
 var spriteBuffer = null;
 var tiles = null;
 
-function onStart() {
+function onSceneLoad() {
     tiles = ResourceManager.getResource('tile');
     spriteBuffer = SpriteBuffer.createBuffer(0);
-    EntityManager.addFilter(ASPECT_ID, filterEntity);
+    EntityManager.addFilter(FILTER, filterEntity);
 }
 
-function onStop() {
+function onSceneUnload() {
     tiles = null;
     spriteBuffer = null;
-    EntityManager.removeFilter(ASPECT_ID);
+    EntityManager.removeFilter(FILTER);
 }
 
 function filterEntity(entity) {
     return entity.sprite;
 }
 
-function onDraw() {
+function onSceneDraw() {
 
     spriteBuffer.enable(
         Viewport.getModelViewMatrix(),
         Viewport.getProjectionMatrix()
     );
 
-    var entities = EntityManager.getCache(ASPECT_ID);
+    var entities = EntityManager.getCache(FILTER);
 
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
@@ -50,9 +49,8 @@ function onDraw() {
     spriteBuffer.flush();
 }
 
-module.exports = Aspect.create({
-    id: ASPECT_ID,
-    onStart: onStart,
-    onStop: onStop,
-    onDraw: onDraw
-});
+module.exports = function Sprites(scene) {
+    scene.addEventListener('SceneLoad', onSceneLoad);
+    scene.addEventListener('SceneStop', onSceneUnload);
+    scene.addEventListener('SceneDraw', onSceneDraw);
+};

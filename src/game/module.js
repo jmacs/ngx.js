@@ -58,11 +58,12 @@ bootstrap.agents = function() {
 };
 
 bootstrap.scripts = function() {
-    var scripts = ResourceManager.getResource('script');
+    var modules = [];
     var req = require.context('./scripts/', true, /^(.*\.(js$))[^.]*$/igm);
     req.keys().forEach(function(key){
-        scripts.set(key, req(key));
+        modules.push(req(key));
     });
+    ResourceManager.getResource('script').register(modules);
 };
 
 GameClock.addEventListener('GameClockLoaded', function() {
