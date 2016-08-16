@@ -26,15 +26,15 @@ function onSceneUnload() {
 }
 
 function filterEntity(entity) {
-    return entity.box;
+    return entity.components.box;
 }
 
 function onSceneUpdate() {
     SpatialIndex.clearObjects();
     var entities = EntityManager.getCache(FILTER);
     for (var i = 0, len = entities.length; i < len; i++) {
-        var entity = entities[i];
-        SpatialIndex.insertObject(entity.box.sync());
+        var box = entities[i].components.box;
+        SpatialIndex.insertObject(box.sync());
     }
     SpatialIndex.broadphase();
 }

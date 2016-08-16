@@ -21,7 +21,7 @@ function onSceneUnload() {
 }
 
 function filterEntity(entity) {
-    return entity.sprite;
+    return entity.components.sprite;
 }
 
 function onSceneDraw() {
@@ -35,7 +35,7 @@ function onSceneDraw() {
 
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
-        var sprite = entity.sprite;
+        var sprite = entity.components.sprite;
         var tile = tiles.get(sprite.tid);
         spriteBuffer.draw(
             entity.position,

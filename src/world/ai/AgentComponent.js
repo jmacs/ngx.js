@@ -1,25 +1,19 @@
 var Component = require('../../core/Component');
-var ResourceManager = require('../../core/ResourceManager');
+var Entity = require('../../core/Entity');
 
 class AgentComponent extends Component {
 
     constructor() {
         super();
-        this.__behavior = null;
+        this.behavior = null;
         this.awake = false;
         this.time = 0;
     }
 
-    get behavior() {
-        return this.__behavior;
-    }
-
-    set behavior(value) {
-        this.__behavior = value;
-    }
     hydrate(state) {
         if (state.behavior) {
-            this.__behavior = ResourceManager.get('script', state.behavior);
+            this.behavior = state.behavior;
+            Entity.attachScript(state.behavior, this.entity);
         }
     }
 

@@ -80,7 +80,7 @@ function shapecast(cuboid, callback) {
 }
 
 function broadphase() {
-    var i, j, k, c1, c2, script1, script2;
+    var i, j, k, c1, c2, e1, e2;
 
     var collisions = Object.create(null);
 
@@ -104,26 +104,26 @@ function broadphase() {
                 var wasColliding = c1.collidingWith[c2.ref];
 
                 if (aabbIntersection(c1, c2) === true) {
-                    script1 = c1.behavior || DEFAULT_BEHAVIOR;
-                    script2 = c2.behavior || DEFAULT_BEHAVIOR;
+                    e1 = c1.entity;
+                    e2 = c2.entity;
 
                     if (wasColliding) {
-                        script1.onCollisionStay(c1.entity, c2.entity);
-                        script2.onCollisionStay(c2.entity, c1.entity);
+                        e1.message('CollisionStay', e2);
+                        e2.message('CollisionStay', e1);
                     } else {
                         c1.collidingWith[c2.ref] = true;
                         c2.collidingWith[c1.ref] = true;
-                        script1.onCollisionEnter(c1.entity, c2.object);
-                        script2.onCollisionEnter(c2.entity, c1.object);
+                        e1.message('CollisionEnter', e2);
+                        e2.message('CollisionEnter', e1);
                     }
                 }
                 else if (wasColliding) {
-                    script1 = c1.behavior || DEFAULT_BEHAVIOR;
-                    script2 = c2.behavior || DEFAULT_BEHAVIOR;
+                    e1 = c1.entity;
+                    e2 = c2.entity;
                     delete c1.collidingWith[c2.ref];
                     delete c2.collidingWith[c1.ref];
-                    script1.onCollisionExit(c1.entity, c2.entity);
-                    script2.onCollisionExit(c2.entity, c1.entity);
+                    e1.message('CollisionExit', e2);
+                    e2.message('CollisionExit', e1);
                 }
             }
         }

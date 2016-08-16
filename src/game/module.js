@@ -16,6 +16,14 @@ var GlobalAssets = {
 
 var bootstrap = Object.create(null);
 
+function requireModules(context) {
+    var modules = [];
+    context.keys().forEach(function(key){
+        modules.push(context(key));
+    });
+    return modules;
+}
+
 bootstrap.globals = function() {
     window.clock = GameClock;
     window.scene = SceneManager;
@@ -29,38 +37,14 @@ bootstrap.input = function() {
 };
 
 bootstrap.components = function() {
-    var req = require.context('./components', true, /^(.*\.(js$))[^.]*$/igm);
-    var modules = [];
-    req.keys().forEach(function(key){
-        modules.push(req(key));
-    });
+    var context = require.context('./components', true, /^(.*\.(js$))[^.]*$/igm);
+    var modules = requireModules(context);
     ResourceManager.getResource('component').register(modules);
 };
 
-bootstrap.collision = function() {
-    var modules = [];
-    var req = require.context('./scripts/collision', true, /^(.*\.(js$))[^.]*$/igm);
-    req.keys().forEach(function(key){
-        modules.push(req(key));
-    });
-    ResourceManager.getResource('script').register(modules);
-};
-
-bootstrap.agents = function() {
-    var modules = [];
-    var req = require.context('./scripts/agents', true, /^(.*\.(js$))[^.]*$/igm);
-    req.keys().forEach(function(key){
-        modules.push(req(key));
-    });
-    ResourceManager.getResource('script').register(modules);
-};
-
 bootstrap.scripts = function() {
-    var modules = [];
-    var req = require.context('./scripts/', true, /^(.*\.(js$))[^.]*$/igm);
-    req.keys().forEach(function(key){
-        modules.push(req(key));
-    });
+    var context = require.context('./scripts', true, /^(.*\.(js$))[^.]*$/igm);
+    var modules = requireModules(context);
     ResourceManager.getResource('script').register(modules);
 };
 

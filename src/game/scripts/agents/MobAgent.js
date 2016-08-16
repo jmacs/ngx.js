@@ -1,36 +1,37 @@
 
-function awake() {
+function onAgentAwake(self, delta, agent) {
 
 }
 
-function update(entity, delta) {
-    var agent = entity.agent;
+function onAgentUpdate(self, delta, agent) {
+    var input = self.components.input;
+
     agent.time = agent.time + delta;
     if (agent.time > 100) {
         agent.time = 0;
         agent.move = !agent.move;
     }
     if (agent.move) {
-        entity.input.right = 1;
-        entity.input.left = 0;
+        input.right = 1;
+        input.left = 0;
     } else {
-        entity.input.right = 0;
-        entity.input.left = 1;
+        input.right = 0;
+        input.left = 1;
     }
 }
 
-function sleep() {
+function onAgentSleep(self, delta, agent) {
 
 }
 
-function kill() {
+function onAgentKilled(self, delta, agent) {
 
 }
 
 module.exports = {
     name: 'MobAgent',
-    awake: awake,
-    update: update,
-    sleep: sleep,
-    kill: kill
+    AgentAwake: onAgentAwake,
+    AgentUpdate: onAgentUpdate,
+    AgentSleep: onAgentSleep,
+    AgentKilled: onAgentKilled
 };

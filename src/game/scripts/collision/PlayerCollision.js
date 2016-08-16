@@ -1,21 +1,21 @@
 var BoxFunctions = require('../../../world/collision/BoxFunctions');
 
-function onCollisionEnter(player, other) {
+function onCollisionEnter(self, other) {
     console.log('200 enter');
 }
 
-function onCollisionStay(player, other) {
+function onCollisionStay(self, other) {
     console.log('200 stay');
-    BoxFunctions.blockEntityMovement(player, other);
+    BoxFunctions.blockEntityMovement(self, other);
 }
 
-function onCollisionExit(player, other) {
+function onCollisionExit(self, other) {
     console.log('200 exit');
 }
 
 module.exports = {
     name: 'PlayerCollision',
-    onCollisionEnter: onCollisionEnter,
-    onCollisionStay: onCollisionStay,
-    onCollisionExit: onCollisionExit
+    CollisionEnter: onCollisionEnter,
+    CollisionStay: onCollisionStay,
+    CollisionExit: onCollisionExit
 };

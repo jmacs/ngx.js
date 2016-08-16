@@ -12,7 +12,7 @@ function onSceneUnload() {
 }
 
 function filterEntity(entity) {
-    return entity.input;
+    return entity.components.input;
 }
 
 // todo: implement realish physics
@@ -24,7 +24,7 @@ function onSceneUpdate() {
 }
 
 function tick(entity) {
-    var input = entity.input;
+    var input = entity.components.input;
     var position = entity.position;
 
     if (input.up) {

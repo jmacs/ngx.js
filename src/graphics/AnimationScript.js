@@ -3,7 +3,7 @@ var EntityManager = require('../core/EntityManager');
 const FILTER = 'graphics.animation';
 
 function filterEntity(entity) {
-    return entity.sprite && entity.animation;
+    return entity.components.sprite && entity.components.animation;
 }
 
 function onSceneLoad() {
@@ -18,8 +18,8 @@ function onSceneBeforeDraw(delta) {
     var entities = EntityManager.getCache(FILTER);
     for (var i = 0, len = entities.length; i < len; i++) {
         var entity = entities[i];
-        var sprite = entity.sprite;
-        var state = entity.animation;
+        var sprite = entity.components.sprite;
+        var state = entity.components.animation;
         tick(state, sprite, delta);
     }
 }

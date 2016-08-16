@@ -23,26 +23,6 @@ function isComponentValid(module) {
         console.warn('Component "%s" does not define a static id', module.name);
         return false;
     }
-    if (name === 'prefab') {
-        console.error('reserved component name "prefab"');
-        return false;
-    }
-    if (name === 'position') {
-        console.error('reserved component name "position"');
-        return false;
-    }
-    if (name === 'ref') {
-        console.error('reserved component name "ref"');
-        return false;
-    }
-    if (name === 'id') {
-        console.error('reserved component name "id"');
-        return false;
-    }
-    if (name.charAt(0) === '_') {
-        console.error('component names cannot start with an underscore');
-        return false;
-    }
     return true;
 }
 

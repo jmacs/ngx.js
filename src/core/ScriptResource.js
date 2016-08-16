@@ -53,4 +53,13 @@ class ScriptResource extends Resource {
     }
 }
 
+ScriptResource.applyInterface = function(object, functionNames, operation) {
+    for (var i = 0, l = functionNames.length; i < l; i++) {
+        var functionName = functionNames[i];
+        if (!(object[functionName] instanceof Function)) {
+            object[functionName] = operation;
+        }
+    }
+};
+
 module.exports = ScriptResource;

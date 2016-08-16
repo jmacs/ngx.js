@@ -3,7 +3,7 @@ var CollisionInfo = require('./CollisionInfo');
 var info = new CollisionInfo();
 
 function blockEntityMovement(entity, other) {
-    intersectionDepth(entity.box, other.box, info);
+    intersectionDepth(entity.components.box, other.components.box, info);
 
     if (info.right || info.left) {
         entity.position[0] += info.x;

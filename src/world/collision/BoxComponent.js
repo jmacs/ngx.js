@@ -1,5 +1,5 @@
 var Component = require('../../core/Component');
-var ResourceManager = require('../../core/ResourceManager');
+var Entity = require('../../core/Entity');
 
 class BoxComponent extends Component {
 
@@ -70,11 +70,14 @@ class BoxComponent extends Component {
             this.offsetX = this.halfWidth + Math.abs(minOffsetX);
             this.offsetY = this.halfHeight + Math.abs(minOffsetY);
         }
+
         if (state.mask) {
             this.mask = state.mask;
         }
+
         if (state.behavior) {
-            this.behavior = ResourceManager.get('script', state.behavior);
+            this.behavior = state.behavior;
+            Entity.attachScript(state.behavior, this.entity);
         }
     }
 }

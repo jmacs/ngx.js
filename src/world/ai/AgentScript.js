@@ -24,7 +24,7 @@ function onSceneUnload() {
 }
 
 function filterEntity(entity) {
-    return entity.agent;
+    return entity.components.agent;
 }
 
 function onSceneUpdate(delta) {
@@ -35,24 +35,22 @@ function onSceneUpdate(delta) {
 
     for (var i = 0, l = entities.length; i < l; i++) {
         var entity = entities[i];
-        var agentState = entity.agent;
-        var agentScript = entity.agent.behavior;
-        if (!agentScript) continue;
+        var agentState = entity.components.agent;
 
         var inRange = isInActivationRange(entity);
 
         if (inRange && timeToThink) {
             if (!agentState.awake) {
                 agentState.awake = true;
-                agentScript.awake();
+                entity.message('AgentAwake', delta, agentState);
             }
             time = limit;
-            agentScript.update(entity, delta);
+            entity.message('AgentUpdate', delta, agentState);
         }
 
         if (!inRange && agentState.awake) {
             agentState.awake = false;
-            agentScript.sleep(entity);
+            entity.message('AgentSleep', delta, agentState);
         }
     }
 

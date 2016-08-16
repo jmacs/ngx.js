@@ -24,7 +24,7 @@ function onSceneUnload() {
 }
 
 function filterEntity(entity) {
-    return entity.input && entity.input.human;
+    return entity.components.input && entity.components.input.human;
 }
 
 function onSceneProcessInput(delta) {
@@ -32,7 +32,7 @@ function onSceneProcessInput(delta) {
 
     for (var i = 0, l = entities.length; i < l; i++) {
         var entity = entities[i];
-        tick(delta, entity.input);
+        tick(delta, entity.components.input);
     }
 
 }

@@ -35,6 +35,7 @@ class Prefab {
     componentAt(index) {
         return this.__components[index];
     }
+
 }
 
 module.exports = Prefab;
