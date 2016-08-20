@@ -5,6 +5,10 @@ function main(process, state) {
     state.x = state.x || 0;
     state.i = 0;
 
+    if (state.throw) {
+        throw new Error('oh no, error');
+    }
+
     return process.yields(doSomethingAsync);
 }
 

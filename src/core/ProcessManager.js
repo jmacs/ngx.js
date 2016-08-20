@@ -66,6 +66,11 @@ function update(delta) {
             // continue in next frame
             nextStack.push(process);
         } else {
+            if (process.status === 4) {
+                console.warn('process timed out "%s#%s"', process.name, process.id);
+            } else if (process.status === 5) {
+                console.warn('unhandled exception in process "%s#%s"', process.name, process.id);
+            }
             _processPool.release(process);
         }
     }
