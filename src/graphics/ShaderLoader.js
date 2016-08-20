@@ -1,4 +1,3 @@
-const MIME_TYPE = 'text/xml';
 var _parser = new DOMParser();
 
 function parseText(response) {
@@ -6,7 +5,7 @@ function parseText(response) {
 }
 
 function parseXml(text) {
-    var xml = _parser.parseFromString(text, MIME_TYPE);
+    var xml = _parser.parseFromString(text, 'text/xml');
     return {
         name: xml.getElementsByTagName('shader')[0].getAttribute('name'),
         fragment: xml.getElementsByTagName('fragment')[0].textContent,

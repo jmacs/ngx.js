@@ -1,7 +1,7 @@
 var SceneManager = require('../../core/SceneManager');
 var ResourceManager = require('../../core/ResourceManager');
 var SpriteBuffer = require('../../graphics/SpriteBuffer');
-var Viewport = require('../../graphics/Viewport');
+var Viewport = require('../../graphics/Viewport2D');
 var Color = require('../../graphics/Color');
 var EntityFactory = require('./EntityFactory');
 

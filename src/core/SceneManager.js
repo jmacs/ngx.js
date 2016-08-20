@@ -1,6 +1,7 @@
 var GameClock = require('./GameClock');
 var ResourceManager = require('./ResourceManager');
 var EntityManager = require('./EntityManager');
+var ProcessManager = require('./ProcessManager');
 
 const NOOP = function(){};
 
@@ -71,6 +72,7 @@ function tick(delta) {
         _listeners.SceneBeforeDraw[i](delta);
     }
 
+    ProcessManager.update(delta);
     _clearScreen();
 
     for (i = 0; i < _countSceneDraw; i++) {

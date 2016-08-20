@@ -18,8 +18,7 @@ class ComponentResource extends Resource {
 }
 
 function isComponentValid(module) {
-    var name = module.id || '';
-    if (name.length === 0) {
+    if (!module.id || module.id.length === 0) {
         console.warn('Component "%s" does not define a static id', module.name);
         return false;
     }

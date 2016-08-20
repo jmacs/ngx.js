@@ -5,7 +5,7 @@ var ResourceManager = require('../core/ResourceManager');
 // resources
 var MapResource = require('./maps/WorldMapResource');
 
-GameClock.addEventListener('GameClockLoaded', function() {
+function initialize() {
 
     ResourceManager.registerResources([
         new MapResource()
@@ -26,4 +26,8 @@ GameClock.addEventListener('GameClockLoaded', function() {
         require('./maps/WorldMapScript')
     ]);
 
-});
+}
+
+module.exports = {
+    initialize: initialize
+};

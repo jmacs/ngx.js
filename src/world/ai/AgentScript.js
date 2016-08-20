@@ -1,17 +1,16 @@
 var ResourceManager = require('../../core/ResourceManager');
 var EntityManager = require('../../core/EntityManager');
+var GameClock = require('../../core/GameClock');
 
 const FILTER = 'world.agents';
-const DEFAULT_BEHAVIOR = {
-    update: function(){},
-    onCollisionStay: function(){},
-    onCollisionExit: function(){}
-};
-
 var agents = null;
 var limit = 500; // ~2 thoughts per second
 var time = 0;
 var timeToThink = false;
+
+function filterEntity(entity) {
+    return entity.components.agent;
+}
 
 function onSceneLoad() {
     agents = ResourceManager.getResource('agent');
@@ -23,40 +22,36 @@ function onSceneUnload() {
     EntityManager.removeFilter(FILTER);
 }
 
-function filterEntity(entity) {
-    return entity.components.agent;
-}
-
 function onSceneUpdate(delta) {
     time -= delta;
     timeToThink = time < 0;
 
-    var entities = EntityManager.getCache(FILTER);
-
-    for (var i = 0, l = entities.length; i < l; i++) {
-        var entity = entities[i];
-        var agentState = entity.components.agent;
-
-        var inRange = isInActivationRange(entity);
-
-        if (inRange && timeToThink) {
-            if (!agentState.awake) {
-                agentState.awake = true;
-                entity.message('AgentAwake', delta, agentState);
-            }
-            time = limit;
-            entity.message('AgentUpdate', delta, agentState);
-        }
-
-        if (!inRange && agentState.awake) {
-            agentState.awake = false;
-            entity.message('AgentSleep', delta, agentState);
-        }
-    }
-
     if (timeToThink) {
+        EntityManager.forEach(FILTER, updateAgent);
         time = limit;
     }
+}
+
+function updateAgent(entity) {
+    var delta = GameClock.delta();
+    var agentState = entity.components.agent;
+
+    var inRange = isInActivationRange(entity);
+
+    if (inRange) {
+        if (!agentState.awake) {
+            agentState.awake = true;
+            entity.message('AgentAwake', delta, agentState);
+        }
+        time = limit;
+        entity.message('AgentUpdate', delta, agentState);
+    }
+
+    if (!inRange && agentState.awake) {
+        agentState.awake = false;
+        entity.message('AgentSleep', delta, agentState);
+    }
+
 }
 
 function isInActivationRange(entity) {

@@ -10,8 +10,7 @@
     "Maps",
     "Debuggers",
     "Sprites",
-    "TestScript",
-    "assets/temp/script.js"
+    "TestScript"
   ],
   "assets": {
     "script": [

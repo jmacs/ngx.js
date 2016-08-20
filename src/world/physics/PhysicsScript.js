@@ -16,14 +16,11 @@ function filterEntity(entity) {
 }
 
 // todo: implement realish physics
-function onSceneUpdate() {
-    var entities = EntityManager.getCache(FILTER);
-    for (var i = 0, len = entities.length; i < len; i++) {
-        tick(entities[i]);
-    }
+function onSceneUpdate(delta) {
+    EntityManager.forEach(FILTER, updatePhysics, delta);
 }
 
-function tick(entity) {
+function updatePhysics(entity, delta) {
     var input = entity.components.input;
     var position = entity.position;
 

@@ -55,10 +55,6 @@ function create(ref, prefabName) {
     return entity;
 }
 
-function release(entity) {
-    // todo: release to pool
-}
-
 function attachComponent(componentType, entity, state) {
     var components = ResourceManager.getResource('component');
 
@@ -73,7 +69,7 @@ function attachComponent(componentType, entity, state) {
         return;
     }
 
-    // todo: pool component types
+    // todo: pool components
     var instance = new ComponentClass();
     entity.components[componentType] = instance;
     instance.initialize(entity);
@@ -111,7 +107,6 @@ function detachScript(scriptName, entity) {
 
 module.exports = {
     create: create,
-    release: release,
     attachScript: attachScript,
     detachScript: detachScript,
     attachComponent: attachComponent,

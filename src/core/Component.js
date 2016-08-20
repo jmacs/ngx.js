@@ -9,7 +9,16 @@ class Component {
         this.entity = entity;
     }
 
-    hydrate(state) {
+    attached(entity) {
+    }
+
+    detatched(entity) {
+    }
+
+    hydrate(state) { // setState(state)
+    }
+
+    dehydrate(state) { // getState(state)
     }
 
     destroy() {

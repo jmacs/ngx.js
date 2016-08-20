@@ -1,4 +1,4 @@
-var Viewport = require('../../graphics/Viewport.js');
+var Viewport = require('../../graphics/Viewport2D.js');
 var InputManager = require('../../input/InputManager.js');
 
 // todo: remove dep on input manager (with scripted camera man)

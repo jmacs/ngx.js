@@ -1,11 +1,11 @@
 // todo: implement max instances, rename get() -> create()
 class ObjectPool {
 
-    constructor(factory, initializer, destructor) {
+    constructor(options) {
         this.__pool = [];
-        this.__factory = factory;
-        this.__initializer = initializer || function(){};
-        this.__destructor = destructor || function(){};
+        this.__create = options.create || function(){};
+        this.__initialize = options.initialize || function(){};
+        this.__release = options.release || function(){};
         this.__count = 0;
     }
 
@@ -17,27 +17,27 @@ class ObjectPool {
         return this.__count;
     }
 
-    get() {
+    create() {
         this.__count++;
         var instance = null;
         if (this.__pool.length) {
             instance = this.__pool.pop();
         } else {
-            instance = this.__factory();
+            instance = this.__create();
         }
-        this.__initializer(instance);
+        this.__initialize(instance);
         return instance;
     }
 
     release(instance) {
         this.__count--;
-        this.__destructor(instance);
+        this.__release(instance);
         this.__pool.push(instance);
     }
 
     allocate(count) {
         for (var i = 0; i < count; i++) {
-            var instance = this.__factory();
+            var instance = this.__create();
             this.__pool.push(instance);
         }
     }

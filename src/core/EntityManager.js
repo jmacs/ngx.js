@@ -1,99 +1,93 @@
-var _entities = Object.create(null);
-var _cache = Object.create(null);
+var EntityFilter = require('./EntityFilter');
+
+var _entityIndex = Object.create(null);
+var _entitiesLength = 0;
 var _filters = [];
 var _filtersLength = 0;
-var _count = 0;
+var _filterIndex = Object.create(null);
 
-function addFilter(key, accept) {
-    if (!_cache[key]) {
-        _cache[key] = [];
-        _filters.push({key: key, accept: accept});
-        _filtersLength++;
-    }
+function addFilter(name, accept) {
+    if (_filterIndex[name]) return;
+    var filter = new EntityFilter(name, accept);
+    _filters.push(filter);
+    _filtersLength++;
+    _filterIndex[name] = filter;
 }
 
-function removeFilter(key) {
-    for (var i = 0, l = _filtersLength; i < l; i++) {
-        if (_filters[i].key === key) {
-            _filters.removeAt(i);
-            _filtersLength--;
-            delete _cache[key];
-        }
+function removeFilter(name) {
+    var filter = _filterIndex[name];
+    if (!filter) return;
+    var n = _filters.indexOf(filter);
+    if (n === -1) return;
+    filter.destroy();
+    _filters.splice(n, 1);
+    _filtersLength--;
+    delete _filterIndex[name];
+}
+
+function clearFilters() {
+    for (var i = 0; i < _filtersLength; i++) {
+        _filters[i].clear();
     }
 }
 
 function addEntity(entity) {
-    if (_entities[entity.id]) return;
-    for (var i = 0, l = _filtersLength; i < l; i++) {
+    if (_entityIndex[entity.id]) return;
+    for (var i = 0; i < _filtersLength; i++) {
         var filter = _filters[i];
         if (filter.accept(entity)) {
-            _cache[filter.key].push(entity);
+            filter.add(entity);
         }
     }
-    _entities[entity.id] = entity;
-    _count++;
+    _entityIndex[entity.id] = entity;
+    _entitiesLength++;
 }
 
 function removeEntity(entity) {
-    if (!_entities[entity.id]) return;
-    for (var i = 0, l = _filtersLength; i < l; i++) {
+    if (!_entityIndex[entity.id]) return;
+    for (var i = 0; i < _filtersLength; i++) {
         var filter = _filters[i];
         if (filter.accept(entity)) {
-            cache[filter.key].remove(entity);
+            filter.remove(entity);
         }
     }
-    delete _entities[entity.id];
-    _count--;
+    delete _entityIndex[entity.id];
+    _entitiesLength--;
 }
 
-function getCache(key) {
-    return _cache[key] || null;
+function forEach(filterName, callback, delta) {
+    var filter = _filterIndex[filterName];
+    filter.each(_entityIndex, callback, delta);
 }
 
 function getEntity(id) {
-    return _entities[id] || null;
+    return _entityIndex[id];
 }
 
 function count() {
-    return _count;
-}
-
-function clearCache() {
-    _count = 0;
-    _cache = Object.create(null);
-    for (var i = 0, l = _filtersLength; i < l; i++) {
-        _cache[_filters[i].key] = [];
-    }
-}
-
-function rebuildCache() {
-    clearCache();
-    var entities = Object.keys(_entities);
-    for (var i = 0, l = entities.length; i < l; i++) {
-        addEntity(entities[i]);
-    }
+    return _entitiesLength;
 }
 
 function clear() {
-    _entities = Object.create(null);
-    clearCache();
+    _entityIndex = Object.create(null);
+    clearFilters();
 }
 
 function log() {
-    console.debug('count: %s', _count);
-    console.debug('cache: %o', _cache);
-    console.debug('entities: %o', _entities);
+    console.debug('count: %s', _entitiesLength);
+    console.debug('filters: %o', _filters);
+    console.debug('entities: %o', _entityIndex);
 }
 
 module.exports = {
     log: log,
     clear: clear,
-    rebuildCache: rebuildCache,
+    clearFilters: clearFilters,
     addFilter: addFilter,
     removeFilter: removeFilter,
     addEntity: addEntity,
     removeEntity: removeEntity,
     count: count,
-    getCache: getCache,
-    getEntity: getEntity
+    getEntity: getEntity,
+    forEach: forEach
 };

@@ -1,6 +1,6 @@
 var Aspect = require('./../core/Aspect');
-var Arrays = require('./../core/Arrays');
-var ObjectPool = require('./../core/ObjectPool');
+var Arrays = require('./../../src/core/Arrays');
+var ObjectPool = require('./../../src/core/ObjectPool');
 
 var aspect = Aspect.create('ngx.events');
 

@@ -25,5 +25,4 @@ class Door extends Component {
 }
 
 Door.id = 'door';
-
 module.exports = Door;

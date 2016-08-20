@@ -2,7 +2,7 @@ var GameClock = require('../core/GameClock');
 var ResourceManager = require('../core/ResourceManager');
 var SceneManager = require('../core/SceneManager');
 var Graphics = require('./Graphics');
-var Viewport = require('./Viewport');
+var Viewport = require('./Viewport2D');
 
 // resources
 var ShaderResource = require('./ShaderResource');
@@ -11,7 +11,7 @@ var AnimationResource = require('./AnimationResource');
 var TileResource = require('./TileResource');
 var GlyphResource = require('./GlyphResource');
 
-GameClock.addEventListener('GameClockLoaded', function() {
+function initialize() {
     Graphics.createContext('webgl');
 
     SceneManager.onClearScreen(Graphics.clear);
@@ -41,4 +41,8 @@ GameClock.addEventListener('GameClockLoaded', function() {
         require('./../game/scripts/DebugScript')
     ]);
 
-});
+}
+
+module.exports = {
+    initialize: initialize
+};

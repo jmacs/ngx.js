@@ -3,6 +3,7 @@ var ResourceManager = require('../core/ResourceManager');
 var EntityManager = require('../core/EntityManager');
 var SceneManager = require('../core/SceneManager');
 var InputManager = require('../input/InputManager');
+var ProcessManager = require('../core/ProcessManager');
 
 var GlobalAssets = {
     config: [
@@ -19,7 +20,8 @@ var bootstrap = Object.create(null);
 function requireModules(context) {
     var modules = [];
     context.keys().forEach(function(key){
-        modules.push(context(key));
+        var module = context(key);
+        if (module) modules.push(module);
     });
     return modules;
 }
@@ -27,9 +29,10 @@ function requireModules(context) {
 bootstrap.globals = function() {
     window.clock = GameClock;
     window.scene = SceneManager;
-    window.resources = ResourceManager;
+    window.resource = ResourceManager;
     window.input = InputManager;
     window.entity = EntityManager;
+    window.process = ProcessManager;
 };
 
 bootstrap.input = function() {
@@ -49,17 +52,16 @@ bootstrap.scripts = function() {
 };
 
 bootstrap.coroutines = function() {
-    var req = require.context('./coroutines/', true, /^(.*\.(js$))[^.]*$/igm);
-    req.keys().forEach(function(key){
-        req(key);
-    });
+    var context = require.context('./coroutines', true, /^(.*\.(js$))[^.]*$/igm);
+    var modules = requireModules(context);
+    ResourceManager.getResource('coroutine').register(modules);
 };
 
-GameClock.addEventListener('GameClockLoaded', function() {
+function initialize() {
     Object.keys(bootstrap).forEach(function(key) {
         bootstrap[key]();
     });
-});
+}
 
 GameClock.addEventListener('GameClockStarted', function() {
     ResourceManager.download(GlobalAssets).then(function() {
@@ -70,3 +72,7 @@ GameClock.addEventListener('GameClockStarted', function() {
         });
     });
 });
+
+module.exports = {
+    initialize: initialize
+};

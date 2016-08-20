@@ -1,26 +1,17 @@
 global.assert = require('chai').assert;
 global.__root = __dirname.replace('/test', '');
-
-global.rootRequire = function(name) {
+global._require = function(name) {
     return require(global.__root + '/' + name);
 };
 
-// TODO: refactor out all global references to window in src
+function noop() {}
 
-var noop = function() {};
+global.window = {
+    addEventListener: noop
+};
 
-var window = {};
-window.addEventListener = noop;
+global.document = {
+    addEventListener: noop
+};
 
-var document = {};
-document.addEventListener = noop;
-
-var gl = {};
-gl.FLOAT = 0;
-
-global.window = window;
-global.document = document;
-window.gl = gl;
-global.gl = gl;
-
-rootRequire('src/core/Arrays');
+_require('src/core/Arrays');

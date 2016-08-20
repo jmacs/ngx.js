@@ -1,9 +1,11 @@
 var EntityManager = require('../core/EntityManager');
+var GameClock = require('../core/GameClock');
 
 const FILTER = 'graphics.animation';
 
 function filterEntity(entity) {
-    return entity.components.sprite && entity.components.animation;
+    return entity.components.sprite &&
+        entity.components.animation;
 }
 
 function onSceneLoad() {
@@ -15,16 +17,13 @@ function onSceneUnload() {
 }
 
 function onSceneBeforeDraw(delta) {
-    var entities = EntityManager.getCache(FILTER);
-    for (var i = 0, len = entities.length; i < len; i++) {
-        var entity = entities[i];
-        var sprite = entity.components.sprite;
-        var state = entity.components.animation;
-        tick(state, sprite, delta);
-    }
+    EntityManager.forEach(FILTER, tickAnimation, delta);
 }
 
-function tick(state, sprite, delta) {
+function tickAnimation(entity, delta) {
+    var sprite = entity.components.sprite;
+    var state = entity.components.animation;
+
     if (state.length <= 1) return;
 
     var index = state.index;

@@ -42,18 +42,20 @@ class BoxComponent extends Component {
     }
 
     hydrate(state) {
+
         if (state.width) {
             this.width = state.width;
             this.halfWidth = this.width * 0.5;
             this.offsetX = this.halfWidth;
         }
+
         if (state.height) {
             this.height = state.height;
             this.halfHeight = this.height * 0.5;
             this.offsetY = this.halfHeight
         }
-        if (state.offset) {
 
+        if (state.offset) {
             // offsets are percentages of pixels on the bottom left and top right
             var minOffsetX = state.width * state.offset[0];
             var minOffsetY = state.height * state.offset[1];
@@ -83,5 +85,4 @@ class BoxComponent extends Component {
 }
 
 BoxComponent.id = 'box';
-
 module.exports = BoxComponent;

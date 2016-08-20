@@ -120,4 +120,4 @@ module.exports = {
     elapsed: elapsed,
     onTick: onTick,
     addEventListener: addEventListener
-}
+};

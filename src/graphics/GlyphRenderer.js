@@ -31,13 +31,13 @@ function setSpacing(margin, lineHeight) {
     lineHeightPx = lineHeight;
 }
 
-function render(spriteBuffer, x, y, varchar) {
+function render(spriteBuffer, x, y, glyphic) {
     if (!glyphMap) return;
 
     var pos = [x, y];
     var line = 0;
-    for (var i = 0, l = varchar.length; i < l; i++) {
-        var code = varchar.indexOf(i);
+    for (var i = 0, l = glyphic.length; i < l; i++) {
+        var code = glyphic.indexOf(i);
         if (code === NULL_CHAR) break;
 
         if (code === NEW_LINE) {
@@ -60,4 +60,4 @@ module.exports = {
     setGlyphSize: setGlyphSize,
     setSpacing: setSpacing,
     render: render
-}
+};

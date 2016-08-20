@@ -1,6 +1,6 @@
 var EntityManager = require('../core/EntityManager');
 var SpriteBuffer = require('./SpriteBuffer');
-var Viewport = require('./Viewport');
+var Viewport = require('./Viewport2D');
 var ResourceManager = require('../core/ResourceManager');
 
 const FILTER = 'graphics.sprites';
@@ -25,28 +25,26 @@ function filterEntity(entity) {
 }
 
 function onSceneDraw() {
-
     spriteBuffer.enable(
         Viewport.getModelViewMatrix(),
         Viewport.getProjectionMatrix()
     );
 
-    var entities = EntityManager.getCache(FILTER);
-
-    for (var i = 0, len = entities.length; i < len; i++) {
-        var entity = entities[i];
-        var sprite = entity.components.sprite;
-        var tile = tiles.get(sprite.tid);
-        spriteBuffer.draw(
-            entity.position,
-            sprite.width,
-            sprite.height,
-            tile,
-            sprite.color
-        );
-    }
+    EntityManager.forEach(FILTER, renderSprite);
 
     spriteBuffer.flush();
+}
+
+function renderSprite(entity) {
+    var sprite = entity.components.sprite;
+    var tile = tiles.get(sprite.tid);
+    spriteBuffer.draw(
+        entity.position,
+        sprite.width,
+        sprite.height,
+        tile,
+        sprite.color
+    );
 }
 
 module.exports = {

@@ -1,6 +1,7 @@
 require('./Arrays');
+
 var ResourceManager = require('./ResourceManager');
-var GameClock = require('./GameClock');
+var ProcessManager = require('./ProcessManager');
 
 // resources
 var PrefabResource = require('./PrefabResource');
@@ -8,8 +9,9 @@ var SceneResource = require('./SceneResource');
 var ComponentResource = require('./ComponentResource');
 var ScriptResource = require('./ScriptResource');
 var ConfigResource = require('./ConfigResource');
+var CoroutineResource = require('./CoroutineResource');
 
-GameClock.addEventListener('GameClockLoaded', function() {
+function initialize() {
 
     ResourceManager.registerMediaLoaders([
         require('./TextLoader'),
@@ -23,7 +25,15 @@ GameClock.addEventListener('GameClockLoaded', function() {
         new SceneResource(),
         new ComponentResource(),
         new ScriptResource(),
-        new ConfigResource()
+        new ConfigResource(),
+        new CoroutineResource()
     ]);
 
-});
+    ProcessManager.initialize(
+        ResourceManager.getResource('coroutine')
+    );
+}
+
+module.exports = {
+    initialize: initialize
+};

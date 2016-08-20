@@ -1,11 +1,13 @@
 const GameClock = require('../../core/GameClock');
-const Viewport = require('../../graphics/Viewport.js');
+const SceneManager = require('../../core/SceneManager');
+const Viewport = require('../../graphics/Viewport2D.js');
 const LineBuilder = require('../../graphics/LineBuilder.js');
 const LineBuffer = require('../../graphics/LineBuffer.js');
 const SpriteBuffer = require('../../graphics/SpriteBuffer');
-const Varchar = require('../../graphics/Varchar');
+const Glyphic = require('../../graphics/Glyphic');
 const GlyphRenderer = require('./../../graphics/GlyphRenderer');
 const Color = require('../../graphics/Color');
+
 const GRID_SHIFT = 6;
 
 var spatialGrid;
@@ -17,11 +19,12 @@ var lastFps = 0;
 var red;
 
 function onSceneLoad() {
+    SceneManager.addEventListener('MapLoaded', onMapLoaded);
     red = new Color(1, 0, 0, 1);
     lineBuffer = LineBuffer.createBuffer(0);
     spriteBuffer = SpriteBuffer.createBuffer(0);
-    debugText = Varchar.parseString('0123456789_0123456789_012');
-    fpsText = new Varchar(2);
+    debugText = Glyphic.parseString('0123456789_0123456789_012');
+    fpsText = new Glyphic(2);
 }
 
 function onSceneUnload() {
@@ -35,7 +38,11 @@ function onSceneUnload() {
 }
 
 function onMapLoaded(map) {
-    spatialGrid = LineBuilder.buildGrid(0, 0, 8, 8, Math.pow(2, GRID_SHIFT));
+    spatialGrid = LineBuilder.buildGrid(0, 0,
+        map.boundsX >> GRID_SHIFT,
+        map.boundsY >> GRID_SHIFT,
+        Math.pow(2, GRID_SHIFT)
+    );
 }
 
 function onSceneDraw() {
@@ -65,7 +72,7 @@ function onSceneDraw() {
     GlyphRenderer.setGlyphMap(1);
     //GlyphRenderer.setColor(red);
     GlyphRenderer.render(spriteBuffer, 80, 180, debugText);
-    GlyphRenderer.render(spriteBuffer, 0, 0, fpsText);
+    GlyphRenderer.render(spriteBuffer, 20, 20, fpsText);
 
     spriteBuffer.flush();
 }

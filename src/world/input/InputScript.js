@@ -11,6 +11,11 @@ const ZERO = 0.0;
 var keyboard;
 var mouse;
 
+function filterEntity(entity) {
+    return entity.components.input &&
+        entity.components.input.human;
+}
+
 function onSceneLoad() {
     keyboard = InputManager.getDevice('keyboard');
     mouse = InputManager.getDevice('mouse');
@@ -23,21 +28,12 @@ function onSceneUnload() {
     EntityManager.removeFilter(FILTER);
 }
 
-function filterEntity(entity) {
-    return entity.components.input && entity.components.input.human;
-}
-
 function onSceneProcessInput(delta) {
-    var entities = EntityManager.getCache(FILTER);
-
-    for (var i = 0, l = entities.length; i < l; i++) {
-        var entity = entities[i];
-        tick(delta, entity.components.input);
-    }
-
+    EntityManager.forEach(FILTER, updateInput, delta);
 }
 
-function tick(delta, component) {
+function updateInput(entity, delta) {
+    var component = entity.components.input;
     var state = keyboard.getState();
 
     if (state.keys[KEY_UP]) {
