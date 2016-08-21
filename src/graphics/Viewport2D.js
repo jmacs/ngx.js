@@ -101,11 +101,17 @@ function transform() {
     isDirty = false;
 }
 
-function clear() {
-    Graphics.clear(clearbit);
+function getWidth() {
+    return width;
+}
+
+function getHeight() {
+    return height;
 }
 
 module.exports = {
+    getWidth: getWidth,
+    getHeight: getHeight,
     lookAt: lookAt,
     pan: pan,
     zoom: zoom,
@@ -114,7 +120,6 @@ module.exports = {
     rotate: rotate,
     initialize: initialize,
     transform: transform,
-    clear: clear,
     getProjectionMatrix: getProjectionMatrix,
     getModelViewMatrix: getModelViewMatrix
 };

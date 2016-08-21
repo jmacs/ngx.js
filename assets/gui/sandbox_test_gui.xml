@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gui name="test" script="SandboxGui">
+    <panel origin="1" x="10" y="10" width="0.3" height="0.3">
+        <button origin="Center" x="5" y="5" width="0.1" height="0.1"
+                onClick="onOkButtonClicked" />
+    </panel>
+    <panel origin="8" x="10" y="10" width="0.5" height="0.2">
+        <button x="5" y="5" width="0.1" height="0.1" />
+    </panel>
+</gui>

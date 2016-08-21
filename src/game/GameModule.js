@@ -4,6 +4,7 @@ var EntityManager = require('../core/EntityManager');
 var SceneManager = require('../core/SceneManager');
 var InputManager = require('../input/InputManager');
 var ProcessManager = require('../core/ProcessManager');
+var GuiManager = require('../gui/GuiManager');
 
 var GlobalAssets = {
     config: [
@@ -33,6 +34,7 @@ bootstrap.globals = function() {
     window.input = InputManager;
     window.entity = EntityManager;
     window.process = ProcessManager;
+    window.gui = GuiManager;
 };
 
 bootstrap.input = function() {
@@ -57,11 +59,11 @@ bootstrap.coroutines = function() {
     ResourceManager.getResource('coroutine').register(modules);
 };
 
-function initialize() {
-    Object.keys(bootstrap).forEach(function(key) {
-        bootstrap[key]();
-    });
-}
+bootstrap.controls = function() {
+    var context = require.context('./controls', true, /^(.*\.(js$))[^.]*$/igm);
+    var modules = requireModules(context);
+    ResourceManager.getResource('control').register(modules);
+};
 
 GameClock.addEventListener('GameClockStarted', function() {
     ResourceManager.download(GlobalAssets).then(function() {
@@ -72,6 +74,12 @@ GameClock.addEventListener('GameClockStarted', function() {
         });
     });
 });
+
+function initialize() {
+    Object.keys(bootstrap).forEach(function(key) {
+        bootstrap[key]();
+    });
+}
 
 module.exports = {
     initialize: initialize

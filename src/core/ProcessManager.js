@@ -1,4 +1,3 @@
-var ResourceManager = require('./ResourceManager');
 var Process = require('./Process');
 var ObjectPool = require('./ObjectPool');
 
@@ -46,7 +45,7 @@ function startProcess(coroutineId, initialState) {
     return process.id;
 }
 
-function exitProcess(pid) {
+function endProcess(pid) {
     for (var i = 0, l = _stack.length; i < l; i++) {
         if (_stack[i].id === pid) {
             _stack[i].exit();
@@ -87,7 +86,7 @@ function log() {
 module.exports = {
     initialize: initialize,
     startProcess: startProcess,
-    exitProcess: exitProcess,
+    endProcess: endProcess,
     update: update,
     log: log
 };

@@ -3,6 +3,7 @@ var CoreModule = require('./core/CoreModule');
 var GraphicsModule = require('./graphics/GraphicsModule');
 var InputModule = require('./input/InputModule');
 var WorldModule = require('./world/WorldModule');
+var GuiModule = require('./gui/GuiModule');
 var GameModule = require('./game/GameModule');
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -15,5 +16,6 @@ GameClock.addEventListener('GameClockLoaded', function() {
     GraphicsModule.initialize();
     InputModule.initialize();
     WorldModule.initialize();
+    GuiModule.initialize();
     GameModule.initialize();
 });

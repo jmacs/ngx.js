@@ -18,6 +18,7 @@ var _countSceneBeforeDraw = 0;
 var _countSceneDraw = 0;
 var _countSceneAfterDraw = 0;
 var _countSceneUnload = 0;
+var _countSceneDrawGui = 0;
 
 function createEventListenersHash() {
     var listeners = Object.create(null);
@@ -30,6 +31,7 @@ function createEventListenersHash() {
     listeners.SceneBeforeDraw = [];
     listeners.SceneDraw = [];
     listeners.SceneAfterDraw = [];
+    listeners.SceneDrawGui = [];
     listeners.SceneUnload = [];
     return listeners;
 }
@@ -43,6 +45,7 @@ function cacheFixedFunctionLength() {
     _countSceneBeforeDraw = _listeners.SceneBeforeDraw.length;
     _countSceneDraw = _listeners.SceneDraw.length;
     _countSceneAfterDraw = _listeners.SceneAfterDraw.length;
+    _countSceneDrawGui = _listeners.SceneDrawGui.length;
     _countSceneUnload = _listeners.SceneUnload.length;
 }
 
@@ -72,7 +75,10 @@ function tick(delta) {
         _listeners.SceneBeforeDraw[i](delta);
     }
 
+    // coroutines
     ProcessManager.update(delta);
+
+    // gl.clear()
     _clearScreen();
 
     for (i = 0; i < _countSceneDraw; i++) {
@@ -81,6 +87,10 @@ function tick(delta) {
 
     for (i = 0; i < _countSceneAfterDraw; i++) {
         _listeners.SceneAfterDraw[i](delta);
+    }
+
+    for (i = 0; i < _countSceneDrawGui; i++) {
+        _listeners.SceneDrawGui[i](delta);
     }
 }
 

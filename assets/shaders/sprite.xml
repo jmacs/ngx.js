@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <shader name="sprite">
-    <vertex>
+    <vertex><![CDATA[
         attribute vec2 a_position;
         attribute vec2 a_texcoord;
         attribute vec4 a_color;
@@ -16,7 +16,7 @@
             v_color = a_color;
             gl_Position = u_projection * u_model * vec4(a_position, 0, 1.0);
         }
-    </vertex>
+    ]]></vertex>
     <fragment><![CDATA[
         precision mediump float;
 

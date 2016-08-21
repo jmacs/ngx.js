@@ -1,5 +1,4 @@
 var Resource = require('./Resource');
-var Scene = require('./Scene');
 
 const FILE_NAME_REGEX = /[^\\/]+$/;
 

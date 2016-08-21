@@ -10,7 +10,7 @@
     "Maps",
     "Debuggers",
     "Sprites",
-    "TestScript"
+    "SandboxGui"
   ],
   "assets": {
     "script": [
@@ -37,6 +37,9 @@
       "assets/prefabs/decor.json",
       "assets/prefabs/items.json",
       "assets/prefabs/mobs.json"
+    ],
+    "gui": [
+      "assets/gui/sandbox_test_gui.xml"
     ]
   }
 }
