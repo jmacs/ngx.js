@@ -1,28 +1,25 @@
 var EntityManager = require('../../core/EntityManager');
-var SpatialIndex = require('./SpatialIndex');
-
-const FILTER = 'world.collision';
+var SpatialIndex = require('./../../world/collision/SpatialIndex');
 
 const GRID_SHIFT = 6;   // 64x64
 const GRID_WIDTH = 8;   // 512
 const GRID_HEIGHT = 8;  // 512
+var filter = null;
 
 function onSceneLoad() {
     SpatialIndex.build(GRID_SHIFT, GRID_WIDTH, GRID_HEIGHT);
-    EntityManager.addFilter(FILTER, filterEntity);
+    filter = EntityManager.createFilter('world.collision', function(entity) {
+        return entity.components.box;
+    });
 }
 
 function onSceneUnload() {
-    EntityManager.removeFilter(FILTER);
-}
-
-function filterEntity(entity) {
-    return entity.components.box;
+    filter = null;
 }
 
 function onSceneUpdate() {
     SpatialIndex.clearObjects();
-    EntityManager.forEach(FILTER, insertSpatialIndex);
+    filter.each(insertSpatialIndex);
     SpatialIndex.broadphase();
 }
 

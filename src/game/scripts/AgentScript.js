@@ -2,24 +2,22 @@ var ResourceManager = require('../../core/ResourceManager');
 var EntityManager = require('../../core/EntityManager');
 var GameClock = require('../../core/GameClock');
 
-const FILTER = 'world.agents';
 var agents = null;
 var limit = 500; // ~2 thoughts per second
 var time = 0;
 var timeToThink = false;
-
-function filterEntity(entity) {
-    return entity.components.agent;
-}
+var filter = null;
 
 function onSceneLoad() {
     agents = ResourceManager.getResource('agent');
-    EntityManager.addFilter(FILTER, filterEntity);
+    filter = EntityManager.createFilter('world.agents', function(entity) {
+        return entity.components.agent;
+    });
 }
 
 function onSceneUnload() {
     agents = null;
-    EntityManager.removeFilter(FILTER);
+    filter = null;
 }
 
 function onSceneUpdate(delta) {
@@ -27,13 +25,12 @@ function onSceneUpdate(delta) {
     timeToThink = time < 0;
 
     if (timeToThink) {
-        EntityManager.forEach(FILTER, updateAgent);
+        filter.each(updateAgent, delta);
         time = limit;
     }
 }
 
-function updateAgent(entity) {
-    var delta = GameClock.delta();
+function updateAgent(entity, delta) {
     var agentState = entity.components.agent;
 
     var inRange = isInActivationRange(entity);

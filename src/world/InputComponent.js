@@ -1,4 +1,4 @@
-var Component = require('../../core/Component.js');
+var Component = require('../core/Component.js');
 
 class InputComponent extends Component {
 

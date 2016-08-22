@@ -1,8 +1,8 @@
-var GameClock = require('../core/GameClock');
 var ResourceManager = require('../core/ResourceManager');
 var SceneManager = require('../core/SceneManager');
 var Graphics = require('./Graphics');
-var Viewport = require('./Viewport2D');
+var Viewport = require('./Viewport');
+var Compositor = require('./Compositor');
 
 // resources
 var ShaderResource = require('./ShaderResource');
@@ -14,7 +14,7 @@ var GlyphResource = require('./GlyphResource');
 function initialize() {
     Graphics.createContext('webgl');
 
-    SceneManager.onClearScreen(Graphics.clear);
+    SceneManager.setCompositor(Compositor);
 
     Viewport.initialize({width: 1280, height: 720});
 
@@ -36,8 +36,8 @@ function initialize() {
     ]);
 
     ResourceManager.getResource('script').register([
-        require('./AnimationScript'),
-        require('./SpriteScript'),
+        require('./../game/scripts/AnimationScript'),
+        require('./../game/scripts/SpriteScript'),
         require('./../game/scripts/DebugScript')
     ]);
 

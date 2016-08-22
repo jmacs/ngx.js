@@ -10,26 +10,25 @@ const ZERO = 0.0;
 
 var keyboard;
 var mouse;
-
-function filterEntity(entity) {
-    return entity.components.input &&
-        entity.components.input.human;
-}
+var filter;
 
 function onSceneLoad() {
     keyboard = InputManager.getDevice('keyboard');
     mouse = InputManager.getDevice('mouse');
-    EntityManager.addFilter(FILTER, filterEntity);
+    filter = EntityManager.createFilter(FILTER, function(entity) {
+        return entity.components.input &&
+            entity.components.input.human;
+    });
 }
 
 function onSceneUnload() {
     keyboard = null;
     mouse = null;
-    EntityManager.removeFilter(FILTER);
+    filter = null;
 }
 
 function onSceneProcessInput(delta) {
-    EntityManager.forEach(FILTER, updateInput, delta);
+    filter.each(updateInput, delta);
 }
 
 function updateInput(entity, delta) {

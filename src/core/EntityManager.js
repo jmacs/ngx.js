@@ -3,37 +3,34 @@ var EntityFilter = require('./EntityFilter');
 var _entityIndex = Object.create(null);
 var _entitiesLength = 0;
 var _filters = [];
-var _filtersLength = 0;
-var _filterIndex = Object.create(null);
 
-function addFilter(name, accept) {
-    if (_filterIndex[name]) return;
+function createFilter(name, accept) {
     var filter = new EntityFilter(name, accept);
-    _filters.push(filter);
-    _filtersLength++;
-    _filterIndex[name] = filter;
+    addFilter(filter);
+    return filter;
 }
 
-function removeFilter(name) {
-    var filter = _filterIndex[name];
-    if (!filter) return;
+function addFilter(filter) {
+    _filters.push(filter);
+    filter.filterOn(_entityIndex);
+}
+
+function removeFilter(filter) {
     var n = _filters.indexOf(filter);
     if (n === -1) return;
     filter.destroy();
-    _filters.splice(n, 1);
-    _filtersLength--;
-    delete _filterIndex[name];
+    _filters.removeAt(n);
 }
 
 function clearFilters() {
-    for (var i = 0; i < _filtersLength; i++) {
+    for (var i = 0, l = _filters.length; i < l; i++) {
         _filters[i].clear();
     }
 }
 
 function addEntity(entity) {
     if (_entityIndex[entity.id]) return;
-    for (var i = 0; i < _filtersLength; i++) {
+    for (var i = 0, l = _filters.length; i < l; i++) {
         var filter = _filters[i];
         if (filter.accept(entity)) {
             filter.add(entity);
@@ -45,7 +42,7 @@ function addEntity(entity) {
 
 function removeEntity(entity) {
     if (!_entityIndex[entity.id]) return;
-    for (var i = 0; i < _filtersLength; i++) {
+    for (var i = 0, l = _filters.length; i < l; i++) {
         var filter = _filters[i];
         if (filter.accept(entity)) {
             filter.remove(entity);
@@ -53,11 +50,6 @@ function removeEntity(entity) {
     }
     delete _entityIndex[entity.id];
     _entitiesLength--;
-}
-
-function forEach(filterName, callback, delta) {
-    var filter = _filterIndex[filterName];
-    filter.each(_entityIndex, callback, delta);
 }
 
 function getEntity(id) {
@@ -82,12 +74,12 @@ function log() {
 module.exports = {
     log: log,
     clear: clear,
+    createFilter: createFilter,
     clearFilters: clearFilters,
     addFilter: addFilter,
     removeFilter: removeFilter,
     addEntity: addEntity,
     removeEntity: removeEntity,
     count: count,
-    getEntity: getEntity,
-    forEach: forEach
+    getEntity: getEntity
 };

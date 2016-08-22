@@ -1,23 +1,21 @@
 var EntityManager = require('../../core/EntityManager');
 
 const MOVEMENT_SPEED = 1.0;
-const FILTER = 'world.physics';
+var filter;
 
 function onSceneLoad() {
-    EntityManager.addFilter(FILTER, filterEntity);
+    filter = EntityManager.createFilter('world.physics', function (entity) {
+        return entity.components.input;
+    });
 }
 
 function onSceneUnload() {
-    EntityManager.removeFilter(FILTER);
-}
-
-function filterEntity(entity) {
-    return entity.components.input;
+    filter = null;
 }
 
 // todo: implement realish physics
 function onSceneUpdate(delta) {
-    EntityManager.forEach(FILTER, updatePhysics, delta);
+    filter.each(updatePhysics, delta);
 }
 
 function updatePhysics(entity, delta) {

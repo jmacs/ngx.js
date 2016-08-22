@@ -1,9 +1,9 @@
 var SceneManager = require('../../core/SceneManager');
 var ResourceManager = require('../../core/ResourceManager');
 var SpriteBuffer = require('../../graphics/SpriteBuffer');
-var Viewport = require('../../graphics/Viewport2D');
+var Viewport = require('../../graphics/Viewport');
 var Color = require('../../graphics/Color');
-var EntityFactory = require('./EntityFactory');
+var EntityFactory = require('./../../world/maps/EntityFactory');
 
 const CELL_SIZE = 16;
 
@@ -13,7 +13,8 @@ var _spriteBuffer = null;
 var _cameraMin = [0,0];
 var _cameraMax = [1000, 1000];
 
-function onSceneLoad() {
+function onSceneLoad(scene) {
+    scene.getCompositor().addLayer(0, drawWorldMapLayer);
     _spriteBuffer = SpriteBuffer.createBuffer(0);
 }
 
@@ -22,7 +23,7 @@ function onSceneUnload() {
     _spriteBuffer = null;
 }
 
-function onSceneDraw() {
+function drawWorldMapLayer() {
     if (!_map) return;
 
     _spriteBuffer.enable(
@@ -76,6 +77,5 @@ module.exports = {
     name: 'Maps',
     SceneLoad: onSceneLoad,
     SceneStop: onSceneUnload,
-    SceneDraw: onSceneDraw,
     LoadMap: onLoadMap
 };

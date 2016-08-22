@@ -1,4 +1,4 @@
-var Component = require('../../core/Component');
+var Component = require('../core/Component');
 
 class TriggerComponent extends Component {
 

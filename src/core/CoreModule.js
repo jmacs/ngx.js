@@ -1,7 +1,7 @@
 require('./Arrays');
-
 var ResourceManager = require('./ResourceManager');
 var ProcessManager = require('./ProcessManager');
+var SceneManager = require('./SceneManager');
 
 // resources
 var PrefabResource = require('./PrefabResource');
@@ -12,6 +12,10 @@ var ConfigResource = require('./ConfigResource');
 var CoroutineResource = require('./CoroutineResource');
 
 function initialize() {
+
+    SceneManager.setCompositor({
+        update: function() { }
+    });
 
     ResourceManager.registerMediaLoaders([
         require('./TextLoader'),

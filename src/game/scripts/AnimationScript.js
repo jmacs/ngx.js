@@ -1,23 +1,21 @@
-var EntityManager = require('../core/EntityManager');
-var GameClock = require('../core/GameClock');
+var EntityManager = require('../../core/EntityManager');
+var GameClock = require('../../core/GameClock');
 
-const FILTER = 'graphics.animation';
-
-function filterEntity(entity) {
-    return entity.components.sprite &&
-        entity.components.animation;
-}
+var filter = null;
 
 function onSceneLoad() {
-    EntityManager.addFilter(FILTER, filterEntity);
+    filter = EntityManager.createFilter('graphics.animation', function(entity) {
+        return entity.components.sprite &&
+            entity.components.animation;
+    });
 }
 
 function onSceneUnload() {
-    EntityManager.removeFilter(FILTER);
+    filter = null;
 }
 
-function onSceneBeforeDraw(delta) {
-    EntityManager.forEach(FILTER, tickAnimation, delta);
+function onSceneAfterUpdate(delta) {
+    filter.each(tickAnimation, delta);
 }
 
 function tickAnimation(entity, delta) {
@@ -49,5 +47,5 @@ module.exports = {
     name: 'Animations',
     SceneLoad: onSceneLoad,
     SceneStop: onSceneUnload,
-    SceneBeforeDraw: onSceneBeforeDraw
+    SceneAfterUpdate: onSceneAfterUpdate
 };

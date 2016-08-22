@@ -23,6 +23,10 @@ class Control {
         return this.__id;
     }
 
+    get children() {
+        return this.__children;
+    }
+
     get x() {
         return this.__x;
     }

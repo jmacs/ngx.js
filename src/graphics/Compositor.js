@@ -1,11 +1,6 @@
 var Graphics = require('./Graphics');
 
-var spriteBuffer = null;
 var _layers = [];
-
-function initialize() {
-
-}
 
 function addLayer(index, callback) {
     _layers.push({
@@ -26,15 +21,13 @@ function reset() {
     _layers.length = 0;
 }
 
-function clearScreen() {
-    Graphics.clear();
-}
-
 function sortLayers(a, b) {
     return a.index - b.index;
 }
 
 function draw(delta) {
+    Graphics.clear();
+
     for (var i = 0, l = _layers.length; i < l; i++) {
         _layers[i].draw(delta);
     }
@@ -43,7 +36,6 @@ function draw(delta) {
 module.exports = {
     addLayer: addLayer,
     removeLayer: removeLayer,
-    clearScreen: clearScreen,
     reset: reset,
     draw: draw
 };

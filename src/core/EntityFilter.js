@@ -32,13 +32,27 @@ class EntityFilter {
         arr.length--;
     }
 
-    each(entities, callback, delta) {
+    filterOn(dataset) {
+        this.__dataset = dataset;
+    }
+
+    each(callback, delta) {
+        var dataset = this.__dataset;
         var size = this.__size;
         var index = this.__index;
         for (var i = 0; i < size; i++) {
-            var entity = entities[index[i]];
-            if (entity) {
-                callback(entity, delta);
+            var data = dataset[index[i]];
+            callback(data, delta);
+        }
+    }
+
+    rebuild() {
+        var dataset = this.__dataset;
+        var keys = Object.keys(this.__dataset);
+        for (var i = 0, l = keys.length; i < l; i++) {
+            var entity = dataset[keys[i]];
+            if (this.accept(entity)) {
+                this.add(entity);
             }
         }
     }

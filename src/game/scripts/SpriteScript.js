@@ -1,41 +1,39 @@
-var EntityManager = require('../core/EntityManager');
-var SpriteBuffer = require('./SpriteBuffer');
-var Viewport = require('./Viewport2D');
-var ResourceManager = require('../core/ResourceManager');
+var EntityManager = require('../../core/EntityManager');
+var SpriteBuffer = require('./../../graphics/SpriteBuffer');
+var Viewport = require('./../../graphics/Viewport');
+var ResourceManager = require('../../core/ResourceManager');
 
-const FILTER = 'graphics.sprites';
-
+var filter = null;
 var spriteBuffer = null;
 var tiles = null;
 
-function onSceneLoad() {
+function onSceneLoad(scene) {
+    scene.getCompositor().addLayer(200, drawSpriteLayer);
     tiles = ResourceManager.getResource('tile');
     spriteBuffer = SpriteBuffer.createBuffer(0);
-    EntityManager.addFilter(FILTER, filterEntity);
+    filter = EntityManager.createFilter('graphics.sprites', function(entity) {
+        return entity.components.sprite;
+    });
 }
 
 function onSceneUnload() {
     tiles = null;
     spriteBuffer = null;
-    EntityManager.removeFilter(FILTER);
+    EntityManager.removeFilter(filter);
 }
 
-function filterEntity(entity) {
-    return entity.components.sprite;
-}
-
-function onSceneDraw() {
+function drawSpriteLayer() {
     spriteBuffer.enable(
         Viewport.getModelViewMatrix(),
         Viewport.getProjectionMatrix()
     );
 
-    EntityManager.forEach(FILTER, renderSprite);
+    filter.each(drawSprite);
 
     spriteBuffer.flush();
 }
 
-function renderSprite(entity) {
+function drawSprite(entity) {
     var sprite = entity.components.sprite;
     var tile = tiles.get(sprite.tid);
     spriteBuffer.draw(
@@ -50,6 +48,5 @@ function renderSprite(entity) {
 module.exports = {
     name: 'Sprites',
     SceneLoad: onSceneLoad,
-    SceneStop: onSceneUnload,
-    SceneDraw: onSceneDraw
+    SceneStop: onSceneUnload
 };

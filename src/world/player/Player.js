@@ -1,6 +1,0 @@
-var pvar;
-
-module.exports = {
-
-
-}

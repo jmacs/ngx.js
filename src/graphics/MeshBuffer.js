@@ -82,6 +82,24 @@ class MeshBuffer {
         v[i + 3] = p2[1];
     }
 
+    drawLine(x1, y1, x2, y2) {
+        if (this.index * VERTEX_PER_LINE >= VERTEX_BUFFER_LENGTH) {
+            this.flush();
+        }
+
+        var v = this.array;
+        var i = this.index * VERTEX_PER_LINE;
+        this.index++;
+
+        // line start
+        v[i    ] = x1;
+        v[i + 1] = y1;
+
+        // line end
+        v[i + 2] = x2;
+        v[i + 3] = y2;
+    }
+
     enable(modelViewMatrix, projectionMatrix) {
         var gl = Graphics.getContext();
 

@@ -3,99 +3,72 @@ var ResourceManager = require('./ResourceManager');
 var EntityManager = require('./EntityManager');
 var ProcessManager = require('./ProcessManager');
 
-const NOOP = function(){};
-
-var i = 0;
+var i = 0, l = 0;
 var _scene = null;
-var _clearScreen = NOOP;
-var _listeners = createEventListenersHash();
-var _countSceneLoad = 0;
-var _countSceneProcessInput = 0;
-var _countSceneBeforeUpdate = 0;
-var _countSceneUpdate = 0;
-var _countSceneAfterUpdate = 0;
-var _countSceneBeforeDraw = 0;
-var _countSceneDraw = 0;
-var _countSceneAfterDraw = 0;
-var _countSceneUnload = 0;
-var _countSceneDrawGui = 0;
+var _listeners = Object.create(null);
+var _compositor = null;
+var _lifecycle = {
+    SceneLoad: [],
+    SceneProcessInput: [],
+    SceneBeforeUpdate: [],
+    SceneUpdate: [],
+    SceneAfterUpdate: [],
+    SceneUnload: []
+};
 
-function createEventListenersHash() {
-    var listeners = Object.create(null);
-    // fixed functions
-    listeners.SceneLoad = [];
-    listeners.SceneProcessInput = [];
-    listeners.SceneBeforeUpdate = [];
-    listeners.SceneUpdate = [];
-    listeners.SceneAfterUpdate = [];
-    listeners.SceneBeforeDraw = [];
-    listeners.SceneDraw = [];
-    listeners.SceneAfterDraw = [];
-    listeners.SceneDrawGui = [];
-    listeners.SceneUnload = [];
-    return listeners;
+
+function resetScene() {
+    _listeners = Object.create(null);
+    _lifecycle.SceneLoad.length = 0;
+    _lifecycle.SceneProcessInput.length = 0;
+    _lifecycle.SceneBeforeUpdate.length = 0;
+    _lifecycle.SceneUpdate.length = 0;
+    _lifecycle.SceneAfterUpdate.length = 0;
+    _lifecycle.SceneUnload.length = 0;
 }
 
-function cacheFixedFunctionLength() {
-    _countSceneLoad = _listeners.SceneLoad.length;
-    _countSceneProcessInput = _listeners.SceneProcessInput.length;
-    _countSceneBeforeUpdate = _listeners.SceneBeforeUpdate.length;
-    _countSceneUpdate = _listeners.SceneUpdate.length;
-    _countSceneAfterUpdate = _listeners.SceneAfterUpdate.length;
-    _countSceneBeforeDraw = _listeners.SceneBeforeDraw.length;
-    _countSceneDraw = _listeners.SceneDraw.length;
-    _countSceneAfterDraw = _listeners.SceneAfterDraw.length;
-    _countSceneDrawGui = _listeners.SceneDrawGui.length;
-    _countSceneUnload = _listeners.SceneUnload.length;
+function loadScene() {
+    l = _lifecycle.SceneLoad.length;
+    for (i = 0; i < l; i++) {
+        _lifecycle.SceneLoad[i](SceneManager);
+    }
 }
 
-//
-// Tick
-//
+function onGameClockTick(delta) {
 
-function tick(delta) {
-
-    for (i = 0; i < _countSceneProcessInput; i++) {
-        _listeners.SceneProcessInput[i](delta);
+    l = _lifecycle.SceneProcessInput.length;
+    for (i = 0; i < l; i++) {
+        _lifecycle.SceneProcessInput[i](delta);
     }
 
-    for (i = 0; i < _countSceneBeforeUpdate; i++) {
-        _listeners.SceneBeforeUpdate[i](delta);
+    l = _lifecycle.SceneBeforeUpdate.length;
+    for (i = 0; i < l; i++) {
+        _lifecycle.SceneBeforeUpdate[i](delta);
     }
 
-    for (i = 0; i < _countSceneUpdate; i++) {
-        _listeners.SceneUpdate[i](delta);
+    l = _lifecycle.SceneUpdate.length;
+    for (i = 0; i < l; i++) {
+        _lifecycle.SceneUpdate[i](delta);
     }
 
-    for (i = 0; i < _countSceneAfterUpdate; i++) {
-        _listeners.SceneAfterUpdate[i](delta);
+    l = _lifecycle.SceneAfterUpdate.length;
+    for (i = 0; i < l; i++) {
+        _lifecycle.SceneAfterUpdate[i](delta);
     }
 
-    for (i = 0; i < _countSceneBeforeDraw; i++) {
-        _listeners.SceneBeforeDraw[i](delta);
-    }
-
-    // coroutines
+    // execute coroutines
     ProcessManager.update(delta);
 
-    // gl.clear()
-    _clearScreen();
-
-    for (i = 0; i < _countSceneDraw; i++) {
-        _listeners.SceneDraw[i](delta);
-    }
-
-    for (i = 0; i < _countSceneAfterDraw; i++) {
-        _listeners.SceneAfterDraw[i](delta);
-    }
-
-    for (i = 0; i < _countSceneDrawGui; i++) {
-        _listeners.SceneDrawGui[i](delta);
-    }
+    // draw scene
+    _compositor.draw(delta);
 }
 
-function clearScripts() {
-    _listeners = createEventListenersHash();
+
+function unloadScene() {
+    l = _lifecycle.SceneLoad.length;
+    for (i = 0; i < l; i++) {
+        _lifecycle.SceneLoad[i](SceneManager);
+    }
 }
 
 //
@@ -107,8 +80,12 @@ function log() {
     console.debug('listeners: %o', _listeners);
 }
 
-function onClearScreen(callback) {
-    _clearScreen = callback;
+function getCompositor() {
+    return _compositor;
+}
+
+function setCompositor(value) {
+    _compositor = value;
 }
 
 function activateScene(id) {
@@ -121,7 +98,7 @@ function activateScene(id) {
 
     console.info('Loading scene "%s"', id);
 
-    triggerEvent('SceneUnload');
+    unloadScene();
 
     _scene = scene;
 
@@ -131,12 +108,12 @@ function activateScene(id) {
 }
 
 function onSceneLoaded() {
-    clearScripts();
+    resetScene();
     for (var i = 0, l = _scene.scripts.length; i < l; i++) {
         attachScript(_scene.scripts[i]);
     }
-    triggerEvent('SceneLoad');
-    GameClock.onTick(tick);
+    loadScene();
+    GameClock.onTick(onGameClockTick);
 }
 
 function attachScript(scriptName) {
@@ -150,16 +127,22 @@ function detachScript(scriptName) {
 }
 
 function addEventListener(event, callback) {
+    if (_lifecycle[event]) {
+        _lifecycle[event].push(callback);
+        return;
+    }
     _listeners[event] = _listeners[event] || [];
     _listeners[event].push(callback);
-    cacheFixedFunctionLength();
 }
 
 function removeEventListener(event, callback) {
+    if (_lifecycle[event]) {
+        _lifecycle[event].remove(callback);
+        return;
+    }
     _listeners = _listeners[event];
     if (!_listeners) return;
     _listeners.remove(callback);
-    cacheFixedFunctionLength();
 }
 
 function triggerEvent(event, arg1, arg2, arg3) {
@@ -172,7 +155,8 @@ function triggerEvent(event, arg1, arg2, arg3) {
 
 var SceneManager = {
     log: log,
-    onClearScreen: onClearScreen,
+    getCompositor: getCompositor,
+    setCompositor: setCompositor,
     activateScene: activateScene,
     attachScript: attachScript,
     detachScript: detachScript,

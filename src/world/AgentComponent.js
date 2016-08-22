@@ -1,5 +1,5 @@
-var Component = require('../../core/Component');
-var Entity = require('../../core/Entity');
+var Component = require('../core/Component');
+var Entity = require('../core/Entity');
 
 class AgentComponent extends Component {
 

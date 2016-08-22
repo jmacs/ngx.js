@@ -1,8 +1,7 @@
 const GameClock = require('../../core/GameClock');
-const SceneManager = require('../../core/SceneManager');
-const Viewport = require('../../graphics/Viewport2D.js');
+const Viewport = require('../../graphics/Viewport.js');
 const LineBuilder = require('../../graphics/LineBuilder.js');
-const LineBuffer = require('../../graphics/LineBuffer.js');
+const LineBuffer = require('../../graphics/MeshBuffer.js');
 const SpriteBuffer = require('../../graphics/SpriteBuffer');
 const Glyphic = require('../../graphics/Glyphic');
 const GlyphRenderer = require('./../../graphics/GlyphRenderer');
@@ -18,8 +17,8 @@ var fpsText;
 var lastFps = 0;
 var red;
 
-function onSceneLoad() {
-    SceneManager.addEventListener('MapLoaded', onMapLoaded);
+function onSceneLoad(scene) {
+    scene.getCompositor().addLayer(100, drawDebugLayer);
     red = new Color(1, 0, 0, 1);
     lineBuffer = LineBuffer.createBuffer(0);
     spriteBuffer = SpriteBuffer.createBuffer(0);
@@ -45,7 +44,7 @@ function onMapLoaded(map) {
     );
 }
 
-function onSceneDraw() {
+function drawDebugLayer() {
 
     if (spatialGrid) {
         lineBuffer.enable(
@@ -81,6 +80,5 @@ module.exports = {
     name: 'Debuggers',
     SceneLoad: onSceneLoad,
     SceneStop: onSceneUnload,
-    SceneDraw: onSceneDraw,
     MapLoaded: onMapLoaded
 };

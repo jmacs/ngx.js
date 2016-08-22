@@ -1,7 +1,7 @@
 var ResourceManager = require('../core/ResourceManager');
 var ControlFactory = require('./ControlFactory');
 var Screen = require('./Screen');
-var Viewport = require('../graphics/Viewport2D');
+var Viewport = require('../graphics/Viewport');
 
 var _screen = new Screen();
 
@@ -17,6 +17,8 @@ function loadGui(name) {
     }
 
     _screen.update();
+
+    return _screen;
 }
 
 function render() {
