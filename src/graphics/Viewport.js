@@ -8,6 +8,8 @@ const MIN_ZOOM = 0;
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 
+var iMatrix = mat4.create();
+var sMatrix = mat4.create();
 var pMatrix = mat4.create();
 var vMatrix = mat4.create();
 var posX = 0.0;
@@ -19,6 +21,7 @@ var rotationAngle = 0.0;
 var zoomFactor = DEFAULT_ZOOM;
 var isDirty = true;
 var canvas = null;
+var fov = 100;
 
 function initialize(options) {
     var gl = Graphics.getContext();
@@ -39,7 +42,21 @@ function initialize(options) {
 
     gl.canvas.width = width;
     gl.canvas.height = height;
-    gl.viewport(posX, posY, width, height);
+    gl.viewport(0, 0, width, height);
+
+    mat4.identity(iMatrix);
+
+    // screen space
+    mat4.ortho(iMatrix, 0, width, 0, height, 0, 100);
+    mat4.scale(sMatrix, sMatrix, [1, -1, 1]); // flip y
+
+    // projection
+    //mat4.perspective(pMatrix, 45, aspect, 0, fov); // works
+    mat4.ortho(pMatrix, 0, width, 0, height, 0, 100);
+    //mat4.ortho(pMatrix, -1.0, 1.0, -1.0, 1.0, 0, 100);
+
+    //ortho(out, left, right, bottom, top, near, far)
+
 
     isDirty = true;
     if (!canvas) {
@@ -48,8 +65,16 @@ function initialize(options) {
         document.body.appendChild(canvas);
     }
 
-    zoomTo(256);
-    lookAt(150, 100);
+    //zoomTo(256);
+    //lookAt(0, 0);
+}
+
+function getScreenMatrix() {
+    return sMatrix;
+}
+
+function getIdentityMatrix() {
+    return iMatrix;
 }
 
 function getProjectionMatrix() {
@@ -94,10 +119,9 @@ function rotate(value) {
 
 function transform() {
     if (!isDirty) return;
-    mat4.perspective(pMatrix, 45, aspect, 0, 100);
     mat4.identity(vMatrix);
-    mat4.translate(vMatrix, vMatrix, [-posX, -posY, -zoomFactor]);
-    mat4.rotateZ(vMatrix, vMatrix, rotationAngle);
+    mat4.translate(vMatrix, vMatrix, [-posX, -posY, 0]);
+    //mat4.rotateZ(vMatrix, vMatrix, rotationAngle);
     isDirty = false;
 }
 
@@ -120,6 +144,8 @@ module.exports = {
     rotate: rotate,
     initialize: initialize,
     transform: transform,
+    getScreenMatrix: getScreenMatrix,
+    getIdentityMatrix: getIdentityMatrix,
     getProjectionMatrix: getProjectionMatrix,
     getModelViewMatrix: getModelViewMatrix
 };

@@ -22,8 +22,8 @@ function onSceneUnload() {
 
 function drawSandboxGui() {
     _meshBuffer.enable(
-        Viewport.getModelViewMatrix(),
-        Viewport.getProjectionMatrix()
+        Viewport.getIdentityMatrix(),
+        Viewport.getScreenMatrix()
     );
 
     drawOutline(_screen);
