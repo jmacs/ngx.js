@@ -7,7 +7,8 @@ var STATE_STOP = 2;
 
 var _listeners = Object.create(null);
 var _noop = function(){};
-var _updateFunction = _noop;
+var _doUpdate = _noop;
+var _doDraw = _noop;
 var _actualFps = 0;
 var _targetFps = 0;
 var _skip = 0;
@@ -23,7 +24,7 @@ var _frameTimer = 1000;
 function start() {
     if (_state === STATE_STOP) {
 
-        trigger('GameClockRestarted');
+        triggerEvent('GameClockRestarted');
 
         _state = STATE_RUN;
 
@@ -37,12 +38,12 @@ function start() {
         _state = STATE_RUN;
 
         console.info('GameClockLoaded');
-        trigger('GameClockLoaded');
+        triggerEvent('GameClockLoaded');
 
         tick(0);
 
         console.info('GameClockStarted');
-        trigger('GameClockStarted');
+        triggerEvent('GameClockStarted');
 
     }
 }
@@ -72,19 +73,28 @@ function tick(now) {
     _then = now;
     _elapsed += _delta * 0.001;
 
-    _updateFunction(_delta);
+    _doUpdate(_delta);
+    _doDraw(_delta);
 }
 
-function trigger(event) {
+function triggerEvent(event, args) {
     var callbacks = _listeners[event] || [];
     for (var i = 0, l = callbacks.length; i < l; i++) {
-        callbacks[i]();
+        callbacks[i](args);
     }
 }
 
 function addEventListener(event, callback) {
     _listeners[event] = _listeners[event] || [];
     _listeners[event].push(callback);
+}
+
+function removeEventListener(event, callback) {
+    var callbacks = _listeners[event];
+    if (!callbacks) return;
+    var n = callbacks.indexOf(callback);
+    if (n === -1) return;
+    callbacks.splice(n, 1);
 }
 
 function stop() {
@@ -107,8 +117,12 @@ function elapsed() {
     return _elapsed;
 }
 
-function onTick(callback) {
-    _updateFunction = callback || _noop;
+function onUpdate(callback) {
+    _doUpdate = callback || _noop;
+}
+
+function onDraw(callback) {
+    _doDraw = callback || _noop;
 }
 
 module.exports = {
@@ -118,6 +132,9 @@ module.exports = {
     now: now,
     fps: fps,
     elapsed: elapsed,
-    onTick: onTick,
-    addEventListener: addEventListener
+    onUpdate: onUpdate,
+    onDraw: onDraw,
+    triggerEvent: triggerEvent,
+    addEventListener: addEventListener,
+    removeEventListener: removeEventListener
 };

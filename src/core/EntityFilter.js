@@ -21,15 +21,7 @@ class EntityFilter {
     }
 
     remove(entity) {
-        var len = this.__size;
-        var arr = this.__index;
-        if (!len) return false;
-        var n = this.__index.indexOf(entity.id);
-        while (n < len) {
-            arr[n] = arr[n+1];
-            n++
-        }
-        arr.length--;
+
     }
 
     filterOn(dataset) {

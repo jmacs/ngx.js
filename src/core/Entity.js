@@ -7,6 +7,7 @@ class Entity {
     constructor() {
         this.id = 0;
         this.ref = 0;
+        this.index = -1;
         this.prefab = null;
         this.position = [0.0, 0.0, 0.0];
         this.components = Object.create(null);

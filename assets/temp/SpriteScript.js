@@ -1,7 +1,7 @@
-var EntityManager = require('../../core/EntityManager');
-var SpriteBuffer = require('./../../graphics/SpriteBuffer');
-var Viewport = require('./../../graphics/Viewport');
-var ResourceManager = require('../../core/ResourceManager');
+var EntityManager = require('../../src/core/EntityManager');
+var SpriteBuffer = require('./../../src/graphics/SpriteBuffer');
+var Viewport = require('./../../src/graphics/Viewport');
+var ResourceManager = require('../../src/core/ResourceManager');
 
 var filter = null;
 var spriteBuffer = null;

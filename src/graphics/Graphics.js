@@ -1,6 +1,5 @@
 var gl = null;
 var canvas = null;
-var glClear;
 
 function getContext() {
     return gl;
@@ -21,16 +20,6 @@ function createContext(contextType, contextAttributes) {
         console.error('unable to create WebGL rendering context: %s', ex.message);
         return null;
     }
-}
-
-function setOptions(options) {
-    if (options.glClear) {
-        glClear = options.glClear;
-    }
-}
-
-function clear() {
-    gl.clear(glClear);
 }
 
 function addLineNumbers(src) {
@@ -93,8 +82,6 @@ function deleteTexture(texture) {
 }
 
 module.exports = {
-    clear: clear,
-    setOptions: setOptions,
     createContext: createContext,
     getContext: getContext,
     getCanvas: getCanvas,

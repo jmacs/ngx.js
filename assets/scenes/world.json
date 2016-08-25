@@ -6,10 +6,26 @@
     "Collisions",
     "Agents",
     "Animations",
-    "Cameras",
-    "Maps",
-    "Sprites",
-    "SandboxGui"
+    "WorldMap"
+  ],
+  "cameras": [
+    {
+      "name": "main",
+      "orthographic": true,
+      "backgroundColor": "0xB3EEFF",
+      "renderers": [
+        "MapRenderer",
+        "SpriteRenderer",
+        "MeshRenderer"
+      ]
+    },
+    {
+      "name": "screen",
+      "orthographic": true,
+      "renderers": [
+        "GuiRenderer"
+      ]
+    }
   ],
   "assets": {
     "script": [

@@ -1,15 +1,12 @@
 var Graphics = require('./Graphics.js');
-var Color = require('./Color.js');
+var Color = require('./Color');
 var {mat4} = require('gl-matrix');
 
-const DEFAULT_ZOOM = 500.0;
-const MAX_ZOOM = 100.0;
-const MIN_ZOOM = 0;
+const DEFAULT_ZOOM = 1;
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 
 var iMatrix = mat4.create();
-var sMatrix = mat4.create();
 var pMatrix = mat4.create();
 var vMatrix = mat4.create();
 var posX = 0.0;
@@ -25,16 +22,8 @@ var fov = 100;
 
 function initialize(options) {
     var gl = Graphics.getContext();
-    var color = Color.fromHex(0x75ffff);
 
-    Graphics.setOptions({
-        glClear: gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
-    });
 
-    gl.enable(gl.BLEND);
-    gl.clearColor(color.r, color.b, color.g, 1.0);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.enable(gl.BLEND);
 
     width = options.width || DEFAULT_WIDTH;
     height = options.height || DEFAULT_HEIGHT;
@@ -47,30 +36,24 @@ function initialize(options) {
     mat4.identity(iMatrix);
 
     // screen space
-    mat4.ortho(iMatrix, 0, width, 0, height, 0, 100);
-    mat4.scale(sMatrix, sMatrix, [1, -1, 1]); // flip y
+    //mat4.ortho(iMatrix, 0, width, 0, height, 0, 100);
+    //mat4.scale(iMatrix, iMatrix, [1, -1, 1]); // flip y
 
-    // projection
-    //mat4.perspective(pMatrix, 45, aspect, 0, fov); // works
+    // projection (screen space)
+    //mat4.perspective(pMatrix, 45, aspect, 0, 100); // works
     mat4.ortho(pMatrix, 0, width, 0, height, 0, 100);
-    //mat4.ortho(pMatrix, -1.0, 1.0, -1.0, 1.0, 0, 100);
-
     //ortho(out, left, right, bottom, top, near, far)
-
+    //pMatrix[5] = -pMatrix[5];
+    //mat4.scale(pMatrix, pMatrix, [-1, 1, 1]);
 
     isDirty = true;
     if (!canvas) {
-        zoomFactor = width;
         canvas = gl.canvas;
         document.body.appendChild(canvas);
     }
 
     //zoomTo(256);
     //lookAt(0, 0);
-}
-
-function getScreenMatrix() {
-    return sMatrix;
 }
 
 function getIdentityMatrix() {
@@ -116,12 +99,19 @@ function rotate(value) {
     rotationAngle += value;
     isDirty = true;
 }
+var arrayPos = [0, 0, 0];
+var arrayScale = [1, 1, 1];
 
 function transform() {
     if (!isDirty) return;
+    arrayPos[0] = -posX;
+    arrayPos[1] = -posY;
+    arrayScale[0] = zoomFactor;
+    arrayScale[1] = zoomFactor;
     mat4.identity(vMatrix);
-    mat4.translate(vMatrix, vMatrix, [-posX, -posY, 0]);
-    //mat4.rotateZ(vMatrix, vMatrix, rotationAngle);
+    mat4.translate(vMatrix, vMatrix, arrayPos);
+    mat4.scale(vMatrix, vMatrix, arrayScale);
+    mat4.rotateZ(vMatrix, vMatrix, rotationAngle);
     isDirty = false;
 }
 
@@ -144,7 +134,6 @@ module.exports = {
     rotate: rotate,
     initialize: initialize,
     transform: transform,
-    getScreenMatrix: getScreenMatrix,
     getIdentityMatrix: getIdentityMatrix,
     getProjectionMatrix: getProjectionMatrix,
     getModelViewMatrix: getModelViewMatrix

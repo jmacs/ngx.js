@@ -8,7 +8,7 @@ class SpriteComponent extends Component {
         this.width = 32;
         this.height = 32;
         this.tid = 0;
-        this.color = new Color();
+        this.color = Color.create();
     }
 
     hydrate(state) {

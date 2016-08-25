@@ -5,6 +5,7 @@ class Scene {
         this.name = options.name;
         this.assets = options.assets || {};
         this.scripts = options.scripts || [];
+        this.cameras = options.cameras || [];
     }
 
 }
