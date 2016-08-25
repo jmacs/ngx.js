@@ -31,6 +31,6 @@ function insertSpatialIndex(entity) {
 module.exports = {
     name: 'Collisions',
     SceneLoad: onSceneLoad,
-    SceneStop: onSceneUnload,
+    SceneUnload: onSceneUnload,
     SceneUpdate: onSceneUpdate
 };

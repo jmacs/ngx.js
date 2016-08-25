@@ -13,9 +13,7 @@ var CoroutineResource = require('./CoroutineResource');
 
 function initialize() {
 
-    SceneManager.setCompositor({
-        update: function() { }
-    });
+    SceneManager.initialize();
 
     ResourceManager.registerMediaLoaders([
         require('./TextLoader'),

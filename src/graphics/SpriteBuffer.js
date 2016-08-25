@@ -92,10 +92,10 @@ class SpriteBuffer {
         var x = position[0];
         var y = position[1];
 
-        var r = color.r;
-        var g = color.g;
-        var b = color.b;
-        var a = color.a;
+        var r = color[0];
+        var g = color[1];
+        var b = color[2];
+        var a = color[3];
 
         var v = this.array;
         var i = this.index * VERTEX_PER_SPRITE;

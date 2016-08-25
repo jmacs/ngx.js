@@ -1,12 +1,10 @@
 var GameClock = require('./GameClock');
 var ResourceManager = require('./ResourceManager');
-var EntityManager = require('./EntityManager');
 var ProcessManager = require('./ProcessManager');
 
 var i = 0, l = 0;
 var _scene = null;
 var _listeners = Object.create(null);
-var _compositor = null;
 var _lifecycle = {
     SceneLoad: [],
     SceneProcessInput: [],
@@ -16,6 +14,9 @@ var _lifecycle = {
     SceneUnload: []
 };
 
+function initialize() {
+    GameClock.onUpdate(onGameClockUpdate);
+}
 
 function resetScene() {
     _listeners = Object.create(null);
@@ -28,13 +29,14 @@ function resetScene() {
 }
 
 function loadScene() {
+    GameClock.triggerEvent('SceneLoad', _scene);
     l = _lifecycle.SceneLoad.length;
     for (i = 0; i < l; i++) {
         _lifecycle.SceneLoad[i](SceneManager);
     }
 }
 
-function onGameClockTick(delta) {
+function onGameClockUpdate(delta) {
 
     l = _lifecycle.SceneProcessInput.length;
     for (i = 0; i < l; i++) {
@@ -58,35 +60,27 @@ function onGameClockTick(delta) {
 
     // execute coroutines
     ProcessManager.update(delta);
-
-    // draw scene
-    _compositor.draw(delta);
 }
 
 
 function unloadScene() {
+    GameClock.triggerEvent('SceneUnload', _scene);
     l = _lifecycle.SceneLoad.length;
     for (i = 0; i < l; i++) {
         _lifecycle.SceneLoad[i](SceneManager);
     }
 }
 
+function onSceneAssetsDownloaded() {
+    for (var i = 0, l = _scene.scripts.length; i < l; i++) {
+        attachScript(_scene.scripts[i]);
+    }
+    loadScene();
+}
+
 //
 // Public Functions
 //
-
-function log() {
-    console.debug('scene: %o', _scene);
-    console.debug('listeners: %o', _listeners);
-}
-
-function getCompositor() {
-    return _compositor;
-}
-
-function setCompositor(value) {
-    _compositor = value;
-}
 
 function activateScene(id) {
     var scene = ResourceManager.get('scene', id);
@@ -99,21 +93,13 @@ function activateScene(id) {
     console.info('Loading scene "%s"', id);
 
     unloadScene();
+    resetScene();
 
     _scene = scene;
 
     return ResourceManager
         .download(scene.assets)
-        .then(onSceneLoaded);
-}
-
-function onSceneLoaded() {
-    resetScene();
-    for (var i = 0, l = _scene.scripts.length; i < l; i++) {
-        attachScript(_scene.scripts[i]);
-    }
-    loadScene();
-    GameClock.onTick(onGameClockTick);
+        .then(onSceneAssetsDownloaded);
 }
 
 function attachScript(scriptName) {
@@ -137,7 +123,8 @@ function addEventListener(event, callback) {
 
 function removeEventListener(event, callback) {
     if (_lifecycle[event]) {
-        _lifecycle[event].remove(callback);
+        var n = _lifecycle[event].indexOf(callback);
+        _lifecycle[event][n] = null;
         return;
     }
     _listeners = _listeners[event];
@@ -153,10 +140,15 @@ function triggerEvent(event, arg1, arg2, arg3) {
     }
 }
 
+function log() {
+    console.debug('scene: %o', _scene);
+    console.debug('lifecycle: %o', _lifecycle);
+    console.debug('listeners: %o', _listeners);
+}
+
 var SceneManager = {
     log: log,
-    getCompositor: getCompositor,
-    setCompositor: setCompositor,
+    initialize: initialize,
     activateScene: activateScene,
     attachScript: attachScript,
     detachScript: detachScript,

@@ -75,11 +75,6 @@ class Control {
         return this.__parent;
     }
 
-    setOrigin(value) {
-        this.__origin = value || 0;
-        this.invalidate();
-    }
-
     setParent(value) {
         if (value instanceof Control) {
             this.__parent = value;
@@ -87,6 +82,11 @@ class Control {
             return;
         }
         throw new Error('Parent must be an instance of Control');
+    }
+
+    setOrigin(value) {
+        this.__origin = value || 0;
+        this.invalidate();
     }
 
     setAspect(width, height) {
@@ -161,37 +161,37 @@ class Control {
             // MiddleLeft
             case 3:
                 this.__x = parent.left;
-                this.__y = parent.middle + height * 0.5;
+                this.__y = parent.middle - height * 0.5;
                 break;
 
             // MiddleCenter
             case 4:
                 this.__x = parent.center - width * 0.5;
-                this.__y = parent.middle + height * 0.5;
+                this.__y = parent.middle - height * 0.5;
                 break;
 
             // MiddleRight
             case 5:
-                this.__x = parent.center - width;
-                this.__y = parent.middle + height * 0.5;
+                this.__x = parent.right - width;
+                this.__y = parent.middle - height * 0.5;
                 break;
 
             // BottomLeft
             case 6:
                 this.__x = parent.left;
-                this.__y = parent.bottom + height;
+                this.__y = parent.bottom - height;
                 break;
 
             // BottomCenter
             case 7:
                 this.__x = parent.center - width * 0.5;
-                this.__y = parent.bottom + height;
+                this.__y = parent.bottom - height;
                 break;
 
             // BottomRight
             case 8:
                 this.__x = parent.right - width;
-                this.__y = parent.bottom + height;
+                this.__y = parent.bottom - height;
                 break;
 
             // TopLeft

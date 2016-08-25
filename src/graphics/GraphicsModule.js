@@ -1,8 +1,5 @@
 var ResourceManager = require('../core/ResourceManager');
-var SceneManager = require('../core/SceneManager');
-var Graphics = require('./Graphics');
-var Viewport = require('./Viewport');
-var Compositor = require('./Compositor');
+var GraphicsManager = require('./GraphicsManager');
 
 // resources
 var ShaderResource = require('./ShaderResource');
@@ -10,13 +7,11 @@ var TextureResource = require('./TextureResource');
 var AnimationResource = require('./AnimationResource');
 var TileResource = require('./TileResource');
 var GlyphResource = require('./GlyphResource');
+var RendererResource = require('./RendererResource');
 
 function initialize() {
-    Graphics.createContext('webgl');
 
-    SceneManager.setCompositor(Compositor);
-
-    Viewport.initialize({width: 1280, height: 720});
+    GraphicsManager.initialize();
 
     ResourceManager.registerMediaLoaders([
         require('./ShaderLoader')
@@ -27,7 +22,8 @@ function initialize() {
         new AnimationResource(),
         new TileResource(),
         new GlyphResource(),
-        new ShaderResource()
+        new ShaderResource(),
+        new RendererResource()
     ]);
 
     ResourceManager.getResource('component').register([
@@ -37,8 +33,12 @@ function initialize() {
 
     ResourceManager.getResource('script').register([
         require('./../game/scripts/AnimationScript'),
-        require('./../game/scripts/SpriteScript'),
-        require('./../game/scripts/DebugScript')
+        require('./../../assets/temp/SpriteScript'),
+        require('./../../assets/temp/DebugScript')
+    ]);
+
+    ResourceManager.getResource('renderer').register([
+        require('./SpriteRenderer')
     ]);
 
 }

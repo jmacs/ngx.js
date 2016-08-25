@@ -1,6 +1,7 @@
 var EntityFilter = require('./EntityFilter');
 
 var _entityIndex = Object.create(null);
+var _entityArray = [];
 var _entitiesLength = 0;
 var _filters = [];
 
@@ -25,6 +26,15 @@ function removeFilter(filter) {
 function clearFilters() {
     for (var i = 0, l = _filters.length; i < l; i++) {
         _filters[i].clear();
+    }
+}
+
+function query(predicate, callback) {
+    for (var i = 0; i < _entitiesLength; i++) {
+        var entity = _entityArray[i];
+        if (predicate(entity)) {
+            callback(entity);
+        }
     }
 }
 
@@ -81,5 +91,6 @@ module.exports = {
     addEntity: addEntity,
     removeEntity: removeEntity,
     count: count,
-    getEntity: getEntity
+    getEntity: getEntity,
+    query: query
 };

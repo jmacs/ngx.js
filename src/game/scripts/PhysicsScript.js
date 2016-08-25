@@ -42,6 +42,6 @@ function updatePhysics(entity, delta) {
 module.exports = {
     name: 'Physics',
     SceneLoad: onSceneLoad,
-    SceneStop: onSceneUnload,
+    SceneUnload: onSceneUnload,
     SceneUpdate: onSceneUpdate
 };

@@ -47,7 +47,7 @@ class WorldMap {
         return this.__cells[x][y];
     }
 
-    selectCells(min, max, callback) {
+    selectCells(min, max, callback, self) {
         var minX = min[0] >> CELL_SHIFT;
         var minY = min[1] >> CELL_SHIFT;
         var maxX = Math.min(this.__width-1, max[0] >> CELL_SHIFT);
@@ -58,7 +58,7 @@ class WorldMap {
             for (var y = minY; y < maxY; y++) {
                 var cell = cells[x][y];
                 if (cell.occupied) {
-                    callback(cells[x][y]);
+                    callback(cells[x][y], self);
                 }
             }
         }

@@ -1,6 +1,6 @@
-var GuiManager = require('../../gui/GuiManager');
-var MeshBuffer = require('../../graphics/MeshBuffer');
-var Viewport = require('../../graphics/Viewport');
+var GuiManager = require('../../src/gui/GuiManager');
+var MeshBuffer = require('../../src/graphics/MeshBuffer');
+var Viewport = require('../../src/graphics/Viewport');
 
 var _screen;
 var _meshBuffer;
@@ -22,7 +22,7 @@ function onSceneUnload() {
 
 function drawSandboxGui() {
     _meshBuffer.enable(
-        Viewport.getModelViewMatrix(),
+        Viewport.getIdentityMatrix(),
         Viewport.getProjectionMatrix()
     );
 

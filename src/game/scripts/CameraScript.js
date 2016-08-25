@@ -33,11 +33,11 @@ function onSceneUpdate() {
     }
 
     if (state.keys[90]) { // z
-        Viewport.zoom(1);
+        Viewport.zoom(0.01);
     }
 
     if (state.keys[88]) { // x
-        Viewport.zoom(-1);
+        Viewport.zoom(-0.01);
     }
 
     if (state.keys[81]) { // q
@@ -54,6 +54,6 @@ function onSceneUpdate() {
 module.exports = {
     name: 'Cameras',
     SceneLoad: onSceneLoad,
-    SceneStop: onSceneUnload,
+    SceneUnload: onSceneUnload,
     SceneUpdate: onSceneUpdate
 };

@@ -2,6 +2,7 @@
 class Resource {
 
     constructor() {
+        this.current = null;
         this.__cache = Object.create(null);
     }
 

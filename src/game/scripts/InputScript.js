@@ -63,6 +63,6 @@ function updateInput(entity, delta) {
 module.exports = {
     name: 'Inputs',
     SceneLoad: onSceneLoad,
-    SceneStop: onSceneUnload,
+    SceneUnload: onSceneUnload,
     SceneProcessInput: onSceneProcessInput
 };

@@ -11,6 +11,10 @@ function initialize() {
         new GuiResource()
     ]);
 
+    ResourceManager.getResource('renderer').register([
+        require('./GuiRenderer')
+    ]);
+
 }
 
 module.exports = {

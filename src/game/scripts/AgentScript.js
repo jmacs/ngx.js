@@ -58,6 +58,6 @@ function isInActivationRange(entity) {
 module.exports = {
     name: 'Agents',
     SceneLoad: onSceneLoad,
-    SceneStop: onSceneUnload,
+    SceneUnload: onSceneUnload,
     SceneUpdate: onSceneUpdate
 };

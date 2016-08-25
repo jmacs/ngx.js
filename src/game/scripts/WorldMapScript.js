@@ -1,50 +1,8 @@
 var SceneManager = require('../../core/SceneManager');
 var ResourceManager = require('../../core/ResourceManager');
-var SpriteBuffer = require('../../graphics/SpriteBuffer');
-var Viewport = require('../../graphics/Viewport');
-var Color = require('../../graphics/Color');
 var EntityFactory = require('./../../world/maps/EntityFactory');
 
-const CELL_SIZE = 16;
-
-var _color = new Color();
 var _map = null;
-var _spriteBuffer = null;
-var _cameraMin = [0,0];
-var _cameraMax = [1000, 1000];
-
-function onSceneLoad(scene) {
-    scene.getCompositor().addLayer(0, drawWorldMapLayer);
-    _spriteBuffer = SpriteBuffer.createBuffer(0);
-}
-
-function onSceneUnload() {
-    _map = null;
-    _spriteBuffer = null;
-}
-
-function drawWorldMapLayer() {
-    if (!_map) return;
-
-    _spriteBuffer.enable(
-        Viewport.getModelViewMatrix(),
-        Viewport.getProjectionMatrix()
-    );
-
-    _map.selectCells(_cameraMin, _cameraMax, drawCell);
-
-    _spriteBuffer.flush();
-}
-
-function drawCell(cell) {
-    _spriteBuffer.draw(
-        cell.position,
-        CELL_SIZE,
-        CELL_SIZE,
-        cell.tile0,
-        _color
-    );
-}
 
 function onLoadMap(e) {
     console.info('Loading map "%s"', e.map);
@@ -60,22 +18,20 @@ function onLoadMap(e) {
 }
 
 function populateScene(map) {
-    _map = map;
-    attachScripts();
+    attachScripts(map);
     EntityFactory.createEntities(map.entities);
     SceneManager.triggerEvent('MapLoaded', map);
+    ResourceManager.getResource('map').current = map;
 }
 
-function attachScripts() {
-    if (!_map.scripts) return;
-    for (var i = 0, l = _map.scripts.length; i < l; i++) {
-        SceneManager.attachScript(_map.scripts[i])
+function attachScripts(map) {
+    if (!map.scripts) return;
+    for (var i = 0, l = map.scripts.length; i < l; i++) {
+        SceneManager.attachScript(map.scripts[i])
     }
 }
 
 module.exports = {
-    name: 'Maps',
-    SceneLoad: onSceneLoad,
-    SceneStop: onSceneUnload,
+    name: 'WorldMap',
     LoadMap: onLoadMap
 };

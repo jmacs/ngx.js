@@ -46,6 +46,6 @@ function tickAnimation(entity, delta) {
 module.exports = {
     name: 'Animations',
     SceneLoad: onSceneLoad,
-    SceneStop: onSceneUnload,
+    SceneUnload: onSceneUnload,
     SceneAfterUpdate: onSceneAfterUpdate
 };

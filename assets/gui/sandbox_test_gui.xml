@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gui name="test" script="SandboxGui">
-    <panel origin="1" x="10" y="10" width="0.3" height="0.3">
-        <button origin="Center" x="5" y="5" width="0.1" height="0.1"
-                onClick="onOkButtonClicked" />
+    <panel origin="TopLeft" x="10" y="10" width="0.3" height="0.8">
+        <button origin="BottomRight" x="-5" y="-5" width="0.4" height="0.2" onClick="onOkButtonClicked" />
     </panel>
-    <panel origin="8" x="10" y="10" width="0.5" height="0.2">
-        <button x="5" y="5" width="0.1" height="0.1" />
+    <panel origin="TopRight" x="-10" y="10" width="0.2" height="0.2">
+        <button origin="TopLeft" x="5" y="5" width="0.1" height="0.1" />
     </panel>
 </gui>
