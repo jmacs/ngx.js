@@ -6,7 +6,8 @@
     "Collisions",
     "Agents",
     "Animations",
-    "WorldMap"
+    "WorldMap",
+    "MainCamera"
   ],
   "cameras": [
     {

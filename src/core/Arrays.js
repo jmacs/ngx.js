@@ -1,3 +1,4 @@
+//todo: remove all references to these functions
 
 Array.prototype.removeAt = function(index) {
     var arr = this;

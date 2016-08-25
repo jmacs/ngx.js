@@ -29,11 +29,11 @@ function clearFilters() {
     }
 }
 
-function query(predicate, callback) {
+function query(predicate, callback, self) {
     for (var i = 0; i < _entitiesLength; i++) {
         var entity = _entityArray[i];
         if (predicate(entity)) {
-            callback(entity);
+            callback(entity, self);
         }
     }
 }

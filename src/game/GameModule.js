@@ -5,6 +5,7 @@ var SceneManager = require('../core/SceneManager');
 var InputManager = require('../input/InputManager');
 var ProcessManager = require('../core/ProcessManager');
 var GuiManager = require('../gui/GuiManager');
+var GraphicsManager = require('../graphics/GraphicsManager');
 
 var GlobalAssets = {
     config: [
@@ -35,6 +36,7 @@ bootstrap.globals = function() {
     window.entity = EntityManager;
     window.process = ProcessManager;
     window.gui = GuiManager;
+    window.graphics = GraphicsManager;
 };
 
 bootstrap.input = function() {

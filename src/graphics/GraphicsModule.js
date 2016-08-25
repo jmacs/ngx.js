@@ -32,7 +32,7 @@ function initialize() {
     ]);
 
     ResourceManager.getResource('script').register([
-        require('./../game/scripts/AnimationScript'),
+        require('./../game/scripts/Animations'),
         require('./../../assets/temp/SpriteScript'),
         require('./../../assets/temp/DebugScript')
     ]);

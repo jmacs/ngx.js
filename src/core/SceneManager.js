@@ -2,7 +2,6 @@ var GameClock = require('./GameClock');
 var ResourceManager = require('./ResourceManager');
 var ProcessManager = require('./ProcessManager');
 
-var i = 0, l = 0;
 var _scene = null;
 var _listeners = Object.create(null);
 var _lifecycle = {
@@ -30,13 +29,14 @@ function resetScene() {
 
 function loadScene() {
     GameClock.triggerEvent('SceneLoad', _scene);
-    l = _lifecycle.SceneLoad.length;
-    for (i = 0; i < l; i++) {
+    var l = _lifecycle.SceneLoad.length;
+    for (var i = 0; i < l; i++) {
         _lifecycle.SceneLoad[i](SceneManager);
     }
 }
 
 function onGameClockUpdate(delta) {
+    var i, l;
 
     l = _lifecycle.SceneProcessInput.length;
     for (i = 0; i < l; i++) {
@@ -65,8 +65,8 @@ function onGameClockUpdate(delta) {
 
 function unloadScene() {
     GameClock.triggerEvent('SceneUnload', _scene);
-    l = _lifecycle.SceneLoad.length;
-    for (i = 0; i < l; i++) {
+    var l = _lifecycle.SceneLoad.length;
+    for (var i = 0; i < l; i++) {
         _lifecycle.SceneLoad[i](SceneManager);
     }
 }

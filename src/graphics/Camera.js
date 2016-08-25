@@ -62,6 +62,11 @@ class Camera {
         this.__farClipPlane = far;
     }
 
+    enableRenderer(index) {
+        if (index >= this.__renderersLength) return;
+        this.__renderers[index].enabled = true;
+    }
+
     disableRenderer(index) {
         if (index >= this.__renderersLength) return;
         this.__renderers[index].enabled = false;
@@ -87,9 +92,10 @@ class Camera {
             );
         }
         mat4.identity(this.__worldMatrix);
+        this.__dirty = true;
     }
 
-    update() {
+    transform() {
         if (!this.__dirty) return;
         var world = this.__worldMatrix;
         mat4.identity(world);
@@ -116,9 +122,20 @@ class Camera {
         this.__dirty = true;
     }
 
+    setScale(x, y) {
+        this.__cameraScale[0] = x;
+        this.__cameraScale[1] = y;
+        this.__dirty = true;
+    }
+
+    setRotation(value) {
+        this.__cameraRotation = value;
+        this.__dirty = true;
+    }
+
     pan(x, y) {
-        this.__cameraPosition[0] += x;
-        this.__cameraPosition[1] += y;
+        this.__cameraPosition[0] -= x;
+        this.__cameraPosition[1] -= y;
         this.__dirty = true;
     }
 
@@ -130,6 +147,7 @@ class Camera {
 
     rotate(value) {
         this.__cameraRotation += value;
+        this.__dirty = true;
     }
 
 }
