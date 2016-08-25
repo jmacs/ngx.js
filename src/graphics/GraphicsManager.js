@@ -6,9 +6,9 @@ var Camera = require('./Camera');
 var gl = null;
 var _canvas = null;
 var _glClearFlags;
-var _cameras = [];
 var _renderers = [];
 var _renderersLength = 0;
+var _cameras = Object.create(null);
 
 function initialize() {
 
@@ -47,7 +47,7 @@ function onSceneLoad(scene) {
             name: sceneCamera.name,
             width: gl.canvas.width,
             height: gl.canvas.height,
-            depth: 0,
+            depth: i,
             backgroundColor: sceneCamera.backgroundColor,
             orthographic: sceneCamera.orthographic,
             renderers: sceneCamera.renderers
@@ -65,6 +65,8 @@ function onSceneLoad(scene) {
             var renderer = renderers[j];
             _renderers.push(renderer);
         }
+
+        _cameras[camera.name] = camera;
     }
 
     _renderersLength = _renderers.length;
@@ -74,7 +76,7 @@ function onSceneUnload() {
     for (var i = 0; i < _renderersLength; i++) {
         _renderers[i].dispose();
     }
-    _cameras.length = 0;
+    _cameras = Object.create(null);
     _renderers.length = 0;
     _renderersLength = 0;
 }
@@ -97,6 +99,7 @@ function log() {
 }
 
 module.exports = {
+    cameras: _cameras,
     initialize: initialize,
     log: log
 };

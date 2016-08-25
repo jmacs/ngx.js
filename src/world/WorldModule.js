@@ -15,6 +15,10 @@ function initialize() {
         require('./collision/BoxComponent')
     ]);
 
+    ResourceManager.getResource('renderer').register([
+       require('./maps/WorldMapRenderer')
+    ]);
+
 }
 
 module.exports = {

@@ -1,12 +1,14 @@
 var ResourceManager = require('../core/ResourceManager');
 var ControlFactory = require('./ControlFactory');
 var Screen = require('./Screen');
-var Viewport = require('../graphics/Viewport');
+var Graphics = require('../graphics/Graphics');
 
 var _screen = new Screen();
 
 function loadGui(name) {
-    _screen.setViewportSize(Viewport.getWidth(), Viewport.getHeight());
+    var canvas = Graphics.getCanvas();
+
+    _screen.setViewportSize(canvas.width, canvas.height);
 
     var gui = ResourceManager.get('gui', name);
     var root = gui.children.length && gui.children[0];
@@ -19,10 +21,6 @@ function loadGui(name) {
     _screen.update();
 
     return _screen;
-}
-
-function render() {
-
 }
 
 function log() {

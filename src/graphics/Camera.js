@@ -86,6 +86,7 @@ class Camera {
                 this.__farClipPlane
             );
         }
+        mat4.identity(this.__worldMatrix);
     }
 
     update() {

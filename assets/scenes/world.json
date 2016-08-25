@@ -14,13 +14,12 @@
       "orthographic": true,
       "backgroundColor": "0xB3EEFF",
       "renderers": [
-        "MapRenderer",
-        "SpriteRenderer",
-        "MeshRenderer"
+        "WorldMapRenderer",
+        "SpriteRenderer"
       ]
     },
     {
-      "name": "screen",
+      "name": "gui",
       "orthographic": true,
       "renderers": [
         "GuiRenderer"

@@ -18,16 +18,16 @@ function onLoadMap(e) {
 }
 
 function populateScene(map) {
-    _map = map;
-    attachScripts();
+    attachScripts(map);
     EntityFactory.createEntities(map.entities);
     SceneManager.triggerEvent('MapLoaded', map);
+    ResourceManager.getResource('map').current = map;
 }
 
-function attachScripts() {
-    if (!_map.scripts) return;
-    for (var i = 0, l = _map.scripts.length; i < l; i++) {
-        SceneManager.attachScript(_map.scripts[i])
+function attachScripts(map) {
+    if (!map.scripts) return;
+    for (var i = 0, l = map.scripts.length; i < l; i++) {
+        SceneManager.attachScript(map.scripts[i])
     }
 }
 

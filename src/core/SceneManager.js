@@ -71,6 +71,13 @@ function unloadScene() {
     }
 }
 
+function onSceneAssetsDownloaded() {
+    for (var i = 0, l = _scene.scripts.length; i < l; i++) {
+        attachScript(_scene.scripts[i]);
+    }
+    loadScene();
+}
+
 //
 // Public Functions
 //
@@ -86,20 +93,13 @@ function activateScene(id) {
     console.info('Loading scene "%s"', id);
 
     unloadScene();
+    resetScene();
 
     _scene = scene;
 
     return ResourceManager
         .download(scene.assets)
-        .then(onSceneLoaded);
-}
-
-function onSceneLoaded() {
-    resetScene();
-    for (var i = 0, l = _scene.scripts.length; i < l; i++) {
-        attachScript(_scene.scripts[i]);
-    }
-    loadScene();
+        .then(onSceneAssetsDownloaded);
 }
 
 function attachScript(scriptName) {
@@ -123,7 +123,8 @@ function addEventListener(event, callback) {
 
 function removeEventListener(event, callback) {
     if (_lifecycle[event]) {
-        _lifecycle[event].remove(callback);
+        var n = _lifecycle[event].indexOf(callback);
+        _lifecycle[event][n] = null;
         return;
     }
     _listeners = _listeners[event];
