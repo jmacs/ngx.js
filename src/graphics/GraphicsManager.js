@@ -1,7 +1,9 @@
 var GameClock = require('../core/GameClock');
+var ResourceManager = require('../core/ResourceManager');
 var Graphics = require('./Graphics');
 var Color = require('./Color');
 var Camera = require('./Camera');
+var CameraRenderer = require('./CameraRenderer');
 
 var gl = null;
 var _canvas = null;
@@ -9,8 +11,6 @@ var _glClearFlags;
 var _renderers = [];
 var _renderersLength = 0;
 var _cameras = Object.create(null);
-var _cameraArray = [];
-var _cameraLength = 0;
 
 function initialize() {
 
@@ -40,6 +40,7 @@ function initialize() {
 }
 
 function onSceneLoad(scene) {
+    var renderers = ResourceManager.getResource('renderer');
 
     // create cameras
     for (var i = 0, l = scene.cameras.length; i < l; i++) {
@@ -51,8 +52,7 @@ function onSceneLoad(scene) {
             height: gl.canvas.height,
             depth: i,
             backgroundColor: sceneCamera.backgroundColor,
-            orthographic: sceneCamera.orthographic,
-            renderers: sceneCamera.renderers
+            orthographic: sceneCamera.orthographic
         });
 
         if (camera.name === 'main') {
@@ -60,19 +60,24 @@ function onSceneLoad(scene) {
             gl.clearColor(bclr[0], bclr[1], bclr[2], 1.0);
         }
 
-        // build render stack
-        var renderers = camera.renderers;
+        var rendererTypes = sceneCamera.renderers;
 
-        for (var j = 0, m = renderers.length; j < m; j++) {
-            var renderer = renderers[j];
-            _renderers.push(renderer);
+        for (var j = 0, m = rendererTypes.length; j < m; j++) {
+            var Renderer = renderers.get(rendererTypes[j]);
+            if (!Renderer) {
+                console.error('Unknown renderer "%s" in camera "%s"', rendererTypes[j], camera.name);
+                continue;
+            }
+            pushRenderer(Renderer, camera);
         }
 
         _cameras[camera.name] = camera;
-        _cameraArray.push(camera);
     }
+}
 
-    _cameraLength = _cameraArray.length;
+function pushRenderer(Renderer, camera) {
+    var renderer = new Renderer(camera);
+    _renderers.push(renderer);
     _renderersLength = _renderers.length;
 }
 
@@ -81,30 +86,14 @@ function onSceneUnload() {
         _renderers[i].dispose();
     }
     _cameras = Object.create(null);
-    _cameraLength = 0;
-    _cameraArray.length = 0;
     _renderers.length = 0;
     _renderersLength = 0;
 }
 
 function onGameClockDraw(delta) {
-    gl.clear(_glClearFlags);
-    var i;
-
-    // todo: use glClear glScissor and glViewport on each camera pass
-
-    for (i = 0; i < _cameraLength; i++) {
-        _cameraArray[i].transform();
-
+    for (var i = 0; i < _renderersLength; i++) {
+        _renderers[i].draw(delta);
     }
-
-    for (i = 0; i < _renderersLength; i++) {
-        var renderer = _renderers[i];
-        if (renderer.enabled) {
-            renderer.draw(delta);
-        }
-    }
-
 }
 
 function getCamera(name) {
@@ -113,7 +102,7 @@ function getCamera(name) {
 
 function log() {
     console.log('cameras: %o', _cameras);
-    console.log('renderers: %o', _renderers);
+    console.log('commands: %o', _renderers);
 }
 
 module.exports = {

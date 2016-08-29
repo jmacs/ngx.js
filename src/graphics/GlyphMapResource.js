@@ -8,7 +8,7 @@ class GlyphResource extends Resource {
     }
 
     getResourceType() {
-        return 'glyph';
+        return 'glyphmap';
     }
 
     onAssetDownloaded(payload, asset) {

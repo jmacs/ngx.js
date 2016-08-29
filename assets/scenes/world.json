@@ -15,6 +15,7 @@
       "orthographic": true,
       "backgroundColor": "0xB3EEFF",
       "renderers": [
+        "CameraRenderer",
         "WorldMapRenderer",
         "SpriteRenderer"
       ]
@@ -23,6 +24,7 @@
       "name": "gui",
       "orthographic": true,
       "renderers": [
+        "CameraRenderer",
         "GuiRenderer"
       ]
     }
@@ -39,7 +41,7 @@
       "assets/textures/bisasam_font.png",
       "assets/textures/smb3.png"
     ],
-    "glyph": [
+    "glyphmap": [
       "assets/glyphs/bisasam.json"
     ],
     "tile": [

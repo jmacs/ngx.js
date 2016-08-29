@@ -3,7 +3,7 @@ const Viewport = require('../../src/graphics/Viewport.js');
 const LineBuilder = require('../../src/graphics/LineBuilder.js');
 const LineBuffer = require('../../src/graphics/MeshBuffer.js');
 const SpriteBuffer = require('../../src/graphics/SpriteBuffer');
-const Glyphic = require('../../src/graphics/Glyphic');
+const Glyphic = require('../../src/graphics/GlyphString');
 const GlyphRenderer = require('./../../src/graphics/GlyphRenderer');
 const Color = require('../../src/graphics/Color');
 

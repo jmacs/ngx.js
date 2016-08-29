@@ -1,5 +1,5 @@
 var Control = require('./../../gui/Control');
-var Glyphic = require('./../../graphics/Glyphic');
+var Glyphic = require('./../../graphics/GlyphString');
 
 class Text extends Control {
 

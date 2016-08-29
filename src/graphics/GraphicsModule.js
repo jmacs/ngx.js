@@ -6,7 +6,7 @@ var ShaderResource = require('./ShaderResource');
 var TextureResource = require('./TextureResource');
 var AnimationResource = require('./AnimationResource');
 var TileResource = require('./TileResource');
-var GlyphResource = require('./GlyphResource');
+var GlyphResource = require('./GlyphMapResource');
 var RendererResource = require('./RendererResource');
 
 function initialize() {
@@ -32,12 +32,11 @@ function initialize() {
     ]);
 
     ResourceManager.getResource('script').register([
-        require('./../game/scripts/Animations'),
-        require('./../../assets/temp/SpriteScript'),
-        require('./../../assets/temp/DebugScript')
+        require('./../game/scripts/Animations')
     ]);
 
     ResourceManager.getResource('renderer').register([
+        require('./CameraRenderer'),
         require('./SpriteRenderer')
     ]);
 

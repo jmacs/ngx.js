@@ -3,6 +3,7 @@ var EntityManager = require('../core/EntityManager');
 var EntityFilter = require('../core/EntityFilter');
 var SpriteBuffer = require('./SpriteBuffer');
 var Renderer = require('./Renderer');
+var Glyphic = require('./Glyphic');
 
 class SpriteRenderer extends Renderer {
 
@@ -11,6 +12,8 @@ class SpriteRenderer extends Renderer {
         this.__camera = camera;
         this.__tiles = ResourceManager.getResource('tile');
         this.__spriteBuffer = SpriteBuffer.createBuffer(0);
+        this.__temp = new Glyphic('bisasam', 11);
+        this.__temp.setString('hello world');
         this.__filter = EntityManager.createFilter('SpriteRenderer', function(entity) {
             return entity.components.sprite;
         });
@@ -26,6 +29,8 @@ class SpriteRenderer extends Renderer {
         );
 
         this.__filter.each(this.__drawSprite, this);
+
+        this.__temp.draw(buffer);
 
         buffer.flush();
     }

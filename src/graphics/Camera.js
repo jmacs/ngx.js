@@ -11,8 +11,6 @@ class Camera {
         this.__aspect = 0;
         this.__backgroundColor = Color.create();
         this.__clearFlags = 0;
-        this.__renderers = [];
-        this.__renderersLength = 0;
         this.__depth = 0;
         this.__fieldOfView = 100;
         this.__nearClipPlane = 0;
@@ -105,17 +103,6 @@ class Camera {
         this.__dirty = false;
     }
 
-    draw() {
-        var renderers = this.__renderers;
-        var length = this.__renderersLength;
-        for (var i = 0; i < length; i++) {
-            var renderer = renderers[i];
-            if (renderer.enabled) {
-                renderers[i].draw(this);
-            }
-        }
-    }
-
     setPosition(x, y) {
         this.__cameraPosition[0] = x;
         this.__cameraPosition[1] = y;
@@ -174,23 +161,6 @@ Camera.create = function(options) {
     camera.__cameraScale[1] = options.scaleY || 1.0;
     camera.__cameraPosition[0] = options.x || 0.0;
     camera.__cameraPosition[1] = options.y || 0.0;
-
-    if (!options.renderers) {
-        throw new Error('Camera has no renderers defined: ' + camera.name);
-    }
-
-    var renderers = ResourceManager.getResource('renderer');
-    var rendererTypes = options.renderers;
-
-    for (var i = 0, l = rendererTypes.length; i < l; i++) {
-        var RendererType = renderers.get(rendererTypes[i]);
-        if (!RendererType) {
-            console.error('Unknown renderer "%s"', rendererTypes[i]);
-            continue;
-        }
-        camera.__renderers.push(new RendererType(camera));
-    }
-    camera.__renderersLength = camera.__renderers.length;
 
     if (options.backgroundColor instanceof String) {
         backgroundColor = parseInt(options.backgroundColor) || 0;

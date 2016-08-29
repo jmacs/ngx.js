@@ -33,9 +33,14 @@ function sizeOf(object){
                     // determine whether the value has already been processed
                     var processed = false;
                     for (var search = 0; search < objects.length; search ++){
-                        if (objects[search] === objects[index][key]){
+                        try {
+                            if (objects[search] === objects[index][key]){
+                                processed = true;
+                                break;
+                            }
+                        } catch(err) {
                             processed = true;
-                            break;
+                            continue;
                         }
                     }
 

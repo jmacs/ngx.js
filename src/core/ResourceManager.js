@@ -1,4 +1,4 @@
-var Profiler = require('./Profiler');
+var ObjectProfiler = require('./ObjectProfiler');
 
 var _mediaLoaders = Object.create(null);
 var _resources = Object.create(null);
@@ -94,7 +94,7 @@ function getResource(resourceName) {
 }
 
 function log() {
-    console.log('bytes: %s', Profiler.sizeOf(_resources));
+    console.log('bytes: %s', ObjectProfiler.sizeOf(_resources));
     console.log('resources: %o', _resources);
 }
 
