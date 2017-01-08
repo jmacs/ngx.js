@@ -1,4 +1,3 @@
-var GameClock = require('../core/GameClock');
 var MouseState = require('./MouseState');
 
 var _mouse;

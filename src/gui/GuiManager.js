@@ -1,6 +1,6 @@
 var ResourceManager = require('../core/ResourceManager');
-var ControlFactory = require('./ControlFactory');
-var Screen = require('./Screen');
+var ControlFactory = require('./../SceneGraphFactory');
+var Screen = require('././Screen');
 var Graphics = require('../graphics/Graphics');
 
 var _screen = new Screen();

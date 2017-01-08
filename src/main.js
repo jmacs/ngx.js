@@ -1,21 +1,22 @@
-var GameClock = require('./core/GameClock');
-var CoreModule = require('./core/CoreModule');
-var GraphicsModule = require('./graphics/GraphicsModule');
-var InputModule = require('./input/InputModule');
-var WorldModule = require('./world/WorldModule');
-var GuiModule = require('./gui/GuiModule');
-var GameModule = require('./game/GameModule');
+const Runtime = require('./core/Runtime');
+
+Runtime.include([
+
+    require('./composition/Module'),
+    require('./graphics/Module'),
+    require('./input/Module'),
+    require('./audio/Module'),
+
+    require('./physics/Module'),
+    require('./gui/Module'),
+    require('./multitasking/Module'),
+    require('./actors/Module'),
+    require('./maps/Module'),
+
+    require('./temp/Module')
+]);
 
 document.addEventListener('DOMContentLoaded', function() {
     console.info('DOMContentLoaded');
-    GameClock.start();
-});
-
-GameClock.addEventListener('GameClockLoaded', function() {
-    CoreModule.initialize();
-    GraphicsModule.initialize();
-    InputModule.initialize();
-    WorldModule.initialize();
-    GuiModule.initialize();
-    GameModule.initialize();
+    Runtime.start();
 });

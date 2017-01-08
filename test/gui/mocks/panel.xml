@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gui name="layout" controller="SandboxGui">
-    <panel origin="1" x="10" y="10" width="0.3" height="0.3">
-        <button name="ok_button" origin="Center" x="5" y="5" width="0.1" height="0.1" onClick="onOkButtonClicked" />
-    </panel>
-</gui>

@@ -13,7 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "gl-matrix": "^2.3.2"
+    "gl-matrix": "^2.3.2",
+    "http-server": "^0.8.5",
+    "webpack": "^1.14.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -21,6 +23,7 @@
     "json-loader": "^0.5.4",
     "mocha": "^2.5.3",
     "raw-loader": "^0.5.1",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "xmldom": "^0.1.22"
   }
 }

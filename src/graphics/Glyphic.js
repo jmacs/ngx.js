@@ -64,6 +64,11 @@ class Glyphic {
         this.__dirty = true;
     }
 
+    setPosition(x, y) {
+        this.__x = ~~x;
+        this.__y = ~~y;
+        this.__dirty = true;
+    }
     setGlyphMap(glyphMapName) {
         this.__glyphmap = ResourceManager.get('glyphmap', glyphMapName);
         this.__dirty = true;

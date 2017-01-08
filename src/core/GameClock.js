@@ -1,14 +1,11 @@
-var DEFAULT_FPS = 60;
-var DEFAULT_SKIP_MS = 166;
+const DEFAULT_FPS = 60;
+const DEFAULT_SKIP_MS = 166;
+const STATE_NEW = 0;
+const STATE_RUN = 1;
+const STATE_STOP = 2;
+const NOOP = function(){};
 
-var STATE_NEW = 0;
-var STATE_RUN = 1;
-var STATE_STOP = 2;
-
-var _listeners = Object.create(null);
-var _noop = function(){};
-var _doUpdate = _noop;
-var _doDraw = _noop;
+var _onTick = NOOP;
 var _actualFps = 0;
 var _targetFps = 0;
 var _skip = 0;
@@ -24,10 +21,7 @@ var _frameTimer = 1000;
 function start() {
     if (_state === STATE_STOP) {
 
-        triggerEvent('GameClockRestarted');
-
         _state = STATE_RUN;
-
         tick(0);
 
     } else if (_state === STATE_NEW) {
@@ -37,14 +31,7 @@ function start() {
         _interval = 1000 / _targetFps;
         _state = STATE_RUN;
 
-        console.info('GameClockLoaded');
-        triggerEvent('GameClockLoaded');
-
         tick(0);
-
-        console.info('GameClockStarted');
-        triggerEvent('GameClockStarted');
-
     }
 }
 
@@ -73,28 +60,7 @@ function tick(now) {
     _then = now;
     _elapsed += _delta * 0.001;
 
-    _doUpdate(_delta);
-    _doDraw(_delta);
-}
-
-function triggerEvent(event, args) {
-    var callbacks = _listeners[event] || [];
-    for (var i = 0, l = callbacks.length; i < l; i++) {
-        callbacks[i](args);
-    }
-}
-
-function addEventListener(event, callback) {
-    _listeners[event] = _listeners[event] || [];
-    _listeners[event].push(callback);
-}
-
-function removeEventListener(event, callback) {
-    var callbacks = _listeners[event];
-    if (!callbacks) return;
-    var n = callbacks.indexOf(callback);
-    if (n === -1) return;
-    callbacks.splice(n, 1);
+    _onTick(_delta);
 }
 
 function stop() {
@@ -117,12 +83,8 @@ function elapsed() {
     return _elapsed;
 }
 
-function onUpdate(callback) {
-    _doUpdate = callback || _noop;
-}
-
-function onDraw(callback) {
-    _doDraw = callback || _noop;
+function onTick(callback) {
+    _onTick = callback || NOOP;
 }
 
 module.exports = {
@@ -132,9 +94,5 @@ module.exports = {
     now: now,
     fps: fps,
     elapsed: elapsed,
-    onUpdate: onUpdate,
-    onDraw: onDraw,
-    triggerEvent: triggerEvent,
-    addEventListener: addEventListener,
-    removeEventListener: removeEventListener
+    onTick: onTick
 };

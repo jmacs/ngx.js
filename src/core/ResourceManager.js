@@ -1,4 +1,4 @@
-var ObjectProfiler = require('./ObjectProfiler');
+var ObjectProfiler = require('././ObjectProfiler');
 
 var _mediaLoaders = Object.create(null);
 var _resources = Object.create(null);

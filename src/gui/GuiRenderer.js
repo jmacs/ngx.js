@@ -1,28 +1,46 @@
 var MeshBuffer = require('../graphics/MeshBuffer');
+var SpriteBuffer = require('../graphics/SpriteBuffer');
 var Renderer = require('../graphics/Renderer');
 var GuiManager = require('./GuiManager');
+var Glyphic = require('../graphics/Glyphic');
 
 class GuiRenderer extends Renderer {
 
     constructor(camera) {
         super();
         this.__camera = camera;
+        this.__spriteBuffer = SpriteBuffer.createBuffer(0);
         this.__meshBuffer = MeshBuffer.createBuffer(0);
+        this.__temp = new Glyphic('bisasam', 9);
+        this.__temp.setString('gui debug');
+        this.__temp.setPosition(10, 400);
+        this.__temp.setColor(1,1,1,0);
         // todo: don't hardcode gui here
         this.__screen = GuiManager.loadGui('assets/gui/sandbox_test_gui.xml');
     }
 
     draw() {
-        var buffer = this.__meshBuffer;
+        var mbuffer = this.__meshBuffer;
 
-        buffer.enable(
+        mbuffer.enable(
             this.__camera.worldMatrix,
             this.__camera.projectionMatrix
         );
 
         this.__drawOutline(this.__screen);
 
-        buffer.flush();
+        mbuffer.flush();
+
+        var sbuffer = this.__spriteBuffer;
+
+        sbuffer.enable(
+            this.__camera.worldMatrix,
+            this.__camera.projectionMatrix
+        );
+
+        this.__temp.draw(sbuffer);
+
+        sbuffer.flush();
     }
 
     __drawOutline(control) {

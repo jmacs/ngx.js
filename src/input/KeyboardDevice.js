@@ -1,4 +1,3 @@
-var GameClock = require('../core/GameClock');
 var KeyboardState = require('./KeyboardState');
 
 var _keyboard;

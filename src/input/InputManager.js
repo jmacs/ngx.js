@@ -7,7 +7,7 @@ function registerDevice(device) {
 function enableDevice(type) {
     if (_devices[type]) {
         _devices[type].enable();
-        console.info('Input device enabled "%s"', type);
+        console.debug('Input device enabled "%s"', type);
     } else {
         console.error('unknown device type "%s"', type);
     }
@@ -16,7 +16,7 @@ function enableDevice(type) {
 function disableDevice(type) {
     if (_devices[type]) {
         _devices[type].disable();
-        console.info('Input device disabled "%s"', type);
+        console.debug('Input device disabled "%s"', type);
     } else {
         console.error('unknown device type "%s"', type);
     }
