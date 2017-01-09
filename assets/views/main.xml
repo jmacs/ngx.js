@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<View name="main">
+    <Camera name="Main" type="orthographic" x="0" y="0" width="12" height="12">
+        <Surface name="MainSurface" />
+    </Camera>
+    <Camera name="MiniMap" type="projection" x="1" y="7" width="4" height="4">
+        <Surface name="MiniMapSurface" />
+    </Camera>
+    <Camera name="Hud" type="projection" x="1" y="1" width="4" height="4">
+        <Surface name="MiniMapSurface" />
+    </Camera>
+</View>

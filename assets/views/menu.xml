@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<View id="my_form">
+    <Camera id="Form" type="orthographic" x="0" y="0" width="12" height="12">
+        <Surface>
+            <Panel id="lpanel" origin="TopLeft" x="10" y="-10" width="0.3" height="0.8">
+                <Button id="lpanelbtn1" origin="TopCenter" width="0.4" height="0.33" onClick="onOkButtonClicked" />
+                <Button id="lpanelbtn2" origin="MiddleCenter" width="0.4" height="0.33" onClick="onOkButtonClicked" />
+                <Button id="lpanelbtn3" origin="BottomCenter" width="0.4" height="0.33" onClick="onOkButtonClicked" />
+            </Panel>
+            <Panel id="rpanel" origin="TopRight" x="-10" y="-10" width="0.2" height="0.2">
+                <Button id="rpanelbtn" origin="TopLeft" width="0.1" height="0.1" />
+            </Panel>
+        </Surface>
+    </Camera>
+</View>
