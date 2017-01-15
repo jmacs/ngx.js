@@ -4,7 +4,7 @@ const ResourceManager = require('../resources/ResourceManager');
 // resources
 const CoroutineResource = require('./CoroutineResource');
 
-module.exports = function MultitaskingModule(runtime, resources) {
+module.exports = function MultitaskingModule(runtime) {
 
     //ProcessManager.initialize();
 

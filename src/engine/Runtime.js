@@ -3,9 +3,9 @@ const EventEmitter = require('./EventEmitter');
 
 var _properties = null;
 var _scene = null;
-var _sceneLoaders = [];
 var _events = new EventEmitter();
 var _callbacks = Object.create(null);
+var _onSceneLoad = [];
 var _lifecycleHooks = [];
 var _lifecycleLength = 0;
 var _lifecycleIndex = {
@@ -63,12 +63,6 @@ function onGameClockTick(delta) {
     }
 }
 
-function registerSceneLoaders(loaders) {
-    for (var i = 0, l = loaders.length; i < l; i++) {
-        _sceneLoaders.push(loaders[i]);
-    }
-}
-
 function addLifecycleHook(index, callback) {
     _lifecycleHooks.push({index: index, invoke: callback});
     _lifecycleLength = _lifecycleHooks.length;
@@ -86,11 +80,11 @@ function addCallback(name, callback) {
     _callbacks[name].push(callback);
 }
 
-function triggerCallback(name) {
+function triggerCallback(name, args) {
     var callbacks = _callbacks[name];
     if (!callbacks) return;
     for (var i = 0, l = callbacks.length; i < l; i++) {
-        callbacks[i](Runtime);
+        callbacks[i](Runtime, args);
     }
 }
 
@@ -110,8 +104,8 @@ function onModulesLoaded(callback) {
     addCallback('ModulesLoaded', callback);
 }
 
-function onInitialize(callback) {
-    addCallback('Initialize', callback);
+function onSceneInitialize(callback) {
+    addCallback('SceneInitialize', callback);
 }
 
 function onBeginFrame(callback) {
@@ -162,8 +156,8 @@ function onEndFrame(callback) {
     addLifecycleHook(_lifecycleIndex.EndFrame, callback);
 }
 
-function onFinalize(callback) {
-    addCallback('Finalize', callback);
+function onSceneFinalize(callback) {
+    addCallback('SceneFinalize', callback);
 }
 
 function onPause(callback) {
@@ -172,6 +166,20 @@ function onPause(callback) {
 
 function onResume(callback) {
     addCallback('Resume', callback);
+}
+
+function onSceneLoad(callback) {
+    _onSceneLoad.push(callback);
+}
+
+function triggerSceneLoad(scene) {
+    var promises = [];
+    for (var i = 0, l = _onSceneLoad.length; i < l; i++) {
+        var promise = _onSceneLoad[i](Runtime, scene);
+        if (!promise) continue;
+        promises.push(promise);
+    }
+    return promises;
 }
 
 function downloadScene(url) {
@@ -186,22 +194,18 @@ function loadScene(scene) {
 
     if (_scene) {
         console.info('Unloading current scene');
-        triggerCallback('Finalize');
+        triggerCallback('SceneFinalize');
     }
 
     unloadLifecycleAndEvents();
     console.log('Loading scene "%s"', scene.name);
     _scene = scene;
 
-    var promises = [];
-    for (var i = 0, l = _sceneLoaders.length; i < l; i++) {
-        var promise = _sceneLoaders[i](Runtime, scene);
-        promises.push(promise);
-    }
+    var promises = triggerSceneLoad(scene);
 
     Promise.all(promises).then(function () {
         console.info('Initializing scene');
-        triggerCallback('Initialize');
+        triggerCallback('SceneInitialize');
         start();
     });
 }
@@ -226,9 +230,9 @@ var Runtime = {
     send: send,
     downloadScene: downloadScene,
     loadScene: loadScene,
-    registerSceneLoaders: registerSceneLoaders,
     onModulesLoaded: onModulesLoaded,
-    onInitialize: onInitialize,
+    onSceneLoad: onSceneLoad,
+    onSceneInitialize: onSceneInitialize,
     onBeginFrame: onBeginFrame,
     onBeginUpdate: onBeginUpdate,
     onPreUpdate: onPreUpdate,
@@ -241,7 +245,7 @@ var Runtime = {
     onPostDraw: onPostDraw,
     onEndDraw: onEndDraw,
     onEndFrame: onEndFrame,
-    onFinalize: onFinalize,
+    onSceneFinalize: onSceneFinalize,
     onPause: onPause,
     onResume: onResume
 };

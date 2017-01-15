@@ -1,7 +1,9 @@
 const ResourceManager = require('../resources/ResourceManager');
 const AnimationResource = require('./AnimationResource');
+const AnimationSystem = require('./AnimationSystem');
 
-module.exports = function ActorsModule() {
+module.exports = function ActorsModule(runtime) {
+    runtime.onSceneLoad(bindAnimationSystem);
 
     ResourceManager.registerResources([
         new AnimationResource()
@@ -18,3 +20,8 @@ module.exports = function ActorsModule() {
     ]);
 
 };
+
+function bindAnimationSystem(runtime, scene) {
+    if (!scene.animation) return;
+    AnimationSystem(runtime, scene);
+}

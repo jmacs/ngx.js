@@ -13,6 +13,11 @@ function cameras() {
     return _enabledCameras;
 }
 
+function clear() {
+    _cameras = Object.create(null);
+    _enabledCameras.length = 0;
+}
+
 function showCamera(name) {
     var camera = _cameras[name];
     if (!camera) return;
@@ -38,20 +43,6 @@ function sortByDepth(a, b) {
     if (a.__depth < b.__depth) return -1;
     if (a.__depth > b.__depth) return 1;
     return 0;
-}
-
-function initializeAllCameras() {
-    for(var key in _cameras) {
-        _cameras[key].triggerCallback('Initialize');
-    }
-}
-
-function destroyAllCameras() {
-    for (var key in _cameras) {
-        _cameras[key].triggerCallback('Destroy');
-    }
-    _cameras = Object.create(null);
-    _enabledCameras.length = 0;
 }
 
 function destroyCamera(name) {
@@ -98,7 +89,6 @@ function createCamera(options) {
 
     camera.setBackgroundColorHex(backgroundColor);
 
-
     _cameras[camera.name] = camera;
 
     if (options.scripts) {
@@ -113,6 +103,8 @@ function createCamera(options) {
         }
     }
 
+    camera.triggerCallback('Initialize');
+
     if (options.enabled) {
         showCamera(camera.name);
     }
@@ -122,11 +114,10 @@ function createCamera(options) {
 
 module.exports = {
     get: get,
+    clear: clear,
     cameras: cameras,
     showCamera: showCamera,
     hideCamera: hideCamera,
-    initializeAllCameras: initializeAllCameras,
-    destroyAllCameras: destroyAllCameras,
     createCamera: createCamera,
     destroyCamera: destroyCamera
 };

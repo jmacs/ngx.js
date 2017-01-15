@@ -99,6 +99,7 @@ function log() {
 }
 
 module.exports = {
+    hash: _resources,
     registerMediaLoaders: registerMediaLoaders,
     registerResources: registerResources,
     getResource: getResource,

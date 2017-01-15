@@ -2,7 +2,7 @@ const MapSystem = require('./MapSystem');
 
 module.exports = function MapModule(runtime) {
 
-    runtime.registerSceneLoaders([bindGraphicsSystem]);
+    runtime.onSceneLoad(bindGraphicsSystem);
 };
 
 function bindGraphicsSystem(runtime, scene) {

@@ -10,7 +10,7 @@ module.exports = function InputModule(runtime) {
     InputManager.registerDevice(MouseDevice);
     InputManager.registerDevice(GamepadDevice);
 
-    runtime.registerSceneLoaders([bindInputSystem]);
+    runtime.onSceneLoad(bindInputSystem);
 };
 
 function bindInputSystem(runtime, scene) {

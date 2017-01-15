@@ -8,6 +8,11 @@
 
     ]
   },
+  "animation": {
+    "scripts": [
+
+    ]
+  },
   "graphics": {
     "cameras": [
       {

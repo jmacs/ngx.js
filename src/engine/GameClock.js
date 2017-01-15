@@ -19,20 +19,14 @@ var _frameCounter = 0;
 var _frameTimer = 1000;
 
 function start() {
-    if (_state === STATE_STOP) {
+    if (_state === STATE_RUN) return;
 
-        _state = STATE_RUN;
-        tick(0);
+    _targetFps = DEFAULT_FPS;
+    _skip = DEFAULT_SKIP_MS;
+    _interval = 1000 / _targetFps;
+    _state = STATE_RUN;
 
-    } else if (_state === STATE_NEW) {
-
-        _targetFps = DEFAULT_FPS;
-        _skip = DEFAULT_SKIP_MS;
-        _interval = 1000 / _targetFps;
-        _state = STATE_RUN;
-
-        tick(0);
-    }
+    tick(0);
 }
 
 function tick(now) {

@@ -1,17 +1,20 @@
 const CameraManager = require('./CameraManager');
 const Graphics = require('./Graphics');
 
-module.exports = function GraphicsSystem(runtime) {
+module.exports = function GraphicsSystem(runtime, scene) {
     const gl = Graphics.getContext();
     const GL_CLEAR_FLAGS = gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT;
     const VIEWPORT_WIDTH = Graphics.getViewportWidth();
     const VIEWPORT_HEIGHT = Graphics.getViewportHeight();
 
-    runtime.onInitialize(function () {
+    runtime.onSceneInitialize(function () {
         gl.enable(gl.BLEND);
         gl.enable(gl.SCISSOR_TEST);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-        CameraManager.initializeAllCameras();
+        var options = scene.graphics.cameras;
+        for (var i = 0, l = options.length; i < l; i++) {
+            CameraManager.createCamera(options[i]);
+        }
     });
 
     runtime.onPreDraw(function () {
@@ -40,8 +43,8 @@ module.exports = function GraphicsSystem(runtime) {
 
     });
 
-    runtime.onFinalize(function () {
-        CameraManager.destroyAllCameras();
+    runtime.onSceneFinalize(function () {
+        CameraManager.clear();
     });
 
 };

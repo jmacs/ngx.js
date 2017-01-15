@@ -32,7 +32,7 @@ module.exports = function GraphicsModule(runtime) {
         new ShaderResource()
     ]);
 
-    runtime.registerSceneLoaders([bindGraphicsSystem]);
+    runtime.onSceneLoad(bindGraphicsSystem);
 
     var dfd = new Deferred();
 
@@ -47,9 +47,5 @@ module.exports = function GraphicsModule(runtime) {
 
 function bindGraphicsSystem(runtime, scene) {
     if (!scene.graphics) return;
-    var options = scene.graphics.cameras;
-    for (var i = 0, l = options.length; i < l; i++) {
-        CameraManager.createCamera(options[i]);
-    }
-    GraphicsSystem(runtime);
+    GraphicsSystem(runtime, scene);
 }
