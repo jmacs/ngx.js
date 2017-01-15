@@ -1,33 +1,37 @@
 {
   "name": "WorldScene",
-  "scripts": [
-    "TempController"
-  ],
-  "windows": [
-    {
-      "name": "map",
-      "buffer": "TileBuffer",
-      "renderer": "MapRenderer",
-      "visible": true,
-      "size": [119, 119],
-      "position": [0, 0, 0]
-    },
-    {
-      "name": "sprite",
-      "buffer": "TileBuffer",
-      "renderer": "SpriteRenderer",
-      "visible": true,
-      "size": [119, 119],
-      "position": [0, 0, 1]
-    },
-    {
-      "name": "hud",
-      "renderer": "HudRenderer",
-      "visible": true,
-      "size": [119, 12],
-      "position": [0, 0, 2]
-    }
-  ],
+  "map": {
+    "prop1": true
+  },
+  "input": {
+    "scripts": [
+
+    ]
+  },
+  "graphics": {
+    "cameras": [
+      {
+        "name": "main",
+        "orthographic": true,
+        "visible": true,
+        "rectangle": [0, 0, 12, 12],
+        "clearColor": "7FFFD4",
+        "scripts": [
+          "SpriteRenderer"
+        ]
+      },
+      {
+        "name": "hud",
+        "orthographic": true,
+        "visible": true,
+        "rectangle": [0.1, 10.9, 11.8, 1],
+        "width": 300,
+        "height": 600,
+        "position": [0, 0],
+        "clearColor": "6495ED"
+      }
+    ]
+  },
   "assets": {
     "shader": [
       "assets/shaders/sprite.xml",

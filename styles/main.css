@@ -5,25 +5,11 @@ html, body {
     text-align: center;
 }
 
-header {
-    height: 48px;
-    border: 1px solid #333333;
-    width: 100%;
-    box-sizing: border-box;
-}
 
-section.right {
-    float: right;
-    border: 1px solid #333333;
-    width: 25%;
-    height: 540px;
-    position: absolute;
-    right: 0;
-    top: 48px;
-}
 
 section.left {
     float: left;
+    background-color: cornflowerblue;
     border: 1px solid #333333;
     width: 48px;
     height: 540px;

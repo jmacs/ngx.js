@@ -1,6 +1,6 @@
 module.exports = {
     entry: {
-        game: './src/main'
+        game: './src/game/main'
     },
     devtool: 'cheap-source-map',
     output: {

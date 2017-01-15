@@ -1,0 +1,21 @@
+var GlyphMap = require('./GlyphMap');
+var Resource = require('../resources/Resource');
+
+class GlyphResource extends Resource {
+
+    getMediaType() {
+        return 'application/json';
+    }
+
+    getResourceType() {
+        return 'glyph';
+    }
+
+    onAssetDownloaded(payload, asset) {
+        var map = new GlyphMap(payload);
+        this.set(map.id, map);
+    }
+
+}
+
+module.exports = GlyphResource;
