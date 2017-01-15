@@ -11,6 +11,7 @@ module.exports = function GraphicsSystem(runtime) {
         gl.enable(gl.BLEND);
         gl.enable(gl.SCISSOR_TEST);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        CameraManager.initializeAllCameras();
     });
 
     runtime.onPreDraw(function () {
@@ -33,13 +34,14 @@ module.exports = function GraphicsSystem(runtime) {
             gl.viewport(viewport[0], viewport[1], viewport[2], viewport[3]);
             gl.clear(GL_CLEAR_FLAGS);
 
+            camera.transform();
             camera.draw(delta);
         }
 
     });
 
     runtime.onFinalize(function () {
-        CameraManager.clear();
+        CameraManager.destroyAllCameras();
     });
 
 };

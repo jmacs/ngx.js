@@ -50,6 +50,7 @@
     "type": 1,
     "components": {
       "sprite": {
+        "tid": 200,
         "width": 16,
         "height": 16
       },

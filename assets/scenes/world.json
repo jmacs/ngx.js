@@ -13,9 +13,9 @@
       {
         "name": "main",
         "orthographic": true,
-        "visible": true,
         "rectangle": [0, 0, 12, 12],
         "clearColor": "7FFFD4",
+        "enabled": true,
         "scripts": [
           "SpriteRenderer"
         ]
@@ -23,12 +23,10 @@
       {
         "name": "hud",
         "orthographic": true,
-        "visible": true,
         "rectangle": [0.1, 10.9, 11.8, 1],
-        "width": 300,
-        "height": 600,
         "position": [0, 0],
-        "clearColor": "6495ED"
+        "clearColor": "6495ED",
+        "enabled": true
       }
     ]
   },

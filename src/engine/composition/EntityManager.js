@@ -31,6 +31,7 @@ function createEntity(mob) {
         }
     }
 
+    addEntity(entity);
     return entity;
 }
 

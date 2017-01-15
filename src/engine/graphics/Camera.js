@@ -1,5 +1,5 @@
-var Color = require('./Color');
-var {vec3, mat4} = require('gl-matrix');
+const Color = require('./Color');
+const {vec3, mat4} = require('gl-matrix');
 
 var _identity = 0;
 
@@ -7,6 +7,7 @@ class Camera {
 
     constructor(name) {
         _identity++;
+        this.enabled = false;
         this.__id = _identity;
         this.__name = name || 'camera' + _identity;
         this.__aspect = 0;
@@ -16,7 +17,7 @@ class Camera {
         this.__nearClipPlane = 0;
         this.__farClipPlane = 0;
         this.__orthographic = false;
-        this.__viewport = 0;
+        this.__viewport = [0,0,0,0];
         this.__cameraToWorldMatrix = mat4.create();
         this.__worldToCameraMatrix = null;
         this.__projectionMatrix = mat4.create();
@@ -29,6 +30,7 @@ class Camera {
         this.__cameraRotation = 0.0;
         this.__renderLayers = [];
         this.__renderLayersLength = 0;
+        this.__callbacks = Object.create(null);
         this.__dirty = true;
     }
 
@@ -149,8 +151,21 @@ class Camera {
         return 0;
     }
 
-    onInitialize(callback) {
+    __addCallback(name, callback) {
+        this.__callbacks[name] = this.__callbacks[name] || [];
+        this.__callbacks[name].push(callback);
+    }
 
+    triggerCallback(name) {
+        var callbacks = this.__callbacks[name];
+        if (!callbacks) return;
+        for (var i = 0, l = callbacks.length; i < l; i++) {
+            callbacks[i]();
+        }
+    }
+
+    onInitialize(callback) {
+        this.__addCallback('Initialize', callback);
     }
 
     onDrawLayer0(callback) {
@@ -170,7 +185,15 @@ class Camera {
     }
 
     onDestroy(callback) {
+        this.__addCallback('Destroy', callback);
+    }
 
+    onShow(callback) {
+        this.__addCallback('Show', callback);
+    }
+
+    onHide(callback) {
+        this.__addCallback('Hide', callback);
     }
 }
 

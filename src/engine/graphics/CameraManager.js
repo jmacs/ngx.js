@@ -2,44 +2,91 @@ const ResourceManager = require('../resources/ResourceManager');
 const Graphics = require('./Graphics');
 const Camera = require('./Camera');
 
-var _cameraHash = Object.create(null);
-var _cameraArray = [];
+var _cameras = Object.create(null);
+var _enabledCameras = [];
 
 function get(name) {
-    return _cameraHash[name];
+    return _cameras[name];
 }
 
 function cameras() {
-    return _cameraArray;
+    return _enabledCameras;
 }
 
-function clear() {
-    _cameraHash = Object.create(null);
-    _cameraArray.length = 0;
+function showCamera(name) {
+    var camera = _cameras[name];
+    if (!camera) return;
+    var n = _enabledCameras.indexOf(camera);
+    if (n > -1) return;
+    _enabledCameras.push(camera);
+    camera.enabled = true;
+    camera.triggerCallback('Show');
+    _enabledCameras.sort(sortByDepth);
+}
+
+function hideCamera(name) {
+    var camera = _cameras[name];
+    if (!camera) return;
+    var n = _enabledCameras.indexOf(camera);
+    if (n === -1) return;
+    _enabledCameras.splice(n, 1);
+    camera.enabled = false;
+    camera.triggerCallback('Hide');
+}
+
+function sortByDepth(a, b) {
+    if (a.__depth < b.__depth) return -1;
+    if (a.__depth > b.__depth) return 1;
+    return 0;
+}
+
+function initializeAllCameras() {
+    for(var key in _cameras) {
+        _cameras[key].triggerCallback('Initialize');
+    }
+}
+
+function destroyAllCameras() {
+    for (var key in _cameras) {
+        _cameras[key].triggerCallback('Destroy');
+    }
+    _cameras = Object.create(null);
+    _enabledCameras.length = 0;
+}
+
+function destroyCamera(name) {
+    var camera = _cameras[name];
+    if (!camera) return;
+    camera.triggerCallback('Destroy');
+    var n = _enabledCameras.indexOf(camera);
+    if (n === -1) return;
+    _enabledCameras.splice(n, 1);
+    delete _cameras[name];
 }
 
 function createCamera(options) {
     var viewportUnit = options.rectangle || [0, 0, 12, 12];
-
-    var viewport = [0, 0, 0, 0];
-    viewport[0] = Graphics.getHorizontalPx(viewportUnit[0]);
-    viewport[1] = Graphics.getVerticalPx(viewportUnit[1]);
-    viewport[2] = Graphics.getHorizontalPx(viewportUnit[2]);
-    viewport[3] = Graphics.getVerticalPx(viewportUnit[3]);
-
-    var aspect = viewport[2] / viewport[3];
     var backgroundColor = 0;
-
     var camera = new Camera(options.name);
+
     camera.__depth = options.depth || 0;
-    camera.__viewport = viewport;
-    camera.__aspect = aspect;
+
+    camera.__viewport[0] = Graphics.getHorizontalPx(viewportUnit[0]);
+    camera.__viewport[1] = Graphics.getVerticalPx(viewportUnit[1]);
+    camera.__viewport[2] = Graphics.getHorizontalPx(viewportUnit[2]);
+    camera.__viewport[3] = Graphics.getVerticalPx(viewportUnit[3]);
+
+    camera.__aspect = camera.__viewport[2] / camera.__viewport[3];
+
     camera.__orthographic = options.orthographic || false;
     camera.__nearClipPlane = options.nearClipPlane || 0;
     camera.__farClipPlane = options.farClipPlane || 100;
     camera.__fieldOfView = options.fieldOfView || 45;
+    camera.updatePerspective();
+
     camera.__cameraScale[0] = options.scaleX || 1.0;
     camera.__cameraScale[1] = options.scaleY || 1.0;
+
     camera.__cameraPosition[0] = options.x || 0.0;
     camera.__cameraPosition[1] = options.y || 0.0;
 
@@ -51,10 +98,8 @@ function createCamera(options) {
 
     camera.setBackgroundColorHex(backgroundColor);
 
-    camera.updatePerspective();
 
-    _cameraHash[camera.name] = camera;
-    _cameraArray.push(camera);
+    _cameras[camera.name] = camera;
 
     if (options.scripts) {
         var scripts = options.scripts ;
@@ -68,12 +113,20 @@ function createCamera(options) {
         }
     }
 
+    if (options.enabled) {
+        showCamera(camera.name);
+    }
+
     return camera;
 }
 
 module.exports = {
     get: get,
     cameras: cameras,
-    clear: clear,
-    createCamera: createCamera
+    showCamera: showCamera,
+    hideCamera: hideCamera,
+    initializeAllCameras: initializeAllCameras,
+    destroyAllCameras: destroyAllCameras,
+    createCamera: createCamera,
+    destroyCamera: destroyCamera
 };
