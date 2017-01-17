@@ -1,0 +1,7 @@
+
+default controller "pad0" created
+bind pad0 to keyboard
+
+scan game controllers
+callback found controller index 0
+bind pad0 to controller0

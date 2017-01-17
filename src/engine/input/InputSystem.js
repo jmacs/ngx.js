@@ -1,8 +1,20 @@
+const InputManager = require('./InputManager');
 
 module.exports = function InputSystem(runtime) {
 
-    runtime.onBeginFrame(function (delta) {
-        //console.log(delta);
+    runtime.onSceneInitialize(function () {
+
     });
 
+    runtime.onBeginFrame(function () {
+
+    });
+
+    runtime.on('GamepadConnected', function (index) {
+        console.log('GamepadConnected ' + index);
+    });
+
+    runtime.on('GamepadDisconnected', function (index) {
+        console.log('GamepadDisconnected ' + index);
+    });
 };

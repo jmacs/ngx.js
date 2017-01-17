@@ -1,4 +1,4 @@
-var MouseState = require('./MouseState');
+var MouseState = require('./../src/engine/input/MouseState');
 
 var _mouse;
 

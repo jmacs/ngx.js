@@ -1,0 +1,20 @@
+module.exports = {
+    BUTTON_A: 0,
+    BUTTON_B: 1,
+    BUTTON_X: 2,
+    BUTTON_Y: 3,
+    BUTTON_L: 4,
+    BUTTON_R: 5,
+    BUTTON_OPTIONS: 6,
+    BUTTON_START: 7,
+    LEFT_STICK: 8,
+    RIGHT_STICK: 9,
+    LEFT_AXIS_X: 10,
+    LEFT_AXIS_Y: 11,
+    RIGHT_AXIS_X: 12,
+    RIGHT_AXIS_Y: 13,
+    DIRECTION_PAD_X: 14,
+    DIRECTION_PAD_Y: 15,
+    LEFT_TRIGGER: 16,
+    RIGHT_TRIGGER: 17
+};
