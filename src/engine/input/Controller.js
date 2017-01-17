@@ -1,13 +1,18 @@
-const NOOP = function () {};
+const DefaultInputConfig = require('./DefaultInputConfig');
+const DefaultInputMapper = require('./DefaultInputMapper');
 
-class VirtualPad {
+function cloneDefaultConfig() {
+    return JSON.parse(JSON.stringify(DefaultInputConfig));
+}
+
+class Controller {
 
     constructor(index) {
         this.index = index;
         this.state = [];
+        this.config = cloneDefaultConfig();
+        this.map = DefaultInputMapper;
         this.clear();
-        this.onSyncKeyboardState = NOOP;
-        this.onSyncGamepadState = NOOP;
     }
 
     clear() {
@@ -33,11 +38,9 @@ class VirtualPad {
     }
 
     sync() {
-        this.clear();
-        this.onSyncKeyboardState(this);
-        this.onSyncGamepadState(this);
+        this.map(this);
     }
 
 }
 
-module.exports = VirtualPad;
+module.exports = Controller;

@@ -1,8 +1,15 @@
 const InputSystem = require('./InputSystem');
-const InputManager = require('./InputManager');
+const ControllerManager = require('./ControllerManager');
+const Keyboard = require('./Keyboard');
+const Gamepad = require('./Gamepad');
 
 module.exports = function InputModule(runtime) {
-    InputManager.enableGamepad(true);
+    Keyboard.enable(true);
+    Gamepad.enable(true);
+
+    var controller = ControllerManager.createController(0);
+    controller.config.ENABLE_KEYBOARD = true;
+    controller.config.ENABLE_GAMEPAD = true;
 
     runtime.onSceneLoad(bindInputSystem);
 };
