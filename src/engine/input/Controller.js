@@ -1,17 +1,14 @@
-const DefaultInputConfig = require('./DefaultInputConfig');
-const DefaultInputMapper = require('./DefaultInputMapper');
-
-function cloneDefaultConfig() {
-    return JSON.parse(JSON.stringify(DefaultInputConfig));
-}
+const NOOP = function () {};
 
 class Controller {
 
     constructor(index) {
+        this.type = null;
         this.index = index;
         this.state = [];
-        this.config = cloneDefaultConfig();
-        this.map = DefaultInputMapper;
+        this.keepAlive = false;
+        this.gamepadMapper = NOOP;
+        this.auxiliaryMapper = NOOP;
         this.clear();
     }
 
@@ -35,12 +32,16 @@ class Controller {
         state[15] = 0.0;
         state[16] = 0.0;
         state[17] = 0.0;
+        state[18] = 0.0;
+        state[19] = 0.0;
+        state[20] = 0.0;
+        state[21] = 0.0;
     }
 
-    sync() {
-        this.map(this);
+    update() {
+        this.gamepadMapper(this);
+        this.auxiliaryMapper(this);
     }
-
 }
 
 module.exports = Controller;

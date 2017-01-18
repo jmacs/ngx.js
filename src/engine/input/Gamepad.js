@@ -1,10 +1,9 @@
 const Runtime = require('../Runtime');
 
-const SCAN_INTERVAL_MS = 2000;
+const SCAN_INTERVAL_MS = 1000;
 
 var _enabled = false;
-var _gamepads = [null,null,null,null];
-var _connections = [false,false,false,false];
+var _pads = [false, false, false, false];
 var _scanIntervalHandle = 0;
 
 function enable(shouldEnable) {
@@ -21,34 +20,41 @@ function enable(shouldEnable) {
 }
 
 function scanGamepads() {
-    _gamepads = navigator.getGamepads();
+    var gamepads = navigator.getGamepads();
 
     for (var i = 0; i < 4; i++) {
-        if (_gamepads[i] && !_connections[i]) {
-            _connections[i] = true;
-            triggerGamepadConnectedEvent(i);
-        } else if (!_gamepads[i] && _connections[i]) {
-            _connections[i] = false;
+        if (gamepads[i] && !_pads[i]) {
+            _pads[i] = true;
+            triggerGamepadConnectedEvent(i, gamepads[i].id);
+        } else if (!gamepads[i] && _pads[i]) {
+            _pads[i] = false;
             triggerGamepadDisconnectedEvent(i);
         }
     }
 
 }
 
-function triggerGamepadConnectedEvent(index) {
+function triggerGamepadConnectedEvent(index, id) {
     setTimeout(function () {
-        Runtime.send('GamepadConnected', index);
+        console.log('Gamepad %s connected "%s"', index, id);
+        Runtime.send('GamepadConnected', {
+            id: id,
+            index: index
+        });
     });
 }
 
 function triggerGamepadDisconnectedEvent(index) {
     setTimeout(function () {
-        Runtime.send('GamepadDisconnected', index);
+        console.log('Gamepad %s disconnected', index);
+        Runtime.send('GamepadDisconnected', {
+            index: index
+        });
     });
 }
 
 function getGamepad(index) {
-    return _gamepads[index];
+    return navigator.getGamepads()[index];
 }
 
 

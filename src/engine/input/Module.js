@@ -7,9 +7,14 @@ module.exports = function InputModule(runtime) {
     Keyboard.enable(true);
     Gamepad.enable(true);
 
+    ControllerManager.registerInputMappers([
+        require('./XInputMapper'),
+        require('./DInputMapper'),
+    ]);
+
     var controller = ControllerManager.createController(0);
-    controller.config.ENABLE_KEYBOARD = true;
-    controller.config.ENABLE_GAMEPAD = true;
+    controller.keepAlive = true;
+    //controller.auxiliaryMapper = ControllerManager.getInputMapper('KeyboardMapper');
 
     runtime.onSceneLoad(bindInputSystem);
 };
