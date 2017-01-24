@@ -1,11 +1,17 @@
 const Controller = require('./Controller');
 
-const NOOP = function () {};
-
+var _maxControllers = 4;
 var _inputMappers = [];
 var _controllers = [null,null,null,null];
 
+function setMaxControllers(num) {
+    if (num < 0) num = 0;
+    if (num > 4) num = 4;
+    _maxControllers = num;
+}
+
 function createController(index) {
+    if (index > _maxControllers - 1) return;
     var controller = new Controller(index);
     _controllers[index] = controller;
     return controller;
@@ -34,8 +40,6 @@ function assignGamepadInputMapper(index, id) {
     for (var i = 0, l = _inputMappers.length; i < l; i++) {
         var inputMapper = _inputMappers[i];
         if (inputMapper.match(id)) {
-            controller.id = id;
-            controller.type = inputMapper.name;
             controller.gamepadMapper = inputMapper.map;
             console.debug('Assigned controller %s to %s mapper', index, inputMapper.name);
         }
@@ -44,17 +48,15 @@ function assignGamepadInputMapper(index, id) {
 
 function unassignGamepadMapper(index) {
     var controller = _controllers[index];
-    if (controller) {
-        controller.id = null;
-        controller.type = null;
-        controller.gamepadMapper = NOOP;
-        if (!controller.keepAlive) {
-            _controllers[index] = null;
-        }
+    if (!controller) return;
+    controller.unmapGamepad();
+    if (!controller.keepAlive) {
+        _controllers[index] = null;
     }
 }
 
 module.exports = {
+    setMaxControllers: setMaxControllers,
     createController: createController,
     destroyController: destroyController,
     getController: getController,

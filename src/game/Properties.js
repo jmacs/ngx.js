@@ -10,6 +10,7 @@ module.exports = {
         require('../engine/audio/Module'),
         require('../engine/gui/Module'),
         require('../engine/multitasking/Module'),
+        require('../engine/input2/Module'),
     ],
     viewport: {
         width: 1280,

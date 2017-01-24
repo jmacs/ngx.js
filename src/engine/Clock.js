@@ -54,6 +54,11 @@ function tick(now) {
     _then = now;
     _elapsed += _delta * 0.001;
 
+    GameClock.elapsed = _elapsed;
+    GameClock.delta = _delta;
+    GameClock.now = ~~_now;
+    GameClock.fps = _actualFps;
+
     _onTick(_delta);
 }
 
@@ -61,32 +66,18 @@ function stop() {
     _state = STATE_STOP;
 }
 
-function delta() {
-    return _delta;
-}
-
-function now() {
-    return _now;
-}
-
-function fps() {
-    return _actualFps;
-}
-
-function elapsed() {
-    return _elapsed;
-}
-
 function onTick(callback) {
     _onTick = callback || NOOP;
 }
 
-module.exports = {
+const GameClock = {
+    onTick: onTick,
     start: start,
     stop: stop,
-    delta: delta,
-    now: now,
-    fps: fps,
-    elapsed: elapsed,
-    onTick: onTick
+    delta: 0.0,
+    now: 0.0,
+    fps: 0.0,
+    elapsed: 0.0
 };
+
+module.exports = GameClock;

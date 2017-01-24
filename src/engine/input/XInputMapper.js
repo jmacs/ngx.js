@@ -33,10 +33,6 @@ function map(controller) {
     var gamepad = Gamepad.getGamepad(controller.index);
     var state = controller.state;
 
-    controller.clear();
-
-    // Gamepad
-
     if (gamepad) {
 
         var axes = gamepad.axes;
@@ -44,69 +40,33 @@ function map(controller) {
 
         // Face Buttons
 
-        if (buttons[BUTTON_A].pressed) {
-            state[Controls.BUTTON_A] = 1.0;
-        }
-
-        if (buttons[BUTTON_B].pressed) {
-            state[Controls.BUTTON_B] = 1.0;
-        }
-
-        if (buttons[BUTTON_X].pressed) {
-            state[Controls.BUTTON_X] = 1.0;
-        }
-
-        if (buttons[BUTTON_Y].pressed) {
-            state[Controls.BUTTON_Y] = 1.0;
-        }
+        state[Controls.BUTTON_A] = buttons[BUTTON_A].value;
+        state[Controls.BUTTON_B] = buttons[BUTTON_B].value;
+        state[Controls.BUTTON_X] = buttons[BUTTON_X].value;
+        state[Controls.BUTTON_Y] = buttons[BUTTON_Y].value;
 
         // Shoulder Buttons
 
-        if (buttons[BUTTON_L].pressed) {
-            state[Controls.BUTTON_L] = 1.0;
-        }
-
-        if (buttons[BUTTON_R].pressed) {
-            state[Controls.BUTTON_R] = 1.0;
-        }
+        state[Controls.BUTTON_L] = buttons[BUTTON_L].value;
+        state[Controls.BUTTON_R] = buttons[BUTTON_R].value;
 
         // Menu buttons
 
-        if (buttons[START].pressed) {
-            state[Controls.START] = 1.0;
-        }
-
-        if (buttons[BACK].pressed) {
-            state[Controls.OPTIONS] = 1.0;
-        }
-
-        if (buttons[HOME].pressed) {
-            state[Controls.HOME] = 1.0;
-        }
+        state[Controls.START] = buttons[START].value;
+        state[Controls.OPTIONS] = buttons[BACK].value;
+        state[Controls.HOME] = buttons[HOME].value;
 
         // Stick Buttons
 
-        if (buttons[LEFT_STICK].pressed) {
-            state[Controls.LEFT_STICK] = 1.0;
-        }
-
-        if (buttons[RIGHT_STICK].pressed) {
-            state[Controls.RIGHT_STICK] = 1.0;
-        }
+        state[Controls.LEFT_STICK] = buttons[LEFT_STICK].value;
+        state[Controls.RIGHT_STICK] = buttons[RIGHT_STICK].value;
 
         // Direction Pad
 
-        if (buttons[DIR_DOWN].pressed) {
-            state[Controls.DIR_DOWN] = 1.0;
-        } else if (buttons[DIR_UP].pressed) {
-            state[Controls.DIR_UP] = 1.0;
-        }
-
-        if (buttons[DIR_RIGHT].pressed) {
-            state[Controls.DIR_RIGHT] = 1.0;
-        } else if (buttons[DIR_LEFT].pressed) {
-            state[Controls.DIR_LEFT] = 1.0;
-        }
+        state[Controls.DIR_DOWN] = buttons[DIR_DOWN].value;
+        state[Controls.DIR_UP] = buttons[DIR_UP].value;
+        state[Controls.DIR_RIGHT] = buttons[DIR_RIGHT].value;
+        state[Controls.DIR_LEFT] = buttons[DIR_LEFT].value;
 
         // Left Axis
 
@@ -137,15 +97,20 @@ function map(controller) {
         // Triggers
 
         if (axes[RIGHT_TRIGGER] !== -1) {
-            state[Controls.RIGHT_TRIGGER] = axes[RIGHT_TRIGGER];
+            state[Controls.RIGHT_TRIGGER] = normalizeTrigger(axes[RIGHT_TRIGGER]);
         }
 
         if (axes[LEFT_TRIGGER] !== -1) {
-            state[Controls.LEFT_TRIGGER] = axes[LEFT_TRIGGER];
+            state[Controls.LEFT_TRIGGER] = normalizeTrigger(axes[LEFT_TRIGGER]);
         }
 
     }
 
+}
+
+function normalizeTrigger(num) {
+    // normalizes (-1,1) to (0,1)
+    return (num - -1) * 0.5;
 }
 
 function match(id) {

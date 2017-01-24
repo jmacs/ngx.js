@@ -1,4 +1,4 @@
-global.assert = require('chai').assert;
+global.expect = require('chai').expect;
 global.__root = __dirname.replace('/test', '');
 global._require = function(name) {
     return require(global.__root + '/' + name);
@@ -13,5 +13,3 @@ global.window = {
 global.document = {
     addEventListener: noop
 };
-
-_require('src/core/Arrays');

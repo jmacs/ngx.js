@@ -10,7 +10,6 @@ module.exports = {
     START: 8,
     OPTIONS: 9,
     HOME: 10,
-    MEDIA: 11,
     DIR_UP: 12,
     DIR_DOWN: 13,
     DIR_LEFT: 14,

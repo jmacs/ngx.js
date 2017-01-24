@@ -4,6 +4,16 @@ function deadzone(threshold, x, y) {
     if (dist < threshold) return 0.0;
 }
 
+function pair(x, y) {
+    return x << 16 & 0xffff0000 | y & 0x0000ffff;
+}
+
+function depair(p) {
+    return [p >> 16 & 0xFFFF, p & 0xFFFF];
+}
+
 module.exports = {
-    deadzone: deadzone
+    deadzone: deadzone,
+    pair: pair,
+    depair: depair
 };

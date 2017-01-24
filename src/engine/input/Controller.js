@@ -3,12 +3,12 @@ const NOOP = function () {};
 class Controller {
 
     constructor(index) {
-        this.type = null;
         this.index = index;
         this.state = [];
         this.keepAlive = false;
         this.gamepadMapper = NOOP;
-        this.auxiliaryMapper = NOOP;
+        this.keyboardMapper = NOOP;
+        this.mouseMapper = NOOP;
         this.clear();
     }
 
@@ -39,9 +39,16 @@ class Controller {
     }
 
     update() {
+        this.clear();
         this.gamepadMapper(this);
-        this.auxiliaryMapper(this);
+        this.keyboardMapper(this);
+        this.mouseMapper(this);
     }
+
+    unmapGamepad() {
+        this.gamepadMapper = NOOP;
+    }
+
 }
 
 module.exports = Controller;

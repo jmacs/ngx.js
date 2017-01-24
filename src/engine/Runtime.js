@@ -1,4 +1,4 @@
-const GameClock = require('./GameClock');
+const GameClock = require('./Clock');
 const EventEmitter = require('./EventEmitter');
 
 var _properties = null;

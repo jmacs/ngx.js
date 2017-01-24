@@ -31,10 +31,6 @@ function map(controller) {
     var gamepad = Gamepad.getGamepad(controller.index);
     var state = controller.state;
 
-    controller.clear();
-
-    // Gamepad
-
     if (gamepad) {
 
         var axes = gamepad.axes;
@@ -83,7 +79,7 @@ function map(controller) {
         }
 
         if (buttons[SHARE].pressed) {
-            state[Controls.MEDIA] = 1.0
+            state[Controls.START] = 1.0
         }
 
         // Stick Buttons
