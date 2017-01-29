@@ -17,14 +17,6 @@ module.exports = function InputSystem(runtime) {
         }
     });
 
-    runtime.on('GamepadConnected', function (e) {
-        ControllerManager.assignGamepadInputMapper(e.index, e.id);
-    });
-
-    runtime.on('GamepadDisconnected', function (e) {
-        ControllerManager.unassignGamepadMapper(e.index);
-    });
-
 };
 
 const Controls = require('./Controls');

@@ -1,4 +1,4 @@
-const Controllers = require('./ControllerPool');
+
 
 class Player {
 
@@ -7,13 +7,12 @@ class Player {
         this.name = 'player' + index;
         this.enabled = false;
         this.controller = null;
+        this.controllerMap = 0;
+        this.actions = null;
     }
-
-    get actions() {
-        return this.controller.actions;
-    }
-
 
 }
+
+// player.actions[0].isPressed();
 
 module.exports = Player;

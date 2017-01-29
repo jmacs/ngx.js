@@ -1,9 +1,9 @@
 
-function ButtonActionState(element, action) {
-    this.element = element;
+function ButtonActionState(action) {
     this.action = action;
     this.time = 0;
     this.pressed = false;
+    this.value = 0;
     this.lastDownTime = 0;
     this.lastUpTime = 0;
     this.prevDownTime = 0;
@@ -26,11 +26,13 @@ ButtonActionState.prototype.set = function(value, delta) {
         this.prevDownTime = this.lastDownTime;
         this.lastDownTime = this.time;
         this.pressed = false;
+        this.value = 0;
         this.time = 0;
     } else if (!this.pressed && value) { // down
         this.prevUpTime = this.lastUpTime;
         this.lastUpTime = this.time;
         this.pressed = true;
+        this.value = 1;
         this.time = 0;
     }
 

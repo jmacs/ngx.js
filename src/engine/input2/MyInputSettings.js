@@ -17,56 +17,123 @@ module.exports = {
         gamepadScanInterval: 1000,
         autoAssignmentEnabled: true
     },
-    groups: {
-        player: 0,
-        menu: 1,
-    },
-    actions: [
-        {
-            moveHorizontal: Enums.ActionType.AXIS,
-            moveVertical: Enums.ActionType.AXIS,
-            fire: Enums.ActionType.BUTTON,
-            jump: Enums.ActionType.BUTTON,
-        },
-        {
-            menuHorizontal: Enums.ActionType.BUTTON,
-            menuVertical: Enums.ActionType.BUTTON,
-            confirm: Enums.ActionType.BUTTON,
-            cancel: Enums.ActionType.BUTTON
-        }
-    ],
     players: [
         {
-            name: 'player1',
-            controllerMap: [
-                {
-                    moveHorizontal: Enums.Controller.LEFT_AXIS_X,
-                    moveVertical: Enums.Controller.LEFT_AXIS_Y,
-                    fire: Enums.Controller.X,
-                    jump: Enums.Controller.A
-                },
-                {
-                    menuHorizontal: Enums.Controller.LEFT_AXIS_X,
-                    menuVertical: Enums.Controller.LEFT_AXIS_Y,
-                    confirm: Enums.Controller.A,
-                    cancel: Enums.Controller.B
-                }
-            ]
+            name: 'Player1',
+            controllerMap: 0
         },
         {
-            name: 'player2',
-            controllerMap: [
+            name: 'Player2',
+            controllerMap: 0
+        }
+    ],
+    contexts: [
+        'character',
+        'menu'
+    ],
+    actions: [
+        {
+            index: 0,
+            context: 0,
+            name: 'moveHorizontal',
+            description: 'Move Character Horizontally',
+            type: Enums.ActionType.AXIS
+        },
+        {
+            index: 1,
+            context: 0,
+            name: 'moveVertical',
+            description: 'Move Character Vertically',
+            type: Enums.ActionType.AXIS
+        },
+        {
+            index: 2,
+            context: 0,
+            name: 'attack',
+            description: 'Attack',
+            type: Enums.ActionType.BUTTON
+        },
+        {
+            index: 3,
+            context: 0,
+            name: 'run',
+            description: 'Run or Activate',
+            type: Enums.ActionType.BUTTON
+        },
+        {
+            index: 4,
+            context: 0,
+            name: 'roll',
+            description: 'Roll',
+            type: Enums.ActionType.BUTTON
+        },
+        {
+            index: 5,
+            context: 1,
+            name: 'menuHorizontal',
+            description: 'Menu Select Horizontal',
+            type: Enums.ActionType.BUTTON
+        },
+        {
+            index: 6,
+            context: 1,
+            name: 'menuVertical',
+            description: 'Menu Select Vertical',
+            type: Enums.ActionType.BUTTON
+        },
+        {
+            index: 7,
+            context: 1,
+            name: 'menuConfirm',
+            description: 'Menu Confirm',
+            type: Enums.ActionType.BUTTON
+        },
+        {
+            index: 8,
+            context: 1,
+            name: 'menuCancel',
+            type: Enums.ActionType.BUTTON
+        }
+    ],
+    controllerMaps: [
+        {
+            name: 'DefaultControls',
+            mappings: [
                 {
-                    moveHorizontal: Enums.Controller.LEFT_AXIS_X,
-                    moveVertical: Enums.Controller.LEFT_AXIS_Y,
-                    fire: Enums.Controller.X,
-                    jump: Enums.Controller.A
+                    action: 0, // moveHorizontal
+                    element: Enums.Controller.LEFT_AXIS_X
                 },
                 {
-                    menuHorizontal: Enums.Controller.LEFT_AXIS_X,
-                    menuVertical: Enums.Controller.LEFT_AXIS_Y,
-                    confirm: Enums.Controller.A,
-                    cancel: Enums.Controller.B
+                    action: 1, // moveVertical
+                    element: Enums.Controller.LEFT_AXIS_Y
+                },
+                {
+                    action: 2, // attack
+                    element: Enums.Controller.X
+                },
+                {
+                    action: 3, // run or activate
+                    element: Enums.Controller.A
+                },
+                {
+                    action: 4, // roll
+                    element: Enums.Controller.R
+                },
+                {
+                    action: 5, // menuHorizontal
+                    element: Enums.Controller.LEFT_AXIS_X
+                },
+                {
+                    action: 6, // menuVertical
+                    element: Enums.Controller.LEFT_AXIS_Y
+                },
+                {
+                    action: 7, // menuConfirm
+                    element: Enums.Controller.A
+                },
+                {
+                    action: 8, // menuCancel
+                    element: Enums.Controller.B
                 }
             ]
         }

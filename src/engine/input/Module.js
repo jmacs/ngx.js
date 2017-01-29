@@ -4,6 +4,7 @@ const Keyboard = require('./Keyboard');
 const Gamepad = require('./Gamepad');
 
 module.exports = function InputModule(runtime) {
+    /*
     Keyboard.enable(true);
     Gamepad.enable(true);
 
@@ -17,6 +18,8 @@ module.exports = function InputModule(runtime) {
     //controller.auxiliaryMapper = ControllerManager.getInputMapper('KeyboardMapper');
 
     runtime.onSceneLoad(bindInputSystem);
+     */
+
 };
 
 function bindInputSystem(runtime, scene) {
