@@ -63,14 +63,14 @@ module.exports = function(gamepad, controller) {
 
     x = axes[LEFT_AXIS_X];
     y = axes[LEFT_AXIS_Y];
-    value = Mathlib.deadzone(x, y);
+    value = Mathlib.deadzone(AXIS_DEAD_ZONE, x, y);
 
-    if (value === 0) {
-        controller.send(Controller.RIGHT_AXIS_X, 0.0);
-        controller.send(Controller.RIGHT_AXIS_Y, 0.0);
+    if (value) {
+        controller.send(Controller.LEFT_AXIS_X, x);
+        controller.send(Controller.LEFT_AXIS_Y, y);
     } else {
-        controller.send(Controller.RIGHT_AXIS_X, x);
-        controller.send(Controller.RIGHT_AXIS_Y, y);
+        controller.send(Controller.LEFT_AXIS_X, 0.0);
+        controller.send(Controller.LEFT_AXIS_Y, 0.0);
     }
 
     // Right Axis
@@ -79,12 +79,12 @@ module.exports = function(gamepad, controller) {
     y = axes[RIGHT_AXIS_Y];
     value = Mathlib.deadzone(AXIS_DEAD_ZONE, x, y);
 
-    if (value === 0) {
-        controller.send(Controller.RIGHT_AXIS_X, 0.0);
-        controller.send(Controller.RIGHT_AXIS_Y, 0.0);
-    } else {
+    if (value) {
         controller.send(Controller.RIGHT_AXIS_X, x);
         controller.send(Controller.RIGHT_AXIS_Y, y);
+    } else {
+        controller.send(Controller.RIGHT_AXIS_X, 0.0);
+        controller.send(Controller.RIGHT_AXIS_Y, 0.0);
     }
 
     // Triggers
